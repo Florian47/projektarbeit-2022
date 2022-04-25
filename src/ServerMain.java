@@ -12,9 +12,6 @@ public class ServerMain {
     {
         String baseUrl = ( args.length > 0 ) ? args[0] : "http://localhost:4000";
         ResourceConfig config = new ResourceConfig( UserResource.class );
-
-        //config.register(new CORSFilter());
-        //config.register(CORSFilter.class);
         config.register(new FilterCors());
         config.register(FilterCors.class);
 
@@ -27,11 +24,6 @@ public class ServerMain {
             }
         } ) );
         server.start();
-
-        /*System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
-                        + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
-                baseUrl) );*/
-
         Thread.currentThread().join();
     }
 

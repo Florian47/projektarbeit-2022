@@ -13,10 +13,9 @@ public class UserResource {
 
     @POST
     @Path("/authenticate")
-    public Response login(Object login) {
+    public Response login(User login) {
 
-        System.out.println(login);
-        return null;
+        return Response.ok(login).build();
     }
 
     @GET
