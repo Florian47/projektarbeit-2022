@@ -11,9 +11,15 @@ public class ServerMain {
     public static void main( String[] args ) throws IOException, InterruptedException
     {
         String baseUrl = ( args.length > 0 ) ? args[0] : "http://localhost:4000";
+        ResourceConfig config = new ResourceConfig( UserResource.class );
+
+        //config.register(new CORSFilter());
+        //config.register(CORSFilter.class);
+        config.register(new FilterCors());
+        config.register(FilterCors.class);
 
         final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-                URI.create( baseUrl ), new ResourceConfig( UserResource.class ), false );
+                URI.create( baseUrl ), config, false );
         Runtime.getRuntime().addShutdownHook( new Thread( new Runnable() {
             @Override
             public void run() {

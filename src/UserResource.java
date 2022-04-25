@@ -13,7 +13,7 @@ public class UserResource {
 
     @POST
     @Path("/authenticate")
-    public Response login(String login) {
+    public Response login(Object login) {
 
         System.out.println(login);
         return null;
