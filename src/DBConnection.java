@@ -1,19 +1,21 @@
 package src;
 
-import java.sql.*;
+
+import org.apache.derby.iapi.jdbc.AutoloadedDriver;
+
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnection {
 
-    public static void main(String[] args) {
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/softwareprojekt2022", "postgres", "user");
-
-            if (connection!=null) System.out.println("Connection OK");
-            else System.out.println("Connection Failed");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    public static void main(String[] args) throws SQLException {
+        Driver derbyEmbeddedDriver = new AutoloadedDriver();
+        DriverManager.registerDriver(derbyEmbeddedDriver);
+        Connection conn = DriverManager.getConnection
+                ("jdbc:derby:testdb1;create=true");
+        conn.setAutoCommit(false);
     }
 
 }

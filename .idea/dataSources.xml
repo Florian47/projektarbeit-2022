@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Softwareprojekt 2022 DB" uuid="46f42df9-d266-4b7d-a0b1-7a7cfe6ab07e">
-      <driver-ref>postgresql</driver-ref>
+    <data-source source="LOCAL" name="testdb1" uuid="e8432592-5ac9-4630-af34-6207a81c8fcd">
+      <driver-ref>derby.embedded</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/softwareprojekt2022</jdbc-url>
+      <jdbc-driver>org.apache.derby.jdbc.EmbeddedDriver</jdbc-driver>
+      <jdbc-url>jdbc:derby:$PROJECT_DIR$/testdb1</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
