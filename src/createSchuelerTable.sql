@@ -1,8 +1,8 @@
 create table SCHUELER
 (
-    ID        INTEGER default AUTOINCREMENT: start 1 increment 1 generated always as identity
+    ID        INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)
         constraint SCHUELER_PK
-        primary key,
+            primary key,
     FIRSTNAME VARCHAR(255) not null,
     LASTNAME  VARCHAR(255) not null,
     USERNAME  VARCHAR(255) not null
