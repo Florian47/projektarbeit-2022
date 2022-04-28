@@ -1,5 +1,9 @@
 package src;
 
+import javax.json.bind.annotation.JsonbProperty;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
     public long getId() {
         return id;
@@ -10,35 +14,35 @@ public class User {
     }
 
     public String getVorname() {
-        return vorname;
+        return firstName;
     }
 
     public void setVorname(String vorname) {
-        this.vorname = vorname;
+        this.firstName = vorname;
     }
 
     public String getNachname() {
-        return nachname;
+        return lastName;
     }
 
     public void setNachname(String nachname) {
-        this.nachname = nachname;
+        this.lastName = nachname;
     }
 
     public String getBenutzername() {
-        return benutzername;
+        return username;
     }
 
     public void setBenutzername(String benutzername) {
-        this.benutzername = benutzername;
+        this.username = benutzername;
     }
 
     public String getPasswort() {
-        return passwort;
+        return password;
     }
 
     public void setPasswort(String passwort) {
-        this.passwort = passwort;
+        this.password = passwort;
     }
 
     public int getKlasse() {
@@ -49,10 +53,10 @@ public class User {
         this.klasse = klasse;
     }
 
-    long id;
-    String vorname;
-    String nachname;
-    String benutzername;
-    String passwort;
+    public long id;
+    public String firstName;
+    public String lastName;
+    public String username;
+    public String password;
     int klasse = 4;
 }
