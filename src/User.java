@@ -53,9 +53,9 @@ public class User {
         this.klasse = klasse;
     }
 
-    long id;
+    public long id;
     public String firstName;
-    String lastName;
+    public String lastName;
     public String username;
     public String password;
     int klasse = 4;

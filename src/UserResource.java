@@ -7,6 +7,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,23 +34,35 @@ public class UserResource {
     }
 
     @GET
-    @Path("/{id}")
-    public Response getUserById(@PathParam("id") Long id) {
-        // ...
-        return null;
+    public Response getAll() throws SQLException {
+        return Response.ok(getUsers()).build();
     }
 
-    @POST
-    public Response getUser(User userToStore) {
-        // ...
-        return null;
+    @GET
+    @Path("/{id}")
+    public Response getUserById(@PathParam("id") Long id) throws SQLException {
+        User user = new User();
+        user.setId(id);
+        User dbUser = getUserById(user);
+        return Response.ok(dbUser).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response updateUser(@PathParam("id") Long id, User userToStore) throws SQLException {
+        userToStore.setId(id);
+        updateUser(userToStore);
+        User dbUser = getUserById(userToStore);
+        return Response.ok(dbUser).build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteUser(@PathParam("id") Long id) {
-        // ...
-        return null;
+    public Response deleteUser(@PathParam("id") Long id) throws SQLException {
+        User user = new User();
+        user.setId(id);
+        deleteUser(user);
+        return Response.ok().build();
     }
 
     public void addUser(User user) throws SQLException {
@@ -74,27 +88,42 @@ public class UserResource {
     public User getUserByUserNameAndPassword(User user) throws SQLException {
         try (var con = DBConnection.get().createStatement()) {
             ResultSet rs = con.executeQuery("SELECT * FROM schueler WHERE(username='%s' AND password='%s')".formatted(user.getBenutzername(), user.getPasswort()));
+            return mapSingle(rs);
+        }
+    }
+    public List<User> getUsers() throws SQLException {
+        try (var con = DBConnection.get().createStatement()) {
+            ResultSet rs = con.executeQuery("SELECT * FROM schueler");
             return map(rs);
         }
     }
+
     public User getUserById(User user) throws SQLException {
         try (var con = DBConnection.get().createStatement()) {
             ResultSet rs = con.executeQuery("SELECT * FROM schueler WHERE(id=%s)".formatted(user.getId()));
-            return map(rs);
+            return mapSingle(rs);
         }
     }
-    
-    private User map(ResultSet resourceResult) throws SQLException {
-        if (resourceResult.next()) {
+
+    private User mapSingle(ResultSet resourceResult) throws SQLException {
+        List<User> list = map(resourceResult);
+        if (list.size()==1) {
+            return list.get(0);
+        }
+        return null;
+    }
+    private List<User> map(ResultSet resourceResult) throws SQLException {
+        List<User> list = new ArrayList<>();
+        while (resourceResult.next()) {
             User user = new User();
             user.setVorname(resourceResult.getString("firstname"));
             user.setNachname(resourceResult.getString("lastname"));
             user.setBenutzername(resourceResult.getString("username"));
             user.setPasswort(resourceResult.getString("password"));
             user.setId(resourceResult.getInt("id"));
-            return user;
+            list.add(user);
         }
-        return null;
+        return list;
     }
 
 }
