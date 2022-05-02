@@ -1,8 +1,8 @@
 package test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import example.springbootdemoserver.Application;
-import example.springbootdemoserver.person.PersonEntity;
+import sommersemester2022.Application;
+import sommersemester2022.person.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class BaseTest {
   public void setup() {
     new TransactionTemplate(tx).execute(new TransactionCallbackWithoutResult() {
       protected void doInTransactionWithoutResult(TransactionStatus status) {
-        removeAll(PersonEntity.class);
+        removeAll(UserEntity.class);
       }
     });
   }

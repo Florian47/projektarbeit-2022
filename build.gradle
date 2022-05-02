@@ -4,8 +4,8 @@ plugins {
   id 'java'
 }
 
-group = "example." + project.name
-version = "0.0.1"
+group = "sommersemester2022." + project.name
+version = "1.0.0"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17

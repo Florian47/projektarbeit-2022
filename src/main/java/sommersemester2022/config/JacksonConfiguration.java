@@ -1,4 +1,4 @@
-package example.springbootdemoserver.config;
+package sommersemester2022.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
