@@ -1,10 +1,8 @@
 package sommersemester2022.person;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 @Entity
-@Table(name="user")
 public class UserEntity {
   public int getId() {
     return id;
