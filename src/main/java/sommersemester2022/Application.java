@@ -1,5 +1,7 @@
 package sommersemester2022;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class Application {
     user.setLastName("admin");
     user.setUsername("admin");
     user.setPassword("admin1");
-    userRepository.save(user);
+    if(!userRepository.existsByUsername(user.getUsername()))userRepository.save(user);
   }
 }
 
