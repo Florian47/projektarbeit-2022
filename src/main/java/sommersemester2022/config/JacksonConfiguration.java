@@ -21,10 +21,6 @@ public class JacksonConfiguration {
         SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
         DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE
       )
-      .featuresToEnable(
-        DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS,
-        DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES
-      )
       .modules(new JavaTimeModule());
   }
 }
