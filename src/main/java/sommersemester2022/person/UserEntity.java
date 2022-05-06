@@ -1,20 +1,45 @@
 package sommersemester2022.person;
 
+import sommersemester2022.userroles.RoleEntity;
+import sommersemester2022.userroles.UserRole;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class UserEntity {
-  public int getId() {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+  private String firstName;
+  private String lastName;
+  @Column(unique = true)
+  private String username;
+  private String password;
+  @Enumerated(EnumType.STRING)
+  private UserRole role;
+  @ManyToMany
+  private Set<RoleEntity> roles = new HashSet<>();
+
+  public UserEntity(String firstName, String lastName, String username, String password, UserRole role) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
+
+  public UserEntity() {}
+
+  public long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
-
-  @Id
-  @GeneratedValue
-  private int id;
 
   public String getFirstName() {
     return firstName;
@@ -48,19 +73,19 @@ public class UserEntity {
     this.password = password;
   }
 
-  private String firstName;
-  private String lastName;
-  @Column(unique = true)
-  private String username;
-  private String password;
-
-  public UserEntity(String firstName, String lastName, String username, String password) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.username = username;
-    this.password = password;
+  public UserRole getRole() {
+    return this.role;
   }
 
-  public UserEntity() {}
+  public void setRole(UserRole role) {
+    this.role = role;
+  }
 
+  public Set<RoleEntity> getRoles() {
+    return this.roles;
+  }
+
+  public void setRoles(Set<RoleEntity> roles) {
+    this.roles = roles;
+  }
 }

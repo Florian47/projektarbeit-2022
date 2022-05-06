@@ -1,9 +1,9 @@
 package test.user;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import sommersemester2022.person.UserEntity;
+import sommersemester2022.userroles.UserRole;
 import test.BaseTest;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -15,7 +15,7 @@ public class UserControllerTest extends BaseTest {
 
   //@Test
   public void testAddPerson() throws Exception {
-    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1"));
+    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1", UserRole.student));
     ResponseEntity<String> result = restPost("/users/register", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -29,7 +29,7 @@ public class UserControllerTest extends BaseTest {
 
   //@Test
   public void testPersonList() throws Exception {
-    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1"));
+    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1", UserRole.student));
     restPost("/users/register", json);
 
     ResponseEntity<String> result = restGet("/users");
