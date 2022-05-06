@@ -1,4 +1,4 @@
-package sommersemester2022.controllers;
+package sommersemester2022.person;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
