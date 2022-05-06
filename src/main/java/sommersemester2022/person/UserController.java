@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import sommersemester2022.payload.response.JwtResponse;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.security.services.jwt.JwtUtils;
-import sommersemester2022.userroles.RoleRepo;
+
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
