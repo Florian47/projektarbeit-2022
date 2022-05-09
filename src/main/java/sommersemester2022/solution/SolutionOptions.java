@@ -1,11 +1,9 @@
 package sommersemester2022.solution;
 
+import javax.persistence.Embeddable;
 import java.util.Map;
-
-public class Helper {
+@Embeddable
+public class SolutionOptions {
   private Map<String, Boolean> help;
 
-  public Map<String, Boolean> getHelp() {
-    return this.help;
-  }
 }

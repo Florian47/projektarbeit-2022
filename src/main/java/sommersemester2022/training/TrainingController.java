@@ -2,9 +2,11 @@ package sommersemester2022.training;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sommersemester2022.person.UserEntity;
+import sommersemester2022.task.TaskEntity;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TrainingController {
@@ -26,9 +28,17 @@ public class TrainingController {
     trainingRepo.deleteById(id);
   }
 
-  @GetMapping("/users")
-  public List<TrainingEntity> getAll() {
-    return trainingRepo.findAll();
+  @GetMapping("/schueler")
+  public Optional<List<TrainingEntity>> getAllTrainingsForStudent(@PathVariable int id, @RequestBody UserEntity student) {
+    return trainingRepo.findByStudent(id);
+  }
+
+  @PutMapping("/trainingView/add)")
+  public TrainingEntity addTasksToTraining(@RequestBody TrainingEntity training, @RequestBody List<TaskEntity> tasks) {
+    for (TaskEntity task: tasks) {
+      training.addTask(task);
+    }
+    return trainingRepo.save(training);
   }
 
 }

@@ -10,7 +10,7 @@ public class TaskEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private int id;
   private String text;
   private String picture;
   private int score;
@@ -73,6 +73,14 @@ public class TaskEntity {
 
   public void setDifficulty(TaskDifficulty difficulty) {
     this.difficulty = difficulty;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public int getId() {
+    return this.id;
   }
 }
 

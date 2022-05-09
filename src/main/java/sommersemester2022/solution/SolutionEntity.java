@@ -1,9 +1,6 @@
 package sommersemester2022.solution;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 
@@ -12,25 +9,26 @@ public class SolutionEntity {
 
   @Id
   @GeneratedValue
-  private long id;
+  private int id;
 
- // @ElementCollection
- // private List<Helper> solution;
-//  private List<Map<String, Boolean>> solution;
+  @ElementCollection
+  private List<SolutionOptions> solution;
+  //@OneToMany(cascade=CascadeType.ALL)
+  //private List<Map<String, Boolean>> solution;
   private String hint;
 
   public SolutionEntity() {}
 
-  public SolutionEntity(List<Map<String, Boolean>> solution, String hint) {
+  public SolutionEntity(List<SolutionOptions> solution, String hint) {
     this.solution = solution;
     this.hint = hint;
   }
 
-  public List<Map<String, Boolean>> getSolution() {
+  public List<SolutionOptions> getSolution() {
     return solution;
   }
 
-  public void setSolution(List<Map<String, Boolean>> solution) {
+  public void setSolution(List<SolutionOptions> solution) {
     this.solution = solution;
   }
 

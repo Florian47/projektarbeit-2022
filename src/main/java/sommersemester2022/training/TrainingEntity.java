@@ -29,7 +29,19 @@ public class TrainingEntity {
     this.creator = creator;
   }
 
+  public void addTask(TaskEntity task) {
+    this.tasks.add(task);
+  }
 
+
+
+  public void addStudent(UserEntity student) {
+    this.students.add(student);
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
 }
 
 

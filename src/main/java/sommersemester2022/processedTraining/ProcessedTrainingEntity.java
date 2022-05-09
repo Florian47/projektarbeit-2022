@@ -11,15 +11,16 @@ public class ProcessedTrainingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private int id;
   private int score;
-  private List<List<List<Boolean>>> studentSolution;
+  @ElementCollection
+  private List<Tasks> studentSolution;
   @ManyToOne
   private TrainingEntity originTraining;
 
   public ProcessedTrainingEntity() {}
 
-  public ProcessedTrainingEntity(List<List<List<Boolean>>> studentSolution, TrainingEntity originTraining) {
+  public ProcessedTrainingEntity(List<Tasks> studentSolution, TrainingEntity originTraining) {
     this.studentSolution = studentSolution;
     this.originTraining = originTraining;
   }
@@ -32,11 +33,11 @@ public class ProcessedTrainingEntity {
     this.score = score;
   }
 
-  public List<List<List<Boolean>>> getStudentSolution() {
+  public List<Tasks> getStudentSolution() {
     return studentSolution;
   }
 
-  public void setStudentSolution(List<List<List<Boolean>>> studentSolution) {
+  public void setStudentSolution(List<Tasks> studentSolution) {
     this.studentSolution = studentSolution;
   }
 }
