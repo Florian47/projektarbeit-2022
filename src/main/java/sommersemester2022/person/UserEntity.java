@@ -1,6 +1,8 @@
 package sommersemester2022.person;
 
 import sommersemester2022.userroles.Role;
+import sommersemester2022.userroles.UserRole;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -9,11 +11,11 @@ import javax.persistence.*;
 
 @Entity
 public class UserEntity {
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
   @ManyToMany(fetch = FetchType.LAZY)
@@ -23,8 +25,9 @@ public class UserEntity {
   private Set<Role> roles = new HashSet<>();
   @Id
   @GeneratedValue
-  private long id;
+  private int id;
 
+  private UserRole role;
   public String getFirstName() {
     return firstName;
   }
@@ -70,11 +73,12 @@ public class UserEntity {
   private String username;
   private String password;
 
-  public UserEntity(String firstName, String lastName, String username, String password) {
+  public UserEntity(String firstName, String lastName, String username, String password, UserRole role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
+    this.role = role;
   }
 
   public UserEntity() {}

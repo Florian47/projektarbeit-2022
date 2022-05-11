@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import sommersemester2022.payload.response.JwtResponse;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.security.services.jwt.JwtUtils;
-
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,18 +51,18 @@ public class UserController {
   }
 
   @GetMapping("/users/{id}")
-  public UserEntity getById(@PathVariable int id) {
+  public UserEntity getById(@PathVariable Integer id) {
     return userRepo.findById(id).get();
   }
 
   @PutMapping("/users/{id}")
-  public UserEntity updateUser(@PathVariable Long id, @RequestBody UserEntity person) {
+  public UserEntity updateUser(@PathVariable Integer id, @RequestBody UserEntity person) {
     person.setId(id);
     return userRepo.save(person);
   }
 
   @DeleteMapping("/users/{id}")
-  public void deleteUser(@PathVariable int id) {
+  public void deleteUser(@PathVariable Integer id) {
     userRepo.deleteById(id);
   }
 
