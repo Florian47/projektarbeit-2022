@@ -28,9 +28,14 @@ public class TrainingController {
     trainingRepo.deleteById(id);
   }
 
-  @GetMapping("/schueler")
+  @GetMapping("/schueler/{id}")
   public Optional<List<TrainingEntity>> getAllTrainingsForStudent(@PathVariable int id, @RequestBody UserEntity student) {
     return trainingRepo.findByStudents(id);
+  }
+
+  @GetMapping("/schueler/all")
+  public List<UserEntity> getAllUsersForTraining(@RequestBody TrainingEntity training) {
+    return training.getStudents();
   }
 
   @PutMapping("/training/add)")

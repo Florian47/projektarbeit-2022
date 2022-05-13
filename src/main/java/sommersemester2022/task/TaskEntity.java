@@ -20,19 +20,16 @@ public class TaskEntity {
   private TaskDifficulty difficulty;
   @OneToOne(cascade = CascadeType.PERSIST)
   private SolutionEntity solution;
-  @ManyToOne
-  private UserEntity creator;
 
   public TaskEntity() {}
 
-  public TaskEntity(String text, String picture, int score, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution, UserEntity creator) {
+  public TaskEntity(String text, String picture, int score, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
     this.text = text;
     this.picture = picture;
     this.score = score;
     this.category = category;
     this.difficulty = difficulty;
     this.solution = solution;
-    this.creator = creator;
   }
 
   public String getText() {
@@ -78,9 +75,16 @@ public class TaskEntity {
   public void setId(int id) {
     this.id = id;
   }
-
   public int getId() {
     return this.id;
+  }
+
+  public SolutionEntity getSolution() {
+    return solution;
+  }
+
+  public void setSolution(SolutionEntity solution) {
+    this.solution = solution;
   }
 }
 

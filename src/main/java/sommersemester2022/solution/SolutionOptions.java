@@ -1,10 +1,47 @@
 package sommersemester2022.solution;
 
-import javax.persistence.Embeddable;
-import java.util.HashMap;
-import java.util.Map;
-@Embeddable
+import org.springframework.stereotype.Service;
+
+import javax.persistence.*;
+import javax.transaction.Transactional;
+
+@Entity
 public class SolutionOptions {
-  //private Map<String, Boolean> help = new HashMap<>();
-  private int count;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private int id;
+  private String optionName;
+  private boolean rightAnswer;
+
+  public SolutionOptions() {}
+
+  public SolutionOptions(String optionName, boolean rightAnswer) {
+    this.optionName = optionName;
+    this.rightAnswer = rightAnswer;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public boolean isRightAnswer() {
+    return rightAnswer;
+  }
+
+  public void setRightAnswer(boolean rightAnswer) {
+    this.rightAnswer = rightAnswer;
+  }
+
+  public String getOptionName() {
+    return optionName;
+  }
+
+  public void setOptionName(String optionName) {
+    this.optionName = optionName;
+  }
 }

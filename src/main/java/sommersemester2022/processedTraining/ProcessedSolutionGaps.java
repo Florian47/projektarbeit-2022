@@ -4,13 +4,13 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Tasks {
+public class ProcessedSolutionGaps {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @OneToMany
-  List<Gaps> gaps;
+
+  String answer;
 
   public int getId() {
     return id;
@@ -20,4 +20,11 @@ public class Tasks {
     this.id = id;
   }
 
+  public String getAnswer() {
+    return answer;
+  }
+
+  public void setAnswer(String answer) {
+    this.answer = answer;
+  }
 }

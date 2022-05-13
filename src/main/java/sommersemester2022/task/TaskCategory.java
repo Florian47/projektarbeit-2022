@@ -1,8 +1,8 @@
 package sommersemester2022.task;
 
 public enum TaskCategory {
-  Grammatik,
-  Lueckentext,
-  Zeichensetzung,
-  GrossKleinSchreibung
+  GRAMMATIK,
+  LUECKENTEXT,
+  ZEICHENSETZUNG,
+  GROSS_KLEIN_SCHREIBUNG
 }

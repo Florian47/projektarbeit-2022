@@ -7,6 +7,8 @@ import sommersemester2022.person.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import sommersemester2022.task.TaskController;
+import sommersemester2022.userroles.UserRole;
 
 import javax.annotation.PostConstruct;
 
@@ -26,6 +28,7 @@ public class Application {
     user.setLastName("admin");
     user.setUsername("admin");
     user.setPassword("admin1");
+    user.setRole(UserRole.admin);
     if(!userRepository.existsByUsername(user.getUsername()))userRepository.save(user);
   }
 }

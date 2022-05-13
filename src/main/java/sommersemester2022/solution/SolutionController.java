@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class SolutionController {
@@ -16,15 +17,15 @@ public class SolutionController {
   }
 
   @GetMapping("/solution/{id}")
-  public SolutionEntity getById(@PathVariable int id) {
-    return solutionRepo.findById(id).get();
+  public Optional<SolutionEntity> getById(@PathVariable int id) {
+    return solutionRepo.findSolutionEntityByRelatedTask_Id(id);
   }
 
-  /*@PutMapping("/users/{id}")
-  public TaskEntity updateUser(@PathVariable int id, @RequestBody TaskEntity task) {
-    task.setId(id);
-    return taskRepo.save(task);
-  }*/
+  @PutMapping("/solution/{id}")
+  public SolutionEntity updateUser(@PathVariable int id, @RequestBody SolutionEntity solution) {
+    solution.setId(id);
+    return solutionRepo.save(solution);
+  }
 
   @DeleteMapping("/solution/delete/{id}")
   public void deleteSolution(@PathVariable int id) {

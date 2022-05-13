@@ -13,14 +13,14 @@ public class ProcessedTrainingEntity {
   private int id;
   private int score;
   @OneToMany
-  private List<Tasks> solutionTasks;
+  private List<ProcessedSolutionTasks> processedSolutionTasks;
   @ManyToOne
   private TrainingEntity originTraining;
 
   public ProcessedTrainingEntity() {}
 
-  public ProcessedTrainingEntity(List<Tasks> solutionTasks, TrainingEntity originTraining) {
-    this.solutionTasks = solutionTasks;
+  public ProcessedTrainingEntity(List<ProcessedSolutionTasks> processedSolutionTasks, TrainingEntity originTraining) {
+    this.processedSolutionTasks = processedSolutionTasks;
     this.originTraining = originTraining;
   }
 
@@ -32,12 +32,36 @@ public class ProcessedTrainingEntity {
     this.score = score;
   }
 
-  public List<Tasks> getSolutionTasks() {
-    return solutionTasks;
+  public List<ProcessedSolutionTasks> getSolutionTasks() {
+    return processedSolutionTasks;
   }
 
-  public void setSolutionTasks(List<Tasks> studentSolution) {
-    this.solutionTasks = studentSolution;
+  public void setSolutionTasks(List<ProcessedSolutionTasks> studentSolution) {
+    this.processedSolutionTasks = studentSolution;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public List<ProcessedSolutionTasks> getProcessedSolutionTasks() {
+    return processedSolutionTasks;
+  }
+
+  public void setProcessedSolutionTasks(List<ProcessedSolutionTasks> processedSolutionTasks) {
+    this.processedSolutionTasks = processedSolutionTasks;
+  }
+
+  public TrainingEntity getOriginTraining() {
+    return originTraining;
+  }
+
+  public void setOriginTraining(TrainingEntity originTraining) {
+    this.originTraining = originTraining;
   }
 }
 

@@ -17,8 +17,8 @@ public class TaskController {
     return taskRepo.save(task);
   }
 
-  @GetMapping("/tasks/{id}")
-  public TaskEntity getById(@PathVariable int id) {
+  @GetMapping("/task/{id}")
+  public TaskEntity getTaskById(@PathVariable int id) {
     return taskRepo.findById(id).get();
   }
 
@@ -38,9 +38,8 @@ public class TaskController {
     return taskRepo.findAll();
   }
 
-  @DeleteMapping("/tasks/{id}")
+  @DeleteMapping("/task/{id}")
   public void deleteTask(@PathVariable int id) {
     taskRepo.deleteById(id);
   }
-
 }

@@ -42,6 +42,14 @@ public class TrainingEntity {
   public void setId(int id) {
     this.id = id;
   }
+
+  public List<UserEntity> getStudents() {
+    return students;
+  }
+
+  public void setStudents(List<UserEntity> students) {
+    this.students = students;
+  }
 }
 
 
