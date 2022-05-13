@@ -1,6 +1,5 @@
 package sommersemester2022.processedTraining;
 
-import sommersemester2022.person.UserEntity;
 import sommersemester2022.training.TrainingEntity;
 
 import javax.persistence.*;
@@ -13,15 +12,15 @@ public class ProcessedTrainingEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private int score;
-  @ElementCollection
-  private List<Tasks> studentSolution;
+  @OneToMany
+  private List<Tasks> solutionTasks;
   @ManyToOne
   private TrainingEntity originTraining;
 
   public ProcessedTrainingEntity() {}
 
-  public ProcessedTrainingEntity(List<Tasks> studentSolution, TrainingEntity originTraining) {
-    this.studentSolution = studentSolution;
+  public ProcessedTrainingEntity(List<Tasks> solutionTasks, TrainingEntity originTraining) {
+    this.solutionTasks = solutionTasks;
     this.originTraining = originTraining;
   }
 
@@ -33,12 +32,12 @@ public class ProcessedTrainingEntity {
     this.score = score;
   }
 
-  public List<Tasks> getStudentSolution() {
-    return studentSolution;
+  public List<Tasks> getSolutionTasks() {
+    return solutionTasks;
   }
 
-  public void setStudentSolution(List<Tasks> studentSolution) {
-    this.studentSolution = studentSolution;
+  public void setSolutionTasks(List<Tasks> studentSolution) {
+    this.solutionTasks = studentSolution;
   }
 }
 

@@ -10,12 +10,12 @@ public class SolutionController {
   @Autowired
   private SolutionRepo solutionRepo;
 
-  @PostMapping("/aufgabe/register")
+  @PostMapping("/solution/add")
   public SolutionEntity createSolution(@RequestBody SolutionEntity solution) {
     return solutionRepo.save(solution);
   }
 
-  @GetMapping("/users/{id}")
+  @GetMapping("/solution/{id}")
   public SolutionEntity getById(@PathVariable int id) {
     return solutionRepo.findById(id).get();
   }
@@ -26,12 +26,12 @@ public class SolutionController {
     return taskRepo.save(task);
   }*/
 
-  @DeleteMapping("/users/{id}")
+  @DeleteMapping("/solution/delete/{id}")
   public void deleteSolution(@PathVariable int id) {
     solutionRepo.deleteById(id);
   }
 
-  @GetMapping("/users")
+  @GetMapping("/solutions")
   public List<SolutionEntity> getAll() {
     return solutionRepo.findAll();
   }

@@ -13,27 +13,27 @@ public class TrainingController {
   @Autowired
   private TrainingRepo trainingRepo;
 
-  @PostMapping("/users/register")
+  @PostMapping("/training/add")
   public TrainingEntity createTraining(@RequestBody TrainingEntity training) {
     return trainingRepo.save(training);
   }
 
-  @GetMapping("/users/{id}")
+  @GetMapping("/training/{id}")
   public TrainingEntity getById(@PathVariable int id) {
     return trainingRepo.findById(id).get();
   }
 
-  @DeleteMapping("/users/{id}")
+  @DeleteMapping("/training/{id}")
   public void deleteTraining(@PathVariable int id) {
     trainingRepo.deleteById(id);
   }
 
   @GetMapping("/schueler")
   public Optional<List<TrainingEntity>> getAllTrainingsForStudent(@PathVariable int id, @RequestBody UserEntity student) {
-    return trainingRepo.findByStudent(id);
+    return trainingRepo.findByStudents(id);
   }
 
-  @PutMapping("/trainingView/add)")
+  @PutMapping("/training/add)")
   public TrainingEntity addTasksToTraining(@RequestBody TrainingEntity training, @RequestBody List<TaskEntity> tasks) {
     for (TaskEntity task: tasks) {
       training.addTask(task);

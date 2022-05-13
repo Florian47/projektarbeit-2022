@@ -10,22 +10,22 @@ public class ProcessedTrainingController {
   @Autowired
   private ProcessedTrainingRepo processedTrainingRepo;
 
-  @PostMapping("/users/register")
+  @PostMapping("/processedTraining/add")
   public ProcessedTrainingEntity createTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
     return processedTrainingRepo.save(processedTraining);
   }
 
-  @GetMapping("/users/{id}")
+  @GetMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity getById(@PathVariable int id) {
     return processedTrainingRepo.findById(id).get();
   }
 
-  @DeleteMapping("/users/{id}")
+  @DeleteMapping("/processedTraining/delete/{id}")
   public void deleteProcessedTraining(@PathVariable int id) {
     processedTrainingRepo.deleteById(id);
   }
 
-  @GetMapping("/users")
+  @GetMapping("/processedTrainings")
   public List<ProcessedTrainingEntity> getAll() {
     return processedTrainingRepo.findAll();
   }

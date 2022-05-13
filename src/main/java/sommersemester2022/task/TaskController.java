@@ -12,33 +12,33 @@ public class TaskController {
   @Autowired
   private TaskRepo taskRepo;
 
-  @PostMapping("/taskView/add")
+  @PostMapping("/task/create")
   public TaskEntity createTask(@RequestBody TaskEntity task) {
     return taskRepo.save(task);
   }
 
-  @GetMapping("/users/{id}")
+  @GetMapping("/tasks/{id}")
   public TaskEntity getById(@PathVariable int id) {
     return taskRepo.findById(id).get();
   }
 
-  @PutMapping("/taskView/edit/{id}")
+  @PutMapping("/task/edit/{id}")
   public TaskEntity updateTask(@PathVariable int id, @RequestBody TaskEntity task) {
     task.setId(id);
     return taskRepo.save(task);
   }
 
-  @PutMapping("/trainingView/edit/{id}")
+  @PutMapping("/training/edit/{id}")
   public TaskEntity updateTaskInTraining(@PathVariable int id, @RequestBody TaskEntity task) {
     task.setId(id);
     return taskRepo.save(task);
   }
-  @GetMapping("/taskView")
+  @GetMapping("/task")
   public List<TaskEntity> getAll() {
     return taskRepo.findAll();
   }
 
-  @DeleteMapping("/users/{id}")
+  @DeleteMapping("/tasks/{id}")
   public void deleteTask(@PathVariable int id) {
     taskRepo.deleteById(id);
   }

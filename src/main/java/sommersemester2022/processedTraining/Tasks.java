@@ -1,12 +1,23 @@
 package sommersemester2022.processedTraining;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.util.List;
 
-@Embeddable
+@Entity
 public class Tasks {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int id;
 
-  @ElementCollection
-  List<Gaps> tasks;
+  @OneToMany
+  List<Gaps> gaps;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
 }
