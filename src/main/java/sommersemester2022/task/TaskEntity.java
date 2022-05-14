@@ -11,6 +11,7 @@ public class TaskEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
+  private String name;
   private String text;
   private String picture;
   private int score;
@@ -23,13 +24,22 @@ public class TaskEntity {
 
   public TaskEntity() {}
 
-  public TaskEntity(String text, String picture, int score, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
+  public TaskEntity(String name, String text, String picture, int score, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
+    this.name = name;
     this.text = text;
     this.picture = picture;
     this.score = score;
     this.category = category;
     this.difficulty = difficulty;
     this.solution = solution;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getText() {

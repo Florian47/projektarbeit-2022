@@ -13,27 +13,52 @@ public class TrainingEntity {
   @Id
   @GeneratedValue
   private int id;
+  private String name;
   @OneToMany
   private List<UserEntity> students;
   private boolean individual;
   @ManyToMany
   private List<TaskEntity> tasks;
-  @ManyToOne
-  private UserEntity creator;
 
   public TrainingEntity() {}
 
-  public TrainingEntity(List<UserEntity> students, boolean individual, UserEntity creator) {
+  public TrainingEntity(String name, List<UserEntity> students, boolean individual) {
+    this.name = name;
     this.students = students;
     this.individual = individual;
-    this.creator = creator;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public boolean isIndividual() {
+    return individual;
+  }
+
+  public void setIndividual(boolean individual) {
+    this.individual = individual;
+  }
+
+  public List<TaskEntity> getTasks() {
+    return tasks;
+  }
+
+  public void setTasks(List<TaskEntity> tasks) {
+    this.tasks = tasks;
   }
 
   public void addTask(TaskEntity task) {
     this.tasks.add(task);
   }
-
-
 
   public void addStudent(UserEntity student) {
     this.students.add(student);

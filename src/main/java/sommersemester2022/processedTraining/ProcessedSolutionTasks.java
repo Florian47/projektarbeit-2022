@@ -9,7 +9,7 @@ public class ProcessedSolutionTasks {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @OneToMany
+  @OneToMany(fetch = FetchType.EAGER)
   List<ProcessedSolutionGaps> gaps;
 
   public int getId() {

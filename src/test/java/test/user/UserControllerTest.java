@@ -16,7 +16,7 @@ public class UserControllerTest extends BaseTest {
 
   @Test
   public void testAddPerson() throws Exception {
-    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1", UserRole.student));
+    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1", UserRole.STUDENT));
     ResponseEntity<String> result = restPost("/users/register", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -30,7 +30,7 @@ public class UserControllerTest extends BaseTest {
 
   //@Test
   public void testPersonList() throws Exception {
-    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1", UserRole.student));
+    String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1", UserRole.STUDENT));
     restPost("/users/register", json);
 
     ResponseEntity<String> result = restGet("/users");

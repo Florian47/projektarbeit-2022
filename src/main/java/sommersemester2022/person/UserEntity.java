@@ -5,6 +5,7 @@ import sommersemester2022.userroles.UserRole;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,6 +19,7 @@ public class UserEntity {
   @Column(unique = true)
   private String username;
   private String password;
+
   @Enumerated(EnumType.STRING)
   private UserRole role;
   @ManyToMany(fetch = FetchType.EAGER)

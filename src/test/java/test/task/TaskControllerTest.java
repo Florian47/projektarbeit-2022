@@ -19,7 +19,7 @@ public class TaskControllerTest extends BaseTest {
 
   @Test
   public void testAddTask() throws Exception {
-    String json = objectMapper.writeValueAsString(new TaskEntity("Heute ist ...", "1234", 4, TaskCategory.GRAMMATIK, TaskDifficulty.HARD, new SolutionEntity()));
+    String json = objectMapper.writeValueAsString(new TaskEntity("Aufgabe 1", "Heute ist ...", "1234", 4, TaskCategory.GRAMMATIK, TaskDifficulty.HARD, new SolutionEntity()));
     ResponseEntity<String> result = restPost("/task/create", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
