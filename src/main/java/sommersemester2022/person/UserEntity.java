@@ -20,7 +20,7 @@ public class UserEntity {
   private String password;
   @Enumerated(EnumType.STRING)
   private UserRole role;
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   private Set<RoleEntity> roles = new HashSet<>();
 
   public UserEntity(String firstName, String lastName, String username, String password, UserRole role) {

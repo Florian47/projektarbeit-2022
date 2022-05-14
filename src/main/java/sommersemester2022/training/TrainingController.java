@@ -23,6 +23,11 @@ public class TrainingController {
     return trainingRepo.findById(id).get();
   }
 
+  @GetMapping("/training/")
+  public List<TrainingEntity> getAll() {
+    return trainingRepo.findAll();
+  }
+
   @DeleteMapping("/training/{id}")
   public void deleteTraining(@PathVariable int id) {
     trainingRepo.deleteById(id);
