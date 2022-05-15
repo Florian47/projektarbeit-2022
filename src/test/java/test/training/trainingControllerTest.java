@@ -8,15 +8,19 @@ import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.userroles.UserRole;
 import test.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class trainingControllerTest  extends BaseTest {
 
+  List<UserEntity> studentList = new ArrayList<>();
+
+
   @Test
   public void testAddTraining() throws Exception {
-    String json = objectMapper.writeValueAsString(new UserEntity());
+    String json = objectMapper.writeValueAsString(new TrainingEntity("Training1",studentList,false));
     ResponseEntity<String> result = restPost("/training/add", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
