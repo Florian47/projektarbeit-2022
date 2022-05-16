@@ -2,8 +2,6 @@ package sommersemester2022.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sommersemester2022.person.UserEntity;
-import sommersemester2022.training.TrainingEntity;
 
 import java.util.List;
 
@@ -41,5 +39,9 @@ public class TaskController {
   @DeleteMapping("/task/{id}")
   public void deleteTask(@PathVariable int id) {
     taskRepo.deleteById(id);
+  }
+
+  public List<TaskEntity> getAllTasksForGeneratedTraining(TaskCategory category, TaskDifficulty difficulty) {
+    return taskRepo.findAllByCategoryAndDifficulty(category, difficulty);
   }
 }

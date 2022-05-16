@@ -19,7 +19,7 @@ public class StudentGeneratedTrainingController {
 
   @PostMapping("/studentTraining/add")
   public void createStudentGeneratedTraining(@RequestBody StudentGeneratedTrainingEntity generatedTraining) {
-    List<TaskEntity> allTasks = taskController.getAll();
+    List<TaskEntity> allTasks = taskController.getAllTasksForGeneratedTraining(generatedTraining.getTrainingCategory(), generatedTraining.getTrainingDifficulty());
     List<Integer> indices = new ArrayList<>();
 
     // Create as many random numbers as asked from student and put into list
