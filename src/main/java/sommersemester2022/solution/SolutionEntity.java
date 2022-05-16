@@ -17,7 +17,7 @@ public class SolutionEntity {
   @GeneratedValue
   private int id;
   @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL)
   private List<SolutionGaps> solutionGaps;
   private String hint;
   @OneToOne(mappedBy = "solution")

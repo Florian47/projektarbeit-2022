@@ -36,6 +36,7 @@ public class StudentGeneratedTrainingController {
       training.addTask(allTasks.get(indices.get(i)));
     }
     trainingController.createTraining(training);
+    // Token zur Identifizierung, Creator muss hinzugefügt werden
   }
 
 }
