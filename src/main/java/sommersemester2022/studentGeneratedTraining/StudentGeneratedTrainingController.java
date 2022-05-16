@@ -1,4 +1,4 @@
-package sommersemester2022.StudentGeneratedTraining;
+package sommersemester2022.studentGeneratedTraining;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,4 +1,4 @@
-package sommersemester2022.StudentGeneratedTraining;
+package sommersemester2022.studentGeneratedTraining;
 
 import sommersemester2022.task.TaskCategory;
 import sommersemester2022.task.TaskDifficulty;
