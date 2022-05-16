@@ -33,7 +33,7 @@ public class TrainingController {
     trainingRepo.deleteById(id);
   }
 
-  @GetMapping("/schueler/{id}")
+  @GetMapping("training/schueler/{id}")
   public List<TrainingEntity> getAllTrainingsForStudent(@PathVariable int id, @RequestBody UserEntity student) {
     return trainingRepo.findByStudents(id).get();
   }
