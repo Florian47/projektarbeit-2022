@@ -17,7 +17,7 @@ public class StudentGeneratedTrainingController {
   private TaskController taskController = new TaskController();
   private TrainingController trainingController = new TrainingController();
 
-  @PostMapping("/studentTraining/add")
+  @PostMapping("/studentGeneratedTraining/add")
   public void createStudentGeneratedTraining(@RequestBody StudentGeneratedTrainingEntity generatedTraining) {
     List<TaskEntity> allTasks = taskController.getAllTasksForGeneratedTraining(generatedTraining.getTrainingCategory(), generatedTraining.getTrainingDifficulty());
     List<Integer> indices = new ArrayList<>();
