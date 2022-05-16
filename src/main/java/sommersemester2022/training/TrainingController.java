@@ -23,7 +23,7 @@ public class TrainingController {
     return trainingRepo.findById(id).get();
   }
 
-  @GetMapping("/training/")
+  @GetMapping("/training")
   public List<TrainingEntity> getAll() {
     return trainingRepo.findAll();
   }
@@ -43,7 +43,7 @@ public class TrainingController {
     return training.getStudents();
   }
 
-  @PutMapping("/training/add)")
+  @PutMapping("/training/add")
   public TrainingEntity addTasksToTraining(@RequestBody TrainingEntity training, @RequestBody List<TaskEntity> tasks) {
     for (TaskEntity task: tasks) {
       training.addTask(task);

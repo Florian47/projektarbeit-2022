@@ -12,8 +12,8 @@ public class TaskController {
   @Autowired
   private TaskRepo taskRepo;
 
-  @PostMapping("/task/create")
-  public TaskEntity createTask(@RequestBody TaskEntity task) {
+  @PostMapping("/task/add")
+  public TaskEntity addTask(@RequestBody TaskEntity task) {
     return taskRepo.save(task);
   }
 

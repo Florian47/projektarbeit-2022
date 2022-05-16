@@ -2,8 +2,10 @@ package sommersemester2022.task;
 
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.solution.SolutionEntity;
+import sommersemester2022.solution.SolutionGaps;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class TaskEntity {
@@ -24,14 +26,17 @@ public class TaskEntity {
 
   public TaskEntity() {}
 
-  public TaskEntity(String name, String text, String picture, int score, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
+  public TaskEntity(String name, String text, String picture, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
     this.name = name;
     this.text = text;
     this.picture = picture;
-    this.score = score;
     this.category = category;
     this.difficulty = difficulty;
     this.solution = solution;
+
+    // Score = Amount of gaps
+    List<SolutionGaps> amount = solution.getSolutionGaps();
+    this.score = amount.size();
   }
 
   public String getName() {

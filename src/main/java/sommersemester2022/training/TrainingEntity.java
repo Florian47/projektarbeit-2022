@@ -1,5 +1,7 @@
 package sommersemester2022.training;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.task.TaskEntity;
 
@@ -14,9 +16,11 @@ public class TrainingEntity {
   @GeneratedValue
   private int id;
   private String name;
+  @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany
   private List<UserEntity> students;
   private boolean individual;
+  @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
   private List<TaskEntity> tasks;
 
