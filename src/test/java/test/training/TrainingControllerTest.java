@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.training.TrainingEntity;
-import sommersemester2022.userroles.UserRole;
 import test.BaseTest;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class trainingControllerTest  extends BaseTest {
+public class TrainingControllerTest extends BaseTest {
 
   List<UserEntity> studentList = new ArrayList<>();
 
