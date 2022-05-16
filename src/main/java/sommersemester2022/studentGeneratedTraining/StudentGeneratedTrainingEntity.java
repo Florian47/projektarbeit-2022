@@ -3,7 +3,15 @@ package sommersemester2022.studentGeneratedTraining;
 import sommersemester2022.task.TaskCategory;
 import sommersemester2022.task.TaskDifficulty;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class StudentGeneratedTrainingEntity {
+  @Id
+  @Column(name = "id", nullable = false)
+  private Long id;
 
   private int taskAmount;
   private TaskDifficulty trainingDifficulty;
@@ -13,6 +21,18 @@ public class StudentGeneratedTrainingEntity {
     this.taskAmount = taskAmount;
     this.trainingDifficulty = trainingDifficulty;
     this.trainingCategory = trainingCategory;
+  }
+
+  public StudentGeneratedTrainingEntity() {
+
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public int getTaskAmount() {
