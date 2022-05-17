@@ -7,6 +7,7 @@ import sommersemester2022.person.UserEntity;
 import sommersemester2022.task.TaskEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +68,7 @@ public class TrainingEntity {
   }
 
   public void addTask(TaskEntity task) {
+    if (this.tasks == null) tasks = new ArrayList<>();
     this.tasks.add(task);
   }
 
