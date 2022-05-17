@@ -25,12 +25,6 @@ public class TaskController {
     task.setId(id);
     return taskRepo.save(task);
   }
-
-  @PutMapping("/training/edit/{id}")
-  public TaskEntity updateTaskInTraining(@PathVariable int id, @RequestBody TaskEntity task) {
-    task.setId(id);
-    return taskRepo.save(task);
-  }
   @GetMapping("/task")
   public List<TaskEntity> getAll() {
     return taskRepo.findAll();

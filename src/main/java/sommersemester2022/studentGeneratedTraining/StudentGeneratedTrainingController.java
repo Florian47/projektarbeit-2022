@@ -23,21 +23,12 @@ public class StudentGeneratedTrainingController {
 
   @PostMapping("/studentGeneratedTraining/add")
   public TrainingEntity createStudentGeneratedTraining(@RequestBody StudentGeneratedTrainingEntity generatedTraining) {
-    List<TaskEntity> allTasks = taskRepo.findAllByCategoryAndDifficulty( generatedTraining.getTrainingCategory(), generatedTraining.getTrainingDifficulty() );
-    List<Integer> indices = new ArrayList<>();
+    List<TaskEntity> allTasks = taskRepo.findAllByCategoryAndDifficulty(generatedTraining.getTrainingCategory(), generatedTraining.getTrainingDifficulty());
 
-    // Create as many random numbers as asked from student and put into list
-    for (int i = 0; i < generatedTraining.getTaskAmount(); i++) {
-      int index;
-      do {
-        index = (int) (Math.random() * taskRepo.count());
-      } while (indices.contains(index));
-      indices.add(index);
-    }
-    // Create the official training with given amount of tasks
     TrainingEntity training = new TrainingEntity("", null, false);
-    for (int i = 0; i < indices.size(); i++) {
-      training.addTask(allTasks.get(indices.get(i)));
+    allTasks.stream().limit(generatedTraining.getTaskAmount()).forEach(training::addTask);
+    if (allTasks.size() < generatedTraining.getTaskAmount()) {
+      throw new RuntimeException("Zu wenig Aufgaben");
     }
     return trainingRepo.save(training);
     // Token zur Identifizierung, Creator muss hinzugefügt werden
