@@ -15,6 +15,7 @@ public class TaskEntity {
   private int id;
   private String name;
   private String text;
+  @Lob
   private String picture;
   private int score;
   @Enumerated(EnumType.STRING)
