@@ -1,9 +1,11 @@
 package sommersemester2022.person;
 
+import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.UserRole;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,12 +21,12 @@ public class UserEntity {
   @Column(unique = true)
   private String username;
   private String password;
-
   @Enumerated(EnumType.STRING)
   private UserRole role;
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<RoleEntity> roles = new HashSet<>();
-
+  @ManyToMany(mappedBy = "students")
+  private List<TrainingEntity> trainings;
   public UserEntity(String firstName, String lastName, String username, String password, UserRole role) {
     this.firstName = firstName;
     this.lastName = lastName;

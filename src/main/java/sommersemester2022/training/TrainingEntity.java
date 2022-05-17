@@ -1,5 +1,6 @@
 package sommersemester2022.training;
 
+import com.sun.istack.NotNull;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import sommersemester2022.person.UserEntity;
@@ -13,11 +14,16 @@ import java.util.Map;
 public class TrainingEntity {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String name;
+  @Column(unique = false)
+  @JoinTable(
+    joinColumns = @JoinColumn(name = "TrainingEntity_id"),
+    inverseJoinColumns = @JoinColumn(name = "students_id")
+  )
   @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany
+  @ManyToMany
   private List<UserEntity> students;
   private boolean individual;
   @LazyCollection(LazyCollectionOption.FALSE)
