@@ -55,4 +55,10 @@ public class TrainingController {
     return trainingRepo.save(training);
   }
 
+  @PutMapping("/training/edit/{id}")
+  public TrainingEntity editTraining(@PathVariable int id, @RequestBody TrainingEntity training) {
+    training.setId(id);
+    return trainingRepo.save(training);
+  }
+
 }
