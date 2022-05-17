@@ -3,6 +3,7 @@ package sommersemester2022.training;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sommersemester2022.person.UserEntity;
+import sommersemester2022.person.UserRepo;
 import sommersemester2022.task.TaskEntity;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public class TrainingController {
   @Autowired
   private TrainingRepo trainingRepo;
+  @Autowired
+  private UserRepo userRepo;
 
   @PostMapping("/training/add")
   public TrainingEntity createTraining(@RequestBody TrainingEntity training) {
@@ -33,9 +36,10 @@ public class TrainingController {
     trainingRepo.deleteById(id);
   }
 
-  @GetMapping("training/schueler/{id}")
-  public List<TrainingEntity> getAllTrainingsForStudent(@PathVariable int id, @RequestBody UserEntity student) {
-    return trainingRepo.findByStudents(id).get();
+  @GetMapping("/training/schueler/{id}")
+  public List<TrainingEntity> getAllTrainingsForStudent(@PathVariable int id) {
+    Optional<UserEntity> user = userRepo.findById(id);
+    return trainingRepo.findByStudents(user).get();
   }
 
   @GetMapping("/schueler/all")
