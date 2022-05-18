@@ -16,7 +16,7 @@ public class UserController {
     return userRepo.findByUsernameAndPassword(person.getUsername(), person.getPassword()).orElseThrow(() ->
       new EntityNotFoundException("Username and password does not match a user"));
   }
-
+//("/userloesung/aufgabe{id}/luecke{id}/)
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
     return userRepo.save(person);
