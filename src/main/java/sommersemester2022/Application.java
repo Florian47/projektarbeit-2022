@@ -119,7 +119,7 @@ public class Application {
     TaskEntity task3 = new TaskEntity();
     task3.setName("Aufgabe 3 - Lückentext");
     task3.setText("Heute ist ...?");
-    task3.setCategory(TaskCategory.GRAMMATIK);
+    task3.setCategory(TaskCategory.LUECKENTEXT);
     task3.setDifficulty(TaskDifficulty.EINFACH);
     task3.setSolution(solution3);
     taskRepository.save(task3);
