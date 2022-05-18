@@ -73,6 +73,7 @@ public class TrainingEntity {
   }
 
   public void addStudent(UserEntity student) {
+    if (this.students == null) students = new ArrayList<>();
     this.students.add(student);
   }
 
