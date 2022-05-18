@@ -1,6 +1,5 @@
 package sommersemester2022.task;
 
-import sommersemester2022.person.UserEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 
@@ -22,7 +21,7 @@ public class TaskEntity {
   private TaskCategory category;
   @Enumerated(EnumType.STRING)
   private TaskDifficulty difficulty;
-  @OneToOne(cascade = CascadeType.PERSIST)
+  @OneToOne(cascade = CascadeType.ALL)
   private SolutionEntity solution;
 
   public TaskEntity() {}

@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 public class SolutionOptions {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false)
   private int id;
   private String optionName;
   private boolean rightAnswer;
