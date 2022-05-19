@@ -1,14 +1,13 @@
 package sommersemester2022.person;
 
-import sommersemester2022.training.TrainingEntity;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.UserRole;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class UserEntity {
@@ -21,18 +20,18 @@ public class UserEntity {
   @Column(unique = true)
   private String username;
   private String password;
-  @Enumerated(EnumType.STRING)
-  private UserRole role;
-  @ManyToMany(fetch = FetchType.EAGER)
-  private Set<RoleEntity> roles = new HashSet<>();
-  @ManyToMany(mappedBy = "students")
-  private List<TrainingEntity> trainings;
-  public UserEntity(String firstName, String lastName, String username, String password, UserRole role) {
+
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @ManyToMany
+//  @Cascade(org.hibernate.annotations.CascadeType.ALL)
+  public List<RoleEntity> roles = new ArrayList<RoleEntity>();
+
+  public UserEntity(String firstName, String lastName, String username, String password, List<RoleEntity> roles) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
-    this.role = role;
+    this.roles = roles;
   }
 
   public UserEntity() {}
@@ -77,19 +76,13 @@ public class UserEntity {
     this.password = password;
   }
 
-  public UserRole getRole() {
-    return this.role;
-  }
 
-  public void setRole(UserRole role) {
-    this.role = role;
-  }
 
-  public Set<RoleEntity> getRoles() {
+  public List<RoleEntity> getRoles() {
     return this.roles;
   }
 
-  public void setRoles(Set<RoleEntity> roles) {
-    this.roles = roles;
+  public void setRoles(List<RoleEntity> role) {
+    this.roles = role;
   }
 }
