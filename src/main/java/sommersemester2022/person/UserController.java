@@ -8,19 +8,31 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import sommersemester2022.payload.response.JwtResponse;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.security.services.jwt.JwtUtils;
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
+import sommersemester2022.userroles.RoleEntity;
+import sommersemester2022.userroles.RoleRepo;
+import sommersemester2022.userroles.UserRole;
 
-@RestController
+import javax.annotation.security.RolesAllowed;
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static sommersemester2022.userroles.UserRole.ADMINISTRATOR;
+import static sommersemester2022.userroles.UserRole.STUDENT;
+
+@RestController @Service @Transactional
 public class UserController {
   @Autowired
   private UserRepo userRepo;
-
+  @Autowired
+  private RoleRepo roleRepo;
   @Autowired
   PasswordEncoder encoder;
   @Autowired
@@ -28,6 +40,9 @@ public class UserController {
   @Autowired
   JwtUtils jwtUtils;
 
+//  private List<RoleEntity> roleList = new ArrayList<>();
+//
+//  private RoleEntity role;
   @PostMapping("/users/authenticate")
   public ResponseEntity authenticate(@RequestBody UserEntity person) {
     Authentication authentication = authenticationManager.authenticate(
@@ -47,22 +62,29 @@ public class UserController {
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
     encoder.encode(person.getPassword());
+
+    person.roles.add(roleRepo.findByName(STUDENT));
     return userRepo.save(person);
   }
 
   @GetMapping("/users/{id}")
-  public UserEntity getById(@PathVariable Integer id) {
+  public UserEntity getById(@PathVariable int id) {
     return userRepo.findById(id).get();
   }
 
+  @RolesAllowed("ADMINISTRATOR")
   @PutMapping("/users/{id}")
-  public UserEntity updateUser(@PathVariable Integer id, @RequestBody UserEntity person) {
+  public UserEntity updateUser(@PathVariable int id, @RequestBody UserEntity person) {
+//    encoder.encode(person.getPassword());
+
     person.setId(id);
     return userRepo.save(person);
+
+//    return ResponseEntity.ok().body(userRepo.save(person));
   }
 
   @DeleteMapping("/users/{id}")
-  public void deleteUser(@PathVariable Integer id) {
+  public void deleteUser( @RequestHeader ("Authorization")@PathVariable int id) {
     userRepo.deleteById(id);
   }
 

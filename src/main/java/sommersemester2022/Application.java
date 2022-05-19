@@ -1,10 +1,15 @@
 package sommersemester2022;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import sommersemester2022.userroles.RoleEntity;
+import sommersemester2022.userroles.RoleRepo;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -17,8 +22,11 @@ import sommersemester2022.training.TrainingRepo;
 import sommersemester2022.userroles.UserRole;
 
 import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static sommersemester2022.userroles.UserRole.STUDENT;
 
 @SpringBootApplication
 public class Application {
@@ -28,6 +36,8 @@ public class Application {
   private TaskRepo taskRepository;
   @Autowired
   private TrainingRepo trainingRepository;
+  @Autowired
+  private RoleRepo roleRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
@@ -35,14 +45,26 @@ public class Application {
 
   @PostConstruct
   private void initDb() {
+    RoleEntity student = new RoleEntity();
+    student.setName(UserRole.STUDENT);
+    if(!roleRepository.existsByName(UserRole.STUDENT)) roleRepository.save(student);
+    RoleEntity teacher = new RoleEntity();
+    teacher.setName(UserRole.TEACHER);
+    if(!roleRepository.existsByName(UserRole.TEACHER)) roleRepository.save(teacher);
+    RoleEntity admin = new RoleEntity();
+    admin.setName(UserRole.ADMINISTRATOR);
+    if(!roleRepository.existsByName(UserRole.ADMINISTRATOR)) roleRepository.save(admin);
+
     // Add admin user
-    UserEntity admin = new UserEntity();
-    admin.setFirstName("admin");
-    admin.setLastName("admin");
-    admin.setUsername("admin");
-    admin.setPassword("admin1");
-    admin.setRole(UserRole.ADMIN);
-    if(!userRepository.existsByUsername(admin.getUsername()))userRepository.save(admin);
+    UserEntity user = new UserEntity();
+    user.setFirstName("admin");
+    user.setLastName("admin");
+    user.setUsername("admin");
+    user.setPassword("admin1");
+    String password = "admin1";
+    user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(12)));
+    user.roles.add(roleRepository.findByName(STUDENT));
+    if(!userRepository.existsByUsername(user.getUsername()))userRepository.save(user);
 
     // Add 3 test users
     UserEntity user1 = new UserEntity();
@@ -50,7 +72,7 @@ public class Application {
     user1.setLastName("Brinkhoff");
     user1.setUsername("cbrinkhoff");
     user1.setPassword("chrisbrinkhoff");
-    user1.setRole(UserRole.STUDENT);
+
     if(!userRepository.existsByUsername(user1.getUsername()))userRepository.save(user1);
 
     UserEntity user2 = new UserEntity();
@@ -58,7 +80,7 @@ public class Application {
     user2.setLastName("Weinert");
     user2.setUsername("fweinert");
     user2.setPassword("florianweinert");
-    user2.setRole(UserRole.STUDENT);
+
     if(!userRepository.existsByUsername(user2.getUsername()))userRepository.save(user2);
 
     UserEntity user3 = new UserEntity();
@@ -66,7 +88,7 @@ public class Application {
     user3.setLastName("Kiehl");
     user3.setUsername("akiehl");
     user3.setPassword("alexanderkiehl");
-    user3.setRole(UserRole.STUDENT);
+
     if(!userRepository.existsByUsername(user3.getUsername()))userRepository.save(user3);
 
     //// Tasks with solutions (without pictures)

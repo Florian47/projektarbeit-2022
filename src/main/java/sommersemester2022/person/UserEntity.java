@@ -1,16 +1,41 @@
 package sommersemester2022.person;
 
-import sommersemester2022.userroles.Role;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.UserRole;
 
-import java.util.Set;
-import java.util.HashSet;
-
-
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 public class UserEntity {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int id;
+  private String firstName;
+  private String lastName;
+  @Column(unique = true)
+  private String username;
+  private String password;
+
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @ManyToMany
+//  @Cascade(org.hibernate.annotations.CascadeType.ALL)
+  public List<RoleEntity> roles = new ArrayList<RoleEntity>();
+
+  public UserEntity(String firstName, String lastName, String username, String password, List<RoleEntity> roles) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.username = username;
+    this.password = password;
+    this.roles = roles;
+  }
+
+  public UserEntity() {}
+
   public int getId() {
     return id;
   }
@@ -18,16 +43,7 @@ public class UserEntity {
   public void setId(int id) {
     this.id = id;
   }
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(	name = "user_roles",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<Role> roles = new HashSet<>();
-  @Id
-  @GeneratedValue
-  private int id;
 
-  private UserRole role;
   public String getFirstName() {
     return firstName;
   }
@@ -60,27 +76,13 @@ public class UserEntity {
     this.password = password;
   }
 
-  public Set<Role> getRoles() {
-    return roles;
-  }
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
-  }
 
-  private String firstName;
-  private String lastName;
-  @Column(unique = true)
-  private String username;
-  private String password;
 
-  public UserEntity(String firstName, String lastName, String username, String password, UserRole role) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.username = username;
-    this.password = password;
-    this.role = role;
+  public List<RoleEntity> getRoles() {
+    return this.roles;
   }
 
-  public UserEntity() {}
-
+  public void setRoles(List<RoleEntity> role) {
+    this.roles = role;
+  }
 }

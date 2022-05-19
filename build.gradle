@@ -20,7 +20,10 @@ dependencies {
   implementation 'org.springframework.security:spring-security-test'
   implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'
   implementation 'org.springframework.boot:spring-boot-starter-web'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
+    implementation 'org.springframework.security:spring-security-config:5.6.3'
+  implementation 'org.springframework.security:spring-security-web:5.6.3'
+    implementation 'org.springframework:spring-web:5.3.19'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
   testImplementation 'p6spy:p6spy:3.9.1'
   implementation 'io.jsonwebtoken:jjwt:0.2'
 }
