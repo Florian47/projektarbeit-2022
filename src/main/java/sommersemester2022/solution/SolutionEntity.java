@@ -23,6 +23,8 @@ public class SolutionEntity {
   @OneToOne(mappedBy = "solution")
   private TaskEntity relatedTask;
 
+  private long maxScore;
+
   public SolutionEntity() {}
 
   public SolutionEntity(List<SolutionGaps> solutionGaps, String hint) {
@@ -52,6 +54,12 @@ public class SolutionEntity {
 
   public void setHint(String hint) {
     this.hint = hint;
+  }
+
+  public long getMaxScore()
+  {
+    maxScore=solutionGaps.stream().filter(p ->p.equals(true)).count();
+    return maxScore;
   }
 }
 

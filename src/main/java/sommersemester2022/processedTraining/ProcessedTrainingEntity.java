@@ -24,7 +24,18 @@ public class ProcessedTrainingEntity {
     this.originTraining = originTraining;
   }
 
+
   public int getScore() {
+    int a = processedSolutionTasks.size();
+      for (int i=0; i<a;i++) {
+        int b = processedSolutionTasks.get(a).getGapsLength();
+        for(int x=0; x<b; x++)
+        {
+          //if(processedSolutionTasks.get(a).getGaps())
+        }
+    }
+
+
     return score;
   }
 

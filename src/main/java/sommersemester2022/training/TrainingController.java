@@ -5,7 +5,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
+import sommersemester2022.processedTraining.ProcessedTrainingEntity;
+import sommersemester2022.processedTraining.ProcessedTrainingRepo;
 import sommersemester2022.task.TaskEntity;
+import sommersemester2022.task.TaskRepo;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +19,9 @@ public class TrainingController {
   private TrainingRepo trainingRepo;
   @Autowired
   private UserRepo userRepo;
+
+  @Autowired
+  private ProcessedTrainingRepo processedTrainingRepo;
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @PostMapping("/training/add")
   public TrainingEntity createTraining(@RequestBody TrainingEntity training) {
@@ -62,4 +68,10 @@ public class TrainingController {
     return trainingRepo.save(training);
   }
 
-}
+  @PostMapping("/generateProcessedTraining/{id}")
+  public ProcessedTrainingEntity createProcessedTraining(@RequestBody ProcessedTrainingEntity processed) {
+
+    return processedTrainingRepo.save(processed);
+   }
+  }
+

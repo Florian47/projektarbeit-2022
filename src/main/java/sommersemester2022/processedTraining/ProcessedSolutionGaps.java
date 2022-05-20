@@ -10,10 +10,8 @@ public class ProcessedSolutionGaps {
   private int id;
   @ManyToOne
   private ProcessedSolutionTasks task;
-  @ElementCollection
-  private List<String> checkedOptions;
-  @ElementCollection
-  private List<String> uncheckedOptions;
+  private String optionName;
+  private boolean rightAnswer;
 
   public int getId() {
     return id;
@@ -23,31 +21,11 @@ public class ProcessedSolutionGaps {
     this.id = id;
   }
 
-  public List<String> getAnswer() {
-    return checkedOptions;
-  }
-
-  public void setCheckedOptions(List<String> answer) {
-    this.checkedOptions = checkedOptions;
-  }
-
   public ProcessedSolutionTasks getTask() {
     return task;
   }
 
   public void setTask(ProcessedSolutionTasks task) {
     this.task = task;
-  }
-
-  public List<String> getCheckedOptions() {
-    return checkedOptions;
-  }
-
-  public List<String> getUncheckedOptions() {
-    return uncheckedOptions;
-  }
-
-  public void setUncheckedOptions(List<String> uncheckedOptions) {
-    this.uncheckedOptions = uncheckedOptions;
   }
 }

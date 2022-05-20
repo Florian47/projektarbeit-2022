@@ -27,4 +27,6 @@ public class ProcessedSolutionTasks {
   public void setGaps(List<ProcessedSolutionGaps> gaps) {
     this.gaps = gaps;
   }
+
+  public int getGapsLength(){return gaps.size();}
 }
