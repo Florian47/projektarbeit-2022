@@ -7,11 +7,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class TaskEntity {
+public class TaskEntity extends NotUniqueIdentification{
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  private Integer id;
+
+
+
   private String name;
   private String text;
   @Lob
@@ -23,7 +26,6 @@ public class TaskEntity {
   private TaskDifficulty difficulty;
   @OneToOne(cascade = CascadeType.ALL)
   private SolutionEntity solution;
-
   public TaskEntity() {}
 
   public TaskEntity(String name, String text, String picture, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
@@ -85,7 +87,7 @@ public class TaskEntity {
     this.difficulty = difficulty;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
   public int getId() {

@@ -4,6 +4,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.stereotype.Service;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
+import sommersemester2022.task.NotUniqueIdentification;
 import sommersemester2022.task.TaskEntity;
 
 import javax.persistence.*;
@@ -11,18 +12,18 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Entity
-public class SolutionEntity {
+public class SolutionEntity extends NotUniqueIdentification {
 
   @Id
   @GeneratedValue
-  private int id;
+  private Integer id;
+
   @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany(cascade = CascadeType.ALL)
   private List<SolutionGaps> solutionGaps;
   private String hint;
   @OneToOne(mappedBy = "solution")
   private TaskEntity relatedTask;
-
   private long maxScore;
 
   public SolutionEntity() {}
@@ -36,7 +37,7 @@ public class SolutionEntity {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

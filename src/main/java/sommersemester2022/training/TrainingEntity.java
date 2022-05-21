@@ -16,7 +16,7 @@ public class TrainingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  private Integer id;
   private String name;
   @Column(unique = false)
   @JoinTable(
@@ -31,12 +31,22 @@ public class TrainingEntity {
   @ManyToMany
   private List<TaskEntity> tasks;
 
+  private int score;
+
   public TrainingEntity() {}
 
   public TrainingEntity(String name, List<UserEntity> students, boolean individual) {
     this.name = name;
     this.students = students;
     this.individual = individual;
+  }
+
+  public int getScore() {
+    return score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
   }
 
   public int getId() {
@@ -77,7 +87,7 @@ public class TrainingEntity {
     this.students.add(student);
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

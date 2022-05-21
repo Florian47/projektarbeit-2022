@@ -1,18 +1,19 @@
 package sommersemester2022.solution;
 
 import org.springframework.stereotype.Service;
+import sommersemester2022.task.NotUniqueIdentification;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 
 @Entity
-public class SolutionOptions {
+public class SolutionOptions extends NotUniqueIdentification {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  private Integer id;
+
   private String optionName;
   private boolean rightAnswer;
-
   public SolutionOptions() {}
 
   public SolutionOptions(String optionName, boolean rightAnswer) {
@@ -24,7 +25,7 @@ public class SolutionOptions {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

@@ -1,5 +1,6 @@
 package sommersemester2022.processedTraining;
 
+import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
 
 import javax.persistence.*;
@@ -13,42 +14,24 @@ public class ProcessedTrainingEntity {
   private int id;
   private int score;
   @OneToMany
-  private List<ProcessedSolutionTasks> processedSolutionTasks;
+  private List<TaskEntity> processedSolutionTasks;
   @ManyToOne
   private TrainingEntity originTraining;
 
   public ProcessedTrainingEntity() {}
 
-  public ProcessedTrainingEntity(List<ProcessedSolutionTasks> processedSolutionTasks, TrainingEntity originTraining) {
+  public ProcessedTrainingEntity(List<TaskEntity> processedSolutionTasks, TrainingEntity originTraining) {
     this.processedSolutionTasks = processedSolutionTasks;
     this.originTraining = originTraining;
   }
 
 
   public int getScore() {
-    int a = processedSolutionTasks.size();
-      for (int i=0; i<a;i++) {
-        int b = processedSolutionTasks.get(a).getGapsLength();
-        for(int x=0; x<b; x++)
-        {
-          //if(processedSolutionTasks.get(a).getGaps())
-        }
-    }
-
-
     return score;
   }
 
   public void setScore(int score) {
     this.score = score;
-  }
-
-  public List<ProcessedSolutionTasks> getSolutionTasks() {
-    return processedSolutionTasks;
-  }
-
-  public void setSolutionTasks(List<ProcessedSolutionTasks> studentSolution) {
-    this.processedSolutionTasks = studentSolution;
   }
 
   public int getId() {
@@ -59,11 +42,11 @@ public class ProcessedTrainingEntity {
     this.id = id;
   }
 
-  public List<ProcessedSolutionTasks> getProcessedSolutionTasks() {
+  public List<TaskEntity> getProcessedSolutionTasks() {
     return processedSolutionTasks;
   }
 
-  public void setProcessedSolutionTasks(List<ProcessedSolutionTasks> processedSolutionTasks) {
+  public void setProcessedSolutionTasks(List<TaskEntity> processedSolutionTasks) {
     this.processedSolutionTasks = processedSolutionTasks;
   }
 
