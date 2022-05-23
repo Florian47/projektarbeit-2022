@@ -1,5 +1,7 @@
 package sommersemester2022.processedTraining;
 
+import sommersemester2022.solution.SolutionGaps;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,9 +10,8 @@ public class ProcessedSolutionTasks {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
-
   @OneToMany(fetch = FetchType.EAGER)
-  List<ProcessedSolutionGaps> gaps;
+  private List<SolutionGaps> gaps;
 
   public int getId() {
     return id;
@@ -20,11 +21,11 @@ public class ProcessedSolutionTasks {
     this.id = id;
   }
 
-  public List<ProcessedSolutionGaps> getGaps() {
+  public List<SolutionGaps> getGaps() {
     return gaps;
   }
 
-  public void setGaps(List<ProcessedSolutionGaps> gaps) {
+  public void setGaps(List<SolutionGaps> gaps) {
     this.gaps = gaps;
   }
 }

@@ -3,7 +3,6 @@ package sommersemester2022.solution;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 
 @Entity
 public class SolutionOptions {
@@ -11,13 +10,13 @@ public class SolutionOptions {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String optionName;
-  private boolean rightAnswer;
+  private boolean checkedAnswer;
 
   public SolutionOptions() {}
 
-  public SolutionOptions(String optionName, boolean rightAnswer) {
+  public SolutionOptions(String optionName, boolean checkedAnswer) {
     this.optionName = optionName;
-    this.rightAnswer = rightAnswer;
+    this.checkedAnswer = checkedAnswer;
   }
 
   public int getId() {
@@ -28,12 +27,12 @@ public class SolutionOptions {
     this.id = id;
   }
 
-  public boolean isRightAnswer() {
-    return rightAnswer;
+  public boolean isCheckedAnswer() {
+    return checkedAnswer;
   }
 
-  public void setRightAnswer(boolean rightAnswer) {
-    this.rightAnswer = rightAnswer;
+  public void setCheckedAnswer(boolean rightAnswer) {
+    this.checkedAnswer = rightAnswer;
   }
 
   public String getOptionName() {
