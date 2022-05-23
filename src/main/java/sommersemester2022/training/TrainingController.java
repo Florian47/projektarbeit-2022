@@ -13,6 +13,7 @@ import sommersemester2022.solution.SolutionOptions;
 import sommersemester2022.task.NotUniqueIdentification;
 import sommersemester2022.task.TaskEntity;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,14 +71,15 @@ public class TrainingController {
     training.setId(id);
     return trainingRepo.save(training);
   }
-
   @PostMapping("/generateProcessedTraining/{id}")
   public ProcessedTrainingEntity createProcessedTraining(@RequestBody TrainingEntity training) {
     ProcessedTrainingEntity processedTraining = new ProcessedTrainingEntity();
     processedTraining.setOriginTraining(training);
+    TrainingEntity copy = new TrainingEntity(training);
     //TODO: deep!!! copy before changing id values
-    for (TaskEntity task : training.getTasks()
+    for (TaskEntity task : copy.getTasks()
     ) {
+
       task.setId(null);
       task.getSolution().setId(null);
       for (SolutionGaps gap : task.getSolution().getSolutionGaps()
@@ -90,7 +92,7 @@ public class TrainingController {
         }
       }
     }
-    processedTraining.setProcessedSolutionTasks(training.getTasks());
+    processedTraining.setProcessedSolutionTasks(copy.getTasks());
     return processedTrainingRepo.save(processedTraining);
   }
 

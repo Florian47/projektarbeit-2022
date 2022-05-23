@@ -13,6 +13,12 @@ public class ProcessedSolutionGaps {
   private String optionName;
   private boolean rightAnswer;
 
+  public ProcessedSolutionGaps(String optionName,boolean rightAnswer){
+    this.optionName=optionName;
+    this.rightAnswer=rightAnswer;
+  }
+
+
   public int getId() {
     return id;
   }

@@ -25,7 +25,7 @@ public class SolutionGaps extends NotUniqueIdentification {
     this.solutionOptions = solutionOptions;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 

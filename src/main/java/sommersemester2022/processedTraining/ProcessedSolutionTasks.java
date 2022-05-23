@@ -12,6 +12,9 @@ public class ProcessedSolutionTasks {
   @OneToMany(fetch = FetchType.EAGER)
   List<ProcessedSolutionGaps> gaps;
 
+  public ProcessedSolutionTasks(List <ProcessedSolutionGaps> gaps) {
+    this.gaps = gaps;
+  }
   public int getId() {
     return id;
   }

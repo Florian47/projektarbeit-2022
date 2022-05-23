@@ -1,14 +1,14 @@
-package test.solution;
+package test.processedSolution;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import sommersemester2022.processedTraining.ProcessedSolutionGaps;
+import sommersemester2022.processedTraining.ProcessedSolutionTasks;
+import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
-import sommersemester2022.task.TaskCategory;
-import sommersemester2022.task.TaskDifficulty;
-import sommersemester2022.task.TaskEntity;
 import test.BaseTest;
 
 import java.util.ArrayList;
@@ -16,9 +16,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SolutionControllerTest extends BaseTest {
+public class ProcessedSolutionControllerTest extends BaseTest {
 
   @Test
+  //Musterlösung vom Lehrer
   public void testJSONSolution() throws Exception {
     SolutionEntity entity = new SolutionEntity();
     List<SolutionGaps> gapsList = new ArrayList<>();
@@ -41,6 +42,25 @@ public class SolutionControllerTest extends BaseTest {
     entity.setSolutionGaps(gapsList);
 
 
+    //Lösung vom Schüler
+    ProcessedTrainingEntity entity1 = new ProcessedTrainingEntity();
+    List<ProcessedSolutionTasks> procGapsList = new ArrayList<>();
+    List<ProcessedSolutionTasks> procGapsList2 = new ArrayList<>();
+    List<ProcessedSolutionGaps> procOptionsList = new ArrayList<>();
+    List<ProcessedSolutionGaps> procOptionsList2 = new ArrayList<>();
+    procOptionsList.add(new ProcessedSolutionGaps("Montag", false));
+    procOptionsList.add(new ProcessedSolutionGaps("Dienstag", true));
+    procOptionsList.add(new ProcessedSolutionGaps("Mittwoch", true));
+    procOptionsList.add(new ProcessedSolutionGaps("Donnerstag", false));
+
+    procOptionsList2.add(new ProcessedSolutionGaps("Montag", false));
+    procOptionsList2.add(new ProcessedSolutionGaps("Dienstag", true));
+    procOptionsList2.add(new ProcessedSolutionGaps("Mittwoch", true));
+    procOptionsList2.add(new ProcessedSolutionGaps("Donnerstag", false));
+
+    procGapsList.add(new ProcessedSolutionTasks(procOptionsList));
+    procGapsList.add(new ProcessedSolutionTasks(procOptionsList2));
+
     String json = objectMapper.writeValueAsString(entity);
     ResponseEntity<String> result = restPost("/solution/add", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -52,5 +72,4 @@ public class SolutionControllerTest extends BaseTest {
     //assertThat(pe.getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
     assertThat(pe.getMaxScore()).isEqualTo(4);
   }
-
 }

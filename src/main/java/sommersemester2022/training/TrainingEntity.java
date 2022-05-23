@@ -41,6 +41,11 @@ public class TrainingEntity {
     this.individual = individual;
   }
 
+  public TrainingEntity(TrainingEntity that)
+    {
+      this(that.getName(),that.getStudents(),that.isIndividual());
+    }
+
   public int getScore() {
     return score;
   }
@@ -49,7 +54,7 @@ public class TrainingEntity {
     this.score = score;
   }
 
-  public int getId() {
+  public Integer getId(){
     return id;
   }
 
@@ -98,6 +103,7 @@ public class TrainingEntity {
   public void setStudents(List<UserEntity> students) {
     this.students = students;
   }
+
 }
 
 

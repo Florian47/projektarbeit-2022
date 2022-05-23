@@ -95,7 +95,7 @@ public class Application {
     user3.roles.add(roleRepository.findByName(ROLE_STUDENT));
 
     if(!userRepository.existsByUsername(user3.getUsername()))userRepository.save(user3);
-
+    /**
     //// Tasks with solutions (without pictures)
     // Task 1 - EINFACH, GRAMMATIK
     List<SolutionOptions> options1 = new ArrayList<>();
@@ -171,6 +171,8 @@ public class Application {
     training2.setTasks(forTraining2);
     training2.addStudent(userRepository.findByUsername("fweinert").get());
     trainingRepository.save(training2);
+    **/
   }
+
 }
 

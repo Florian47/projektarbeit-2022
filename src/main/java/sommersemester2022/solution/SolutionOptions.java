@@ -21,7 +21,7 @@ public class SolutionOptions extends NotUniqueIdentification {
     this.rightAnswer = rightAnswer;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 

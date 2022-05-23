@@ -15,17 +15,15 @@ import java.util.List;
 public class SolutionEntity extends NotUniqueIdentification {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany(cascade = CascadeType.ALL)
   private List<SolutionGaps> solutionGaps;
   private String hint;
-  @OneToOne(mappedBy = "solution")
+  @OneToOne(mappedBy = "solution",cascade=CascadeType.ALL)
   private TaskEntity relatedTask;
-  private long maxScore;
-
   public SolutionEntity() {}
 
   public SolutionEntity(List<SolutionGaps> solutionGaps, String hint) {
@@ -33,8 +31,8 @@ public class SolutionEntity extends NotUniqueIdentification {
     this.hint = hint;
   }
 
-  public int getId() {
-    return id;
+  public Integer getId() {
+    return this.id;
   }
 
   public void setId(Integer id) {
@@ -57,9 +55,20 @@ public class SolutionEntity extends NotUniqueIdentification {
     this.hint = hint;
   }
 
-  public long getMaxScore()
+  public int getMaxScore()
   {
-    maxScore=solutionGaps.stream().filter(p ->p.equals(true)).count();
+    int maxScore=0;
+    for(SolutionGaps s : solutionGaps)
+    {
+      int a = solutionGaps.indexOf(s);
+      for (SolutionOptions q : s.getSolutionOptions())
+      {
+        int b = s.getSolutionOptions().indexOf(q);
+        if (getSolutionGaps().get(a).getSolutionOptions().get(b).isRightAnswer()== true)  {
+            maxScore++;
+          }
+        }
+      }
     return maxScore;
   }
 }

@@ -12,9 +12,6 @@ public class TaskEntity extends NotUniqueIdentification{
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
-
-
-
   private String name;
   private String text;
   @Lob
@@ -24,7 +21,7 @@ public class TaskEntity extends NotUniqueIdentification{
   private TaskCategory category;
   @Enumerated(EnumType.STRING)
   private TaskDifficulty difficulty;
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade=CascadeType.ALL)
   private SolutionEntity solution;
   public TaskEntity() {}
 
@@ -35,10 +32,6 @@ public class TaskEntity extends NotUniqueIdentification{
     this.category = category;
     this.difficulty = difficulty;
     this.solution = solution;
-
-    // Score = Amount of gaps
-    List<SolutionGaps> amount = solution.getSolutionGaps();
-    this.score = amount.size();
   }
 
   public String getName() {
@@ -90,9 +83,8 @@ public class TaskEntity extends NotUniqueIdentification{
   public void setId(Integer id) {
     this.id = id;
   }
-  public int getId() {
-    return this.id;
-  }
+  public Integer getId() {
+    return id;}
 
   public SolutionEntity getSolution() {
     return solution;

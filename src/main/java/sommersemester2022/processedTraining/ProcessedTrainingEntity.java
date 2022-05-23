@@ -13,9 +13,9 @@ public class ProcessedTrainingEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private int score;
-  @OneToMany
+  @OneToMany(cascade=CascadeType.ALL)
   private List<TaskEntity> processedSolutionTasks;
-  @ManyToOne
+  @ManyToOne(cascade=CascadeType.ALL)
   private TrainingEntity originTraining;
 
   public ProcessedTrainingEntity() {}
