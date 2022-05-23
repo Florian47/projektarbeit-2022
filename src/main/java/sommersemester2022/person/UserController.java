@@ -1,8 +1,8 @@
 package sommersemester2022.person;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,21 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import sommersemester2022.payload.response.JwtResponse;
-import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.security.services.jwt.JwtUtils;
-import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.RoleRepo;
-import sommersemester2022.userroles.UserRole;
-
-import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import static sommersemester2022.userroles.UserRole.ADMINISTRATOR;
-import static sommersemester2022.userroles.UserRole.STUDENT;
+import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
+
 
 @RestController @Service @Transactional
 public class UserController {
@@ -40,9 +31,6 @@ public class UserController {
   @Autowired
   JwtUtils jwtUtils;
 
-//  private List<RoleEntity> roleList = new ArrayList<>();
-//
-//  private RoleEntity role;
   @PostMapping("/users/authenticate")
   public ResponseEntity authenticate(@RequestBody UserEntity person) {
     Authentication authentication = authenticationManager.authenticate(
@@ -59,20 +47,21 @@ public class UserController {
 //      new EntityNotFoundException("Username and password does not match a user"));
   }
 //("/userloesung/aufgabe{id}/luecke{id}/)
+  //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
     encoder.encode(person.getPassword());
 
-    person.roles.add(roleRepo.findByName(STUDENT));
+    person.roles.add(roleRepo.findByName(ROLE_STUDENT));
     return userRepo.save(person);
   }
-
+//  @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @GetMapping("/users/{id}")
   public UserEntity getById(@PathVariable int id) {
     return userRepo.findById(id).get();
   }
 
-  @RolesAllowed("ADMINISTRATOR")
+  @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @PutMapping("/users/{id}")
   public UserEntity updateUser(@PathVariable int id, @RequestBody UserEntity person) {
 //    encoder.encode(person.getPassword());
@@ -82,7 +71,7 @@ public class UserController {
 
 //    return ResponseEntity.ok().body(userRepo.save(person));
   }
-
+  @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @DeleteMapping("/users/{id}")
   public void deleteUser( @RequestHeader ("Authorization")@PathVariable int id) {
     userRepo.deleteById(id);

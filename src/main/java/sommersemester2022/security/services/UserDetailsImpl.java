@@ -1,5 +1,5 @@
 package sommersemester2022.security.services;
-
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +12,7 @@ import sommersemester2022.person.UserEntity;
 
 public class UserDetailsImpl implements UserDetails {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private int id;
@@ -31,6 +32,10 @@ public class UserDetailsImpl implements UserDetails {
     this.authorities = authorities;
   }
 
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return authorities;
+  }
   public static UserDetailsImpl build(UserEntity user) {
     List<GrantedAuthority> authorities = user.getRoles().stream()
       .map(role -> new SimpleGrantedAuthority(role.getName().name()))
@@ -40,11 +45,6 @@ public class UserDetailsImpl implements UserDetails {
       user.getUsername(),
       user.getPassword(),
       authorities);
-  }
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return authorities;
   }
 
   public int getId() {

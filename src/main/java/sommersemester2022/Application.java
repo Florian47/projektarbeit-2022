@@ -1,23 +1,21 @@
 package sommersemester2022;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import sommersemester2022.userroles.RoleEntity;
-import sommersemester2022.userroles.RoleRepo;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
 import sommersemester2022.task.TaskCategory;
 import sommersemester2022.task.TaskDifficulty;
 import sommersemester2022.task.TaskEntity;
-import sommersemester2022.task.TaskRepo;
 import sommersemester2022.training.TrainingEntity;
+import sommersemester2022.userroles.RoleEntity;
+import sommersemester2022.userroles.RoleRepo;
+import sommersemester2022.task.TaskRepo;
 import sommersemester2022.training.TrainingRepo;
 import sommersemester2022.userroles.UserRole;
 
@@ -26,7 +24,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-import static sommersemester2022.userroles.UserRole.STUDENT;
+import static sommersemester2022.userroles.UserRole.*;
 
 @SpringBootApplication
 public class Application {
@@ -46,14 +44,14 @@ public class Application {
   @PostConstruct
   private void initDb() {
     RoleEntity student = new RoleEntity();
-    student.setName(UserRole.STUDENT);
-    if(!roleRepository.existsByName(UserRole.STUDENT)) roleRepository.save(student);
+    student.setName(ROLE_STUDENT);
+    if(!roleRepository.existsByName(ROLE_STUDENT)) roleRepository.save(student);
     RoleEntity teacher = new RoleEntity();
-    teacher.setName(UserRole.TEACHER);
-    if(!roleRepository.existsByName(UserRole.TEACHER)) roleRepository.save(teacher);
+    teacher.setName(UserRole.ROLE_TEACHER);
+    if(!roleRepository.existsByName(UserRole.ROLE_TEACHER)) roleRepository.save(teacher);
     RoleEntity admin = new RoleEntity();
-    admin.setName(UserRole.ADMINISTRATOR);
-    if(!roleRepository.existsByName(UserRole.ADMINISTRATOR)) roleRepository.save(admin);
+    admin.setName(ROLE_ADMINISTRATOR);
+    if(!roleRepository.existsByName(UserRole.ROLE_ADMINISTRATOR)) roleRepository.save(admin);
 
     // Add admin user
     UserEntity user = new UserEntity();
@@ -61,17 +59,20 @@ public class Application {
     user.setLastName("admin");
     user.setUsername("admin");
     user.setPassword("admin1");
-    String password = "admin1";
-    user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(12)));
-    user.roles.add(roleRepository.findByName(STUDENT));
+    user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
+    user.roles.add(roleRepository.findByName(ROLE_ADMINISTRATOR));
+    user.roles.add(roleRepository.findByName(ROLE_TEACHER));
+    user.roles.add(roleRepository.findByName(ROLE_STUDENT));
     if(!userRepository.existsByUsername(user.getUsername()))userRepository.save(user);
 
-    // Add 3 test users
+//     Add 3 test users
     UserEntity user1 = new UserEntity();
     user1.setFirstName("Chris");
     user1.setLastName("Brinkhoff");
     user1.setUsername("cbrinkhoff");
     user1.setPassword("chrisbrinkhoff");
+    user1.setPassword(BCrypt.hashpw(user1.getPassword(), BCrypt.gensalt(12)));
+    user1.roles.add(roleRepository.findByName(ROLE_STUDENT));
 
     if(!userRepository.existsByUsername(user1.getUsername()))userRepository.save(user1);
 
@@ -80,6 +81,8 @@ public class Application {
     user2.setLastName("Weinert");
     user2.setUsername("fweinert");
     user2.setPassword("florianweinert");
+    user2.setPassword(BCrypt.hashpw(user2.getPassword(), BCrypt.gensalt(12)));
+    user2.roles.add(roleRepository.findByName(ROLE_STUDENT));
 
     if(!userRepository.existsByUsername(user2.getUsername()))userRepository.save(user2);
 
@@ -88,6 +91,8 @@ public class Application {
     user3.setLastName("Kiehl");
     user3.setUsername("akiehl");
     user3.setPassword("alexanderkiehl");
+    user3.setPassword(BCrypt.hashpw(user3.getPassword(), BCrypt.gensalt(12)));
+    user3.roles.add(roleRepository.findByName(ROLE_STUDENT));
 
     if(!userRepository.existsByUsername(user3.getUsername()))userRepository.save(user3);
 

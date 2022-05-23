@@ -16,12 +16,13 @@ import sommersemester2022.security.services.jwt.AuthEntryPointJwt;
 import sommersemester2022.security.services.jwt.AuthTokenFilter;
 import sommersemester2022.security.services.UserDetailsServiceImpl;
 
+import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
+
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-  // securedEnabled = true,
-  // jsr250Enabled = true,
-  prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, proxyTargetClass = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -46,14 +47,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
   }
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable();
+    http
+      .csrf().disable();
     http.headers().frameOptions().disable();
     http.cors().and().csrf().disable()
       .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-      .antMatchers("/**").permitAll()
-      .anyRequest().authenticated();
+      .authorizeRequests()
+        .antMatchers("/api/**").permitAll()
+        .antMatchers("/**").permitAll()
+        .anyRequest().authenticated()
+      ;
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 }
+
