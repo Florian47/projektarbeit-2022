@@ -24,13 +24,14 @@ public class TrainingEntity {
     inverseJoinColumns = @JoinColumn(name = "students_id")
   )
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   private List<UserEntity> students;
   private boolean individual;
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   private List<TaskEntity> tasks;
 
+  @Transient
   private int score;
 
   public TrainingEntity() {}

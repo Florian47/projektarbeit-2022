@@ -22,7 +22,7 @@ public class SolutionEntity extends NotUniqueIdentification {
   @OneToMany(cascade = CascadeType.ALL)
   private List<SolutionGaps> solutionGaps;
   private String hint;
-  @OneToOne(mappedBy = "solution",cascade=CascadeType.ALL)
+  @OneToOne(mappedBy = "solution",cascade = CascadeType.MERGE)
   private TaskEntity relatedTask;
   public SolutionEntity() {}
 

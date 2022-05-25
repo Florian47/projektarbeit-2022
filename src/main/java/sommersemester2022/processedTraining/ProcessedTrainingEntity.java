@@ -12,10 +12,11 @@ public class ProcessedTrainingEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
+
   private int score;
   @OneToMany(cascade=CascadeType.ALL)
   private List<TaskEntity> processedSolutionTasks;
-  @ManyToOne(cascade=CascadeType.ALL)
+  @ManyToOne
   private TrainingEntity originTraining;
 
   public ProcessedTrainingEntity() {}

@@ -1,5 +1,7 @@
 package sommersemester2022.training;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import sommersemester2022.task.TaskEntity;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @RestController
 public class TrainingController {
@@ -72,12 +75,12 @@ public class TrainingController {
     return trainingRepo.save(training);
   }
   @PostMapping("/generateProcessedTraining/{id}")
-  public ProcessedTrainingEntity createProcessedTraining(@RequestBody TrainingEntity training) {
+  public ProcessedTrainingEntity createProcessedTraining(@RequestBody TrainingEntity training) throws JsonProcessingException {
     ProcessedTrainingEntity processedTraining = new ProcessedTrainingEntity();
     processedTraining.setOriginTraining(training);
-    TrainingEntity copy = new TrainingEntity(training);
-    //TODO: deep!!! copy before changing id values
-    for (TaskEntity task : copy.getTasks()
+    ObjectMapper objectMapper = new ObjectMapper();
+    TrainingEntity copyTraining = objectMapper.readValue(objectMapper.writeValueAsString(training), TrainingEntity.class);
+    for (TaskEntity task : copyTraining.getTasks()
     ) {
 
       task.setId(null);
@@ -92,22 +95,24 @@ public class TrainingController {
         }
       }
     }
-    processedTraining.setProcessedSolutionTasks(copy.getTasks());
+    processedTraining.setProcessedSolutionTasks(copyTraining.getTasks());
     return processedTrainingRepo.save(processedTraining);
   }
 
-  @PostMapping("/evaluate/ProcessedTraining/{id}")
+  @PostMapping("/evaluate/ProcessedTraining")
   public ProcessedTrainingEntity evaluateProcessedTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
 
     TrainingEntity teacherTraining = processedTraining.getOriginTraining();
 
     processedTraining.getProcessedSolutionTasks()
-      .forEach(task -> evaluateTask(task, find(task, teacherTraining.getTasks())));
+      .forEach(studentTask -> evaluateTask(studentTask, find(studentTask, teacherTraining.getTasks())));
 
     //evaluate max training score
-    teacherTraining.setScore(teacherTraining.getTasks().stream().mapToInt(TaskEntity::getScore).sum());
+    int sum = teacherTraining.getTasks().stream().mapToInt(TaskEntity::getScore).sum();
+    teacherTraining.setScore(sum);
     //evaluate reached training score
-    processedTraining.setScore(processedTraining.getProcessedSolutionTasks().stream().mapToInt(TaskEntity::getScore).sum());
+    int sum1 = processedTraining.getProcessedSolutionTasks().stream().mapToInt(TaskEntity::getScore).sum();
+    processedTraining.setScore(sum1);
 
     return processedTrainingRepo.save(processedTraining);
   }
@@ -121,18 +126,17 @@ public class TrainingController {
     //evaluate max task score
     teacher.setScore(teacher.getSolution().getSolutionGaps().size());
     //evaluate reached task score
-    student.setScore(teacher.getSolution().getSolutionGaps().stream().mapToInt(gap -> evaluateGap(gap, find(gap, student.getSolution().getSolutionGaps()))).sum());
+    student.setScore(teacher.getSolution().getSolutionGaps().stream().mapToInt(teacherGap -> evaluateGap(teacherGap, find(teacherGap, student.getSolution().getSolutionGaps()))).sum());
   }
 
   private int evaluateGap(SolutionGaps teacherGap, SolutionGaps studentGap) {
     boolean allOptionsMatch = teacherGap.getSolutionOptions().stream()
-      .filter(SolutionOptions::isRightAnswer)
       .allMatch(teacherOption -> find(teacherOption, studentGap.getSolutionOptions()).isRightAnswer() == teacherOption.isRightAnswer());
     return allOptionsMatch ? 1 : 0;
   }
 
   private <T extends NotUniqueIdentification> T find(T t1, List<T> list) {
-    //TODO: improve exception
+    //TODO: improve exception//Was not able to identifiy T.getClass.getSimpleName() with uniqueName ... in list  {...}
     return list.stream().filter(t2 -> t1.getNotUniqueId() == t2.getNotUniqueId()).findAny().orElseThrow(() -> new RuntimeException("Was not able to find %s in list".formatted(t1.getNotUniqueId())));
   }
 

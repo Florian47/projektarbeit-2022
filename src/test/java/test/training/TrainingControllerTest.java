@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import sommersemester2022.person.UserEntity;
+import sommersemester2022.solution.SolutionEntity;
+import sommersemester2022.solution.SolutionGaps;
+import sommersemester2022.solution.SolutionOptions;
+import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
 import test.BaseTest;
 
@@ -19,7 +23,37 @@ public class TrainingControllerTest extends BaseTest {
 
   @Test
   public void testAddTraining() throws Exception {
-    String json = objectMapper.writeValueAsString(new TrainingEntity("Training1",studentList,false));
+
+    SolutionEntity solution = new SolutionEntity();
+    List<SolutionGaps> gapsList = new ArrayList<>();
+    List<SolutionOptions> optionsList = new ArrayList<>();
+    List<SolutionOptions> optionsList2 = new ArrayList<>();
+
+    optionsList.add(new SolutionOptions("Montag", false));
+    optionsList.add(new SolutionOptions("Dienstag", true));
+    optionsList.add(new SolutionOptions("Mittwoch", true));
+    optionsList.add(new SolutionOptions("Donnerstag", false));
+
+    optionsList2.add(new SolutionOptions("Montag", false));
+    optionsList2.add(new SolutionOptions("Dienstag", true));
+    optionsList2.add(new SolutionOptions("Mittwoch", true));
+    optionsList2.add(new SolutionOptions("Donnerstag", false));
+
+    gapsList.add(new SolutionGaps(optionsList));
+    gapsList.add(new SolutionGaps(optionsList2));
+
+    solution.setSolutionGaps(gapsList);
+
+    List<TaskEntity> tasks = new ArrayList<>();
+    TaskEntity taskEntity = new TaskEntity();
+    taskEntity.setName("TrainingsTask");
+    taskEntity.setSolution(solution);
+    tasks.add(taskEntity);
+
+    TrainingEntity training1 = new TrainingEntity("Training1", studentList, false);
+    training1.setTasks(tasks);
+    String json = objectMapper.writeValueAsString(training1);
+
     ResponseEntity<String> result = restPost("/training/add", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 

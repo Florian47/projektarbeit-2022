@@ -16,12 +16,13 @@ public class TaskEntity extends NotUniqueIdentification{
   private String text;
   @Lob
   private String picture;
+  @Transient
   private int score;
   @Enumerated(EnumType.STRING)
   private TaskCategory category;
   @Enumerated(EnumType.STRING)
   private TaskDifficulty difficulty;
-  @OneToOne(cascade=CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL)
   private SolutionEntity solution;
   public TaskEntity() {}
 
