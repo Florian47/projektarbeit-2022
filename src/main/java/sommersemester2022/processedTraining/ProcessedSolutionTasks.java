@@ -12,6 +12,8 @@ public class ProcessedSolutionTasks {
   @OneToMany(fetch = FetchType.EAGER)
   List<ProcessedSolutionGaps> gaps;
 
+  public ProcessedSolutionTasks() {}
+
   public ProcessedSolutionTasks(List <ProcessedSolutionGaps> gaps) {
     this.gaps = gaps;
   }

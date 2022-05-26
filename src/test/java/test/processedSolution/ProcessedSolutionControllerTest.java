@@ -59,6 +59,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     ProcessedTrainingEntity processedTraining = new ProcessedTrainingEntity();
     processedTraining.setProcessedSolutionTasks(tasks);
     processedTraining.setOriginTraining(trainingEntity);
+    processedTraining.getProcessedSolutionTasks();
 
     json = objectMapper.writeValueAsString(processedTraining);
     result = restPost("/evaluate/ProcessedTraining", json);
@@ -69,8 +70,11 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     List<ProcessedTrainingEntity> processedTrainingEntityList = loadAll(ProcessedTrainingEntity.class);
     assertThat(entities.size()).isEqualTo(1);
     ProcessedTrainingEntity pe = processedTrainingEntityList.get(0);
+    List<TrainingEntity> trainingEntityList = loadAll(TrainingEntity.class);
+    TrainingEntity te = trainingEntityList.get(0);
     //assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
     //assertThat(pe.getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
-    //assertThat(pe.getScore()).isEqualTo(4);
+    assertThat(te.getScore()).isEqualTo(2);
+    assertThat(pe.getScore()).isEqualTo(1);
   }
 }

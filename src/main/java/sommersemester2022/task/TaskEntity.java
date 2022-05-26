@@ -13,6 +13,7 @@ public class TaskEntity extends NotUniqueIdentification{
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
   private String name;
+  @Lob
   private String text;
   @Lob
   private String picture;

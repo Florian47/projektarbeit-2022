@@ -1,5 +1,6 @@
 package sommersemester2022.processedTraining;
 
+import org.springframework.transaction.annotation.Transactional;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Transactional
 public class ProcessedTrainingEntity {
 
   @Id
@@ -14,7 +16,7 @@ public class ProcessedTrainingEntity {
   private int id;
 
   private int score;
-  @OneToMany(cascade=CascadeType.ALL)
+  @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
   private List<TaskEntity> processedSolutionTasks;
   @ManyToOne
   private TrainingEntity originTraining;

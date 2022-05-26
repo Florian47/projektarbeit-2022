@@ -31,7 +31,7 @@ public class TrainingEntity {
   @ManyToMany(cascade = CascadeType.ALL)
   private List<TaskEntity> tasks;
 
-  @Transient
+
   private int score;
 
   public TrainingEntity() {}
