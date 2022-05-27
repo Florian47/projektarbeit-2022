@@ -17,6 +17,7 @@ import sommersemester2022.task.TaskEntity;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -137,7 +138,7 @@ public class TrainingController {
 
   private <T extends NotUniqueIdentification> T find(T t1, List<T> list) {
     //TODO: improve exception//Was not able to identifiy T.getClass.getSimpleName() with uniqueName ... in list  {...}
-    return list.stream().filter(t2 -> t1.getNotUniqueId() == t2.getNotUniqueId()).findAny().orElseThrow(() -> new RuntimeException("Was not able to find %s in list".formatted(t1.getNotUniqueId())));
+    return list.stream().filter(t2 -> Objects.equals(t1.getNotUniqueId(), t2.getNotUniqueId())).findAny().orElseThrow(() -> new RuntimeException("Was not able to find %s in list".formatted(t1.getNotUniqueId())));
   }
 
 }

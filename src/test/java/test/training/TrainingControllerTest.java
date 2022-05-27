@@ -1,9 +1,9 @@
 package test.training;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import sommersemester2022.person.UserEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -18,14 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TrainingControllerTest extends BaseTest {
 
-  List<UserEntity> studentList = new ArrayList<>();
-
-
-  @Test
-  public void testAddTraining() throws Exception {
-
-    SolutionEntity solution = new SolutionEntity();
-    List<SolutionGaps> gapsList = new ArrayList<>();
+  static TrainingEntity training;
+  static SolutionEntity solution;
+  @BeforeAll
+  static void generateDummys(){
     List<SolutionOptions> optionsList = new ArrayList<>();
     List<SolutionOptions> optionsList2 = new ArrayList<>();
 
@@ -39,9 +35,11 @@ public class TrainingControllerTest extends BaseTest {
     optionsList2.add(new SolutionOptions("Mittwoch", true));
     optionsList2.add(new SolutionOptions("Donnerstag", false));
 
+    List<SolutionGaps> gapsList = new ArrayList<>();
     gapsList.add(new SolutionGaps(optionsList));
     gapsList.add(new SolutionGaps(optionsList2));
 
+    solution = new SolutionEntity();
     solution.setSolutionGaps(gapsList);
 
     List<TaskEntity> tasks = new ArrayList<>();
@@ -50,9 +48,15 @@ public class TrainingControllerTest extends BaseTest {
     taskEntity.setSolution(solution);
     tasks.add(taskEntity);
 
-    TrainingEntity training1 = new TrainingEntity("Training1", studentList, false);
-    training1.setTasks(tasks);
-    String json = objectMapper.writeValueAsString(training1);
+    training = new TrainingEntity();
+    training.setTasks(tasks);
+  }
+
+
+
+  @Test
+  public void testAddTraining() throws Exception {
+    String json = objectMapper.writeValueAsString(training);
 
     ResponseEntity<String> result = restPost("/training/add", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -60,7 +64,6 @@ public class TrainingControllerTest extends BaseTest {
     List<TrainingEntity> entities = loadAll(TrainingEntity.class);
     assertThat(entities.size()).isEqualTo(1);
     TrainingEntity pe = entities.get(0);
-    assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
-
+    assertThat(pe).isNotNull();
   }
 }

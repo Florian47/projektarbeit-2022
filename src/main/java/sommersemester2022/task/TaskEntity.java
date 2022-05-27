@@ -5,9 +5,10 @@ import sommersemester2022.solution.SolutionGaps;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-public class TaskEntity extends NotUniqueIdentification{
+public class TaskEntity implements NotUniqueIdentification{
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +26,19 @@ public class TaskEntity extends NotUniqueIdentification{
   private TaskDifficulty difficulty;
   @OneToOne(cascade = CascadeType.ALL)
   private SolutionEntity solution;
+
+  private String notUniqueId;
+
   public TaskEntity() {}
+
+  @PrePersist
+  private void generateRandomNotUniqueId(){
+    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+  }
+  @Override
+  public String getNotUniqueId() {
+    return notUniqueId;
+  }
 
   public TaskEntity(String name, String text, String picture, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
     this.name = name;

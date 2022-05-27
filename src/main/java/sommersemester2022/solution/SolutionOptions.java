@@ -5,20 +5,31 @@ import sommersemester2022.task.NotUniqueIdentification;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @Entity
-public class SolutionOptions extends NotUniqueIdentification {
+public class SolutionOptions implements NotUniqueIdentification {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
   private String optionName;
   private boolean rightAnswer;
-  public SolutionOptions() {}
+  private String notUniqueId;
 
+  public SolutionOptions() {}
   public SolutionOptions(String optionName, boolean rightAnswer) {
     this.optionName = optionName;
     this.rightAnswer = rightAnswer;
+  }
+
+  @PrePersist
+  private void generateRandomNotUniqueId(){
+    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+  }
+  @Override
+  public String getNotUniqueId() {
+    return notUniqueId;
   }
 
   public Integer getId() {

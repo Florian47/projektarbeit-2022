@@ -10,9 +10,10 @@ import sommersemester2022.task.TaskEntity;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-public class SolutionEntity extends NotUniqueIdentification {
+public class SolutionEntity implements NotUniqueIdentification {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,13 +25,22 @@ public class SolutionEntity extends NotUniqueIdentification {
   private String hint;
   @OneToOne(mappedBy = "solution",cascade = CascadeType.MERGE)
   private TaskEntity relatedTask;
-  public SolutionEntity() {}
+  private String notUniqueId;
 
+  public SolutionEntity() {}
   public SolutionEntity(List<SolutionGaps> solutionGaps, String hint) {
     this.solutionGaps = solutionGaps;
     this.hint = hint;
   }
 
+  @PrePersist
+  private void generateRandomNotUniqueId(){
+    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+  }
+  @Override
+  public String getNotUniqueId() {
+    return notUniqueId;
+  }
   public Integer getId() {
     return this.id;
   }
