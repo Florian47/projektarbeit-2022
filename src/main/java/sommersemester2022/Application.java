@@ -169,7 +169,7 @@ public class Application {
     training2.setName("Training 2 - Für Florian Weinert");
     training2.setIndividual(true);
     training2.setTasks(forTraining2);
-    training2.addStudent(user2);
+    training2.addStudent(userRepository.findByUsername("fweinert").get());
     trainingRepository.save(training2);
   }
 }
