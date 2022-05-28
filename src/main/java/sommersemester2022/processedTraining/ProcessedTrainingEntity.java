@@ -1,5 +1,6 @@
 package sommersemester2022.processedTraining;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.transaction.annotation.Transactional;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
@@ -17,8 +18,10 @@ public class ProcessedTrainingEntity {
 
   private int score;
   @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private List<TaskEntity> processedSolutionTasks;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private TrainingEntity originTraining;
 
   public ProcessedTrainingEntity() {}

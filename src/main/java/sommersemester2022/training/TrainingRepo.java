@@ -12,4 +12,5 @@ import java.util.Optional;
 @Service
 public interface TrainingRepo extends JpaRepository<TrainingEntity, Integer> {
   Optional<List<TrainingEntity>> findByStudents(Optional<UserEntity> user);
+  List<TrainingEntity> findByIndividualTrue();
 }

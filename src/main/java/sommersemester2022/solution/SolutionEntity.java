@@ -23,11 +23,13 @@ public class SolutionEntity implements NotUniqueIdentification {
   @OneToMany(cascade = CascadeType.ALL)
   private List<SolutionGaps> solutionGaps;
   private String hint;
-  @OneToOne(mappedBy = "solution",cascade = CascadeType.MERGE)
-  private TaskEntity relatedTask;
   private String notUniqueId;
 
   public SolutionEntity() {}
+
+  public SolutionEntity(List<SolutionGaps> solutionGaps){
+    this.solutionGaps = solutionGaps;
+  }
   public SolutionEntity(List<SolutionGaps> solutionGaps, String hint) {
     this.solutionGaps = solutionGaps;
     this.hint = hint;
@@ -65,21 +67,7 @@ public class SolutionEntity implements NotUniqueIdentification {
     this.hint = hint;
   }
 
-  public int getMaxScore()
-  {
-    int maxScore=0;
-    for(SolutionGaps s : solutionGaps)
-    {
-      int a = solutionGaps.indexOf(s);
-      for (SolutionOptions q : s.getSolutionOptions())
-      {
-        int b = s.getSolutionOptions().indexOf(q);
-        if (getSolutionGaps().get(a).getSolutionOptions().get(b).isRightAnswer()== true)  {
-            maxScore++;
-          }
-        }
-      }
-    return maxScore;
+
   }
-}
+
 

@@ -18,11 +18,6 @@ public class TrainingEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
   private String name;
-  @Column(unique = false)
-  @JoinTable(
-    joinColumns = @JoinColumn(name = "TrainingEntity_id"),
-    inverseJoinColumns = @JoinColumn(name = "students_id")
-  )
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany(cascade = CascadeType.ALL)
   private List<UserEntity> students;
@@ -48,7 +43,7 @@ public class TrainingEntity {
     }
 
   public int getScore() {
-    return score;
+    return this.score;
   }
 
   public void setScore(int score) {

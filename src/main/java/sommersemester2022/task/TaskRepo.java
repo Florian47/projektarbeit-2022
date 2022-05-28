@@ -16,4 +16,5 @@ public interface TaskRepo extends JpaRepository<TaskEntity, Integer> {
   List<TaskEntity> findAllByCategoryAndDifficulty(TaskCategory category, TaskDifficulty difficulty);
 
   boolean existsByName(String name);
+
 }

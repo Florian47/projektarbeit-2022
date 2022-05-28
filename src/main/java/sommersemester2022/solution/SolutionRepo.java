@@ -11,5 +11,4 @@ import java.util.Optional;
 @Service
 public interface SolutionRepo extends JpaRepository<SolutionEntity, Integer> {
 
-  Optional<SolutionEntity> findSolutionEntityByRelatedTask_Id(int id);
 }

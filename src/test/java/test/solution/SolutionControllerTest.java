@@ -48,9 +48,9 @@ public class SolutionControllerTest extends BaseTest {
     List<SolutionEntity> entities = loadAll(SolutionEntity.class);
     //assertThat(entities.size()).isEqualTo(1);
     SolutionEntity pe = entities.get(0);
-    //assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
-    //assertThat(pe.getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
-    assertThat(pe.getMaxScore()).isEqualTo(4);
+    assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
+    assertThat(pe.getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
+
   }
 
 }

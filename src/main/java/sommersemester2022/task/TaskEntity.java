@@ -18,7 +18,6 @@ public class TaskEntity implements NotUniqueIdentification{
   private String text;
   @Lob
   private String picture;
-  @Transient
   private int score;
   @Enumerated(EnumType.STRING)
   private TaskCategory category;
