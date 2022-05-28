@@ -16,20 +16,18 @@ public class TrainingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  private Integer id;
   private String name;
-  @Column(unique = false)
-  @JoinTable(
-    joinColumns = @JoinColumn(name = "TrainingEntity_id"),
-    inverseJoinColumns = @JoinColumn(name = "students_id")
-  )
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   private List<UserEntity> students;
   private boolean individual;
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   private List<TaskEntity> tasks;
+
+
+  private int score;
 
   public TrainingEntity() {}
 
@@ -39,7 +37,20 @@ public class TrainingEntity {
     this.individual = individual;
   }
 
-  public int getId() {
+  public TrainingEntity(TrainingEntity that)
+    {
+      this(that.getName(),that.getStudents(),that.isIndividual());
+    }
+
+  public int getScore() {
+    return this.score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public Integer getId(){
     return id;
   }
 
@@ -77,7 +88,7 @@ public class TrainingEntity {
     this.students.add(student);
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -88,6 +99,7 @@ public class TrainingEntity {
   public void setStudents(List<UserEntity> students) {
     this.students = students;
   }
+
 }
 
 

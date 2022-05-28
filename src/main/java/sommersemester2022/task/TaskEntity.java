@@ -5,14 +5,16 @@ import sommersemester2022.solution.SolutionGaps;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-public class TaskEntity {
+public class TaskEntity implements NotUniqueIdentification{
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  private Integer id;
   private String name;
+  @Lob
   private String text;
   @Lob
   private String picture;
@@ -24,7 +26,18 @@ public class TaskEntity {
   @OneToOne(cascade = CascadeType.ALL)
   private SolutionEntity solution;
 
+  private String notUniqueId;
+
   public TaskEntity() {}
+
+  @PrePersist
+  private void generateRandomNotUniqueId(){
+    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+  }
+  @Override
+  public String getNotUniqueId() {
+    return notUniqueId;
+  }
 
   public TaskEntity(String name, String text, String picture, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
     this.name = name;
@@ -33,10 +46,6 @@ public class TaskEntity {
     this.category = category;
     this.difficulty = difficulty;
     this.solution = solution;
-
-    // Score = Amount of gaps
-    List<SolutionGaps> amount = solution.getSolutionGaps();
-    this.score = amount.size();
   }
 
   public String getName() {
@@ -63,9 +72,7 @@ public class TaskEntity {
     this.picture = picture;
   }
 
-  public int getScore() {
-    return score;
-  }
+  public int getScore() {return score;}
 
   public void setScore(int score) {
     this.score = score;
@@ -87,12 +94,11 @@ public class TaskEntity {
     this.difficulty = difficulty;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
-  public int getId() {
-    return this.id;
-  }
+  public Integer getId() {
+    return id;}
 
   public SolutionEntity getSolution() {
     return solution;

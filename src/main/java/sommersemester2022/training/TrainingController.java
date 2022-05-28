@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
+import sommersemester2022.processedTraining.ProcessedTrainingRepo;
 import sommersemester2022.task.TaskEntity;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class TrainingController {
   private TrainingRepo trainingRepo;
   @Autowired
   private UserRepo userRepo;
+
+  @Autowired
+  private ProcessedTrainingRepo processedTrainingRepo;
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @PostMapping("/training/add")
   public TrainingEntity createTraining(@RequestBody TrainingEntity training) {
@@ -31,6 +35,11 @@ public class TrainingController {
   public List<TrainingEntity> getAll() {
     return trainingRepo.findAll();
   }
+
+  @GetMapping("/training/individuell")
+  public List<TrainingEntity> getAllManuelTrainings() {
+    return trainingRepo.findByIndividualTrue();
+  }
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/training/{id}")
   public void deleteTraining(@PathVariable int id) {
@@ -40,7 +49,7 @@ public class TrainingController {
   @GetMapping("/training/schueler/{id}")
   public List<TrainingEntity> getAllTrainingsForStudent(@PathVariable int id) {
     Optional<UserEntity> user = userRepo.findById(id);
-    return trainingRepo.findByStudents(user).get();
+    return trainingRepo.findByStudentsAndIndividualTrue(user).get();
   }
 
   @GetMapping("/schueler/all")
@@ -50,7 +59,7 @@ public class TrainingController {
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @PutMapping("/training/add")
   public TrainingEntity addTasksToTraining(@RequestBody TrainingEntity training, @RequestBody List<TaskEntity> tasks) {
-    for (TaskEntity task: tasks) {
+    for (TaskEntity task : tasks) {
       training.addTask(task);
     }
     return trainingRepo.save(training);
@@ -61,5 +70,5 @@ public class TrainingController {
     training.setId(id);
     return trainingRepo.save(training);
   }
-
 }
+

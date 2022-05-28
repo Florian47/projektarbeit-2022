@@ -42,7 +42,7 @@ public class UserController {
 //    List<String> roles = userDetails.getAuthorities().stream()
 //      .map(item -> item.getAuthority())
 //      .collect(Collectors.toList());
-    return ResponseEntity.ok().header("Authorization", jwtUtils.generateJwtToken(authentication)).body(person);
+    return ResponseEntity.ok().header("Authorization", jwtUtils.generateJwtToken(authentication)).body(userRepo.findByUsername(person.getUsername()).get());
 //    return userRepo.findByUsernameAndPassword(person.getUsername(), person.getPassword()).orElseThrow(() ->
 //      new EntityNotFoundException("Username and password does not match a user"));
   }

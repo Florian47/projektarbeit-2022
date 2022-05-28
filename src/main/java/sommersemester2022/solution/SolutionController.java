@@ -20,7 +20,7 @@ public class SolutionController {
 
   @GetMapping("/solution/{id}")
   public Optional<SolutionEntity> getById(@PathVariable int id) {
-    return solutionRepo.findSolutionEntityByRelatedTask_Id(id);
+    return solutionRepo.findById(id);
   }
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @PutMapping("/solution/{id}")

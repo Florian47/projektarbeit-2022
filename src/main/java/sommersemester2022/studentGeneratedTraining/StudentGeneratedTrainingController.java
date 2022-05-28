@@ -12,9 +12,11 @@ import sommersemester2022.training.TrainingController;
 import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.training.TrainingRepo;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @RestController
 public class StudentGeneratedTrainingController {
   @Autowired
