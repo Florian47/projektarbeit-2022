@@ -80,7 +80,6 @@ public class ProcessedTrainingController {
       }
     }
     processedTraining.setProcessedSolutionTasks(copyTraining.getTasks());
-    System.err.println("SAVED");
     return processedTrainingRepo.save(processedTraining);
   }
   @PrePersist

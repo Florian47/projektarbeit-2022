@@ -49,7 +49,7 @@ public class TrainingController {
   @GetMapping("/training/schueler/{id}")
   public List<TrainingEntity> getAllTrainingsForStudent(@PathVariable int id) {
     Optional<UserEntity> user = userRepo.findById(id);
-    return trainingRepo.findByStudents(user).get();
+    return trainingRepo.findByStudentsAndIndividualTrue(user).get();
   }
 
   @GetMapping("/schueler/all")
