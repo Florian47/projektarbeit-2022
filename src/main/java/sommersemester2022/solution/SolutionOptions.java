@@ -16,11 +16,13 @@ public class SolutionOptions implements NotUniqueIdentification {
   private String optionName;
   private boolean rightAnswer;
   private String notUniqueId;
+  private boolean checkedAnswer;
 
   public SolutionOptions() {}
-  public SolutionOptions(String optionName, boolean rightAnswer) {
+
+  public SolutionOptions(String optionName, boolean checkedAnswer) {
     this.optionName = optionName;
-    this.rightAnswer = rightAnswer;
+    this.checkedAnswer = checkedAnswer;
   }
 
   @PrePersist
@@ -36,16 +38,16 @@ public class SolutionOptions implements NotUniqueIdentification {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-  public boolean isRightAnswer() {
-    return rightAnswer;
+  public boolean isCheckedAnswer() {
+    return checkedAnswer;
   }
 
-  public void setRightAnswer(boolean rightAnswer) {
-    this.rightAnswer = rightAnswer;
+  public void setCheckedAnswer(boolean rightAnswer) {
+    this.checkedAnswer = rightAnswer;
   }
 
   public String getOptionName() {
