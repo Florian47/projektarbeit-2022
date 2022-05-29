@@ -62,7 +62,6 @@ public class Application {
     user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
     user.roles.add(roleRepository.findByName(ROLE_ADMINISTRATOR));
     user.roles.add(roleRepository.findByName(ROLE_TEACHER));
-    user.roles.add(roleRepository.findByName(ROLE_STUDENT));
     if(!userRepository.existsByUsername(user.getUsername()))userRepository.save(user);
 
 //     Add 3 test users

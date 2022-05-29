@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.security.services.jwt.JwtUtils;
+import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.RoleRepo;
 import java.util.List;
 
@@ -31,12 +33,15 @@ public class UserController {
   @Autowired
   JwtUtils jwtUtils;
 
+  UserDetailsImpl userDetails;
+
   @PostMapping("/users/authenticate")
   public ResponseEntity authenticate(@RequestBody UserEntity person) {
     Authentication authentication = authenticationManager.authenticate(
       new UsernamePasswordAuthenticationToken(person.getUsername(), person.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
+    person.roles = roleRepo.findALLRoles(person.getId());
 
 //    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 //    List<String> roles = userDetails.getAuthorities().stream()
@@ -45,13 +50,13 @@ public class UserController {
     return ResponseEntity.ok().header("Authorization", jwtUtils.generateJwtToken(authentication)).body(person);
 //    return userRepo.findByUsernameAndPassword(person.getUsername(), person.getPassword()).orElseThrow(() ->
 //      new EntityNotFoundException("Username and password does not match a user"));
+
   }
 //("/userloesung/aufgabe{id}/luecke{id}/)
   //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
     encoder.encode(person.getPassword());
-
     person.roles.add(roleRepo.findByName(ROLE_STUDENT));
     return userRepo.save(person);
   }

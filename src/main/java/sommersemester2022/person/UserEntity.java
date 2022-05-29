@@ -3,11 +3,15 @@ package sommersemester2022.person;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.UserRole;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class UserEntity {
@@ -21,11 +25,10 @@ public class UserEntity {
   private String username;
   private String password;
 
-  private UserRole role;
+  public UserRole role;
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
-//  @Cascade(org.hibernate.annotations.CascadeType.ALL)
-  public List<RoleEntity> roles = new ArrayList<RoleEntity>();
+  public List<RoleEntity> roles = new ArrayList<>();
 
   public UserEntity(String firstName, String lastName, String username, String password, List<RoleEntity> roles) {
     this.firstName = firstName;
@@ -88,5 +91,13 @@ public class UserEntity {
 
   public void setRoles(List<RoleEntity> role) {
     this.roles = role;
+  }
+
+
+  public List<GrantedAuthority> build() {
+    List<GrantedAuthority> authorities = this.getRoles().stream()
+      .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+      .collect(Collectors.toList());
+    return authorities;
   }
 }
