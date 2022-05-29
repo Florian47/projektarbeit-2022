@@ -16,7 +16,7 @@ import sommersemester2022.userroles.RoleRepo;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
-import static sommersemester2022.userroles.UserRole.STUDENT;
+//import static sommersemester2022.userroles.UserRole.STUDENT;
 
 @RestController @Service @Transactional
 public class GroupController {

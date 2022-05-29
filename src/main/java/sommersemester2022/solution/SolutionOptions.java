@@ -1,10 +1,8 @@
 package sommersemester2022.solution;
 
-import org.springframework.stereotype.Service;
 import sommersemester2022.task.NotUniqueIdentification;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Entity
@@ -38,7 +36,7 @@ public class SolutionOptions implements NotUniqueIdentification {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

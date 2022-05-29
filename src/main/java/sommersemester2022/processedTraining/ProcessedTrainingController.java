@@ -75,7 +75,7 @@ public class ProcessedTrainingController {
         for (SolutionOptions option :
           gap.getSolutionOptions()) {
           option.setId(null);
-          option.setRightAnswer(false);
+          option.setCheckedAnswer(false);
         }
       }
     }
@@ -117,7 +117,7 @@ public class ProcessedTrainingController {
 
   private int evaluateGap(SolutionGaps teacherGap, SolutionGaps studentGap) {
     boolean allOptionsMatch = teacherGap.getSolutionOptions().stream()
-      .allMatch(teacherOption -> find(teacherOption, studentGap.getSolutionOptions()).isRightAnswer() == teacherOption.isRightAnswer());
+      .allMatch(teacherOption -> find(teacherOption, studentGap.getSolutionOptions()).isCheckedAnswer() == teacherOption.isCheckedAnswer());
     return allOptionsMatch ? 1 : 0;
   }
 
