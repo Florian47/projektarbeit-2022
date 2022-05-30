@@ -26,7 +26,6 @@ public class TrainingEntity {
   @ManyToMany(cascade = CascadeType.ALL)
   private List<TaskEntity> tasks;
 
-
   private int score;
 
   public TrainingEntity() {}

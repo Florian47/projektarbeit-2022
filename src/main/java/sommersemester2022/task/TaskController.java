@@ -29,7 +29,7 @@ public class TaskController {
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @GetMapping("/task")
   public List<TaskEntity> getAll() {
-    return taskRepo.findAll();
+    return taskRepo.findAllByIndividualFalse();
   }
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/task/{id}")

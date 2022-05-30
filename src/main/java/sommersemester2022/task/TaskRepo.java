@@ -1,5 +1,6 @@
 package sommersemester2022.task;
 
+import org.h2.util.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import sommersemester2022.person.UserEntity;
@@ -12,9 +13,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public interface TaskRepo extends JpaRepository<TaskEntity, Integer> {
-
   List<TaskEntity> findAllByCategoryAndDifficulty(TaskCategory category, TaskDifficulty difficulty);
-
+  List<TaskEntity> findAllByIndividualFalse();
   boolean existsByName(String name);
 
 }
