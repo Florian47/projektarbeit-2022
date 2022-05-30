@@ -94,10 +94,5 @@ public class UserEntity {
   }
 
 
-  public List<GrantedAuthority> build() {
-    List<GrantedAuthority> authorities = this.getRoles().stream()
-      .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-      .collect(Collectors.toList());
-    return authorities;
-  }
+
 }

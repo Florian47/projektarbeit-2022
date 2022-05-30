@@ -41,7 +41,7 @@ public class UserController {
       new UsernamePasswordAuthenticationToken(person.getUsername(), person.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
-    person.roles = roleRepo.findALLRoles(person.getId());
+    person.roles = roleRepo.findALLRoles(authentication);
 
 //    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 //    List<String> roles = userDetails.getAuthorities().stream()

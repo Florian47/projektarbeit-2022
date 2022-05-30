@@ -1,8 +1,10 @@
 package sommersemester2022.userroles;
 
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import sommersemester2022.person.UserEntity;
@@ -22,6 +24,6 @@ public interface RoleRepo extends JpaRepository<RoleEntity, Integer> {
   boolean existsByName(UserRole name);
   List<RoleEntity> findAll();
 
-  @Query(value="SELECT roles.id, name FROM app.user_entity_roles INNER JOIN app.roles ON app.user_entity_roles.roles_id = app.roles.id where = 4", nativeQuery = true)
-  List<RoleEntity> findALLRoles(int id);
+  @Query(value="SELECT roles.id, name FROM app.user_entity_roles INNER JOIN app.roles ON app.user_entity_roles.roles_id = app.roles.id where user_entity_id = ?#{#authentication.principal.id}", nativeQuery = true)
+  List<RoleEntity> findALLRoles(@Param("authentication") Authentication authentication);
 }
