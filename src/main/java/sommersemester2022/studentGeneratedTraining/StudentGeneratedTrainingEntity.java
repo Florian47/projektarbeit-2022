@@ -12,7 +12,6 @@ public class StudentGeneratedTrainingEntity {
   @Id
   @Column(name = "id", nullable = false)
   private Long id;
-
   private int taskAmount;
   private TaskDifficulty trainingDifficulty;
   private TaskCategory trainingCategory;

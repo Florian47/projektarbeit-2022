@@ -32,7 +32,6 @@ public class ProcessedTrainingController {
   public ProcessedTrainingEntity createTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
     return processedTrainingRepo.save(processedTraining);
   }
-
   @GetMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity getById(@PathVariable int id) {
     return processedTrainingRepo.findById(id).get();
@@ -69,6 +68,7 @@ public class ProcessedTrainingController {
 
       task.setId(null);
       task.getSolution().setId(null);
+      task.setIndividual(true);
       for (SolutionGaps gap : task.getSolution().getSolutionGaps()
       ) {
         gap.setId(null);

@@ -25,19 +25,10 @@ public class TaskEntity implements NotUniqueIdentification{
   private TaskDifficulty difficulty;
   @OneToOne(cascade = CascadeType.ALL)
   private SolutionEntity solution;
-
   private String notUniqueId;
+  private boolean individual;
 
   public TaskEntity() {}
-
-  @PrePersist
-  private void generateRandomNotUniqueId(){
-    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
-  }
-  @Override
-  public String getNotUniqueId() {
-    return notUniqueId;
-  }
 
   public TaskEntity(String name, String text, String picture, TaskCategory category, TaskDifficulty difficulty, SolutionEntity solution) {
     this.name = name;
@@ -106,6 +97,27 @@ public class TaskEntity implements NotUniqueIdentification{
 
   public void setSolution(SolutionEntity solution) {
     this.solution = solution;
+  }
+
+  public void setNotUniqueId(String notUniqueId) {
+    this.notUniqueId = notUniqueId;
+  }
+
+  public boolean isIndividual() {
+    return individual;
+  }
+
+  public void setIndividual(boolean individual) {
+    this.individual = individual;
+  }
+
+  @PrePersist
+  private void generateRandomNotUniqueId(){
+    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+  }
+  @Override
+  public String getNotUniqueId() {
+    return notUniqueId;
   }
 }
 
