@@ -513,8 +513,7 @@ public class Application {
     gaps1.add(new SolutionGaps(options5));
     gaps1.add(new SolutionGaps(options6));
     gaps1.add(new SolutionGaps(options7));
-    solution1 = new SolutionEntity(gaps1, "3. Fall: Dativ - Frage: Wem? Beispiel: Von wem hat Simone das Auto? Von dem (auch: vom) Autohändler. Dem Autohändler gehörte es vorher.\n" +
-      "4. Fall: Akkusativ - Frage: Wen oder was? Beispiel: Wen hat Simone mitgenommen? Den Hund und den (auch: ihren) besten Freund.");
+    solution1 = new SolutionEntity(gaps1, "3. Fall: Dativ - Frage: Wem? 4. Fall: Akkusativ - Frage: Wen oder was?");
     task1 = new TaskEntity();
     task1.setPicture("");
     task1.setName("Grammatik - Dativ oder Akkusativ I");
@@ -547,8 +546,7 @@ public class Application {
     gaps1.add(new SolutionGaps(options3));
     gaps1.add(new SolutionGaps(options4));
     gaps1.add(new SolutionGaps(options5));
-    solution1 = new SolutionEntity(gaps1, "3. Fall: Dativ - Frage: Wem? Beispiel: Von wem hat Simone das Auto? Von dem (auch: vom) Autohändler. Dem Autohändler gehörte es vorher.\n" +
-      "4. Fall: Akkusativ - Frage: Wen oder was? Beispiel: Wen hat Simone mitgenommen? Den Hund und den (auch: ihren) besten Freund.");
+    solution1 = new SolutionEntity(gaps1, "3. Fall: Dativ - Frage: Wem? 4. Fall: Akkusativ - Frage: Wen oder was?");
     task1 = new TaskEntity();
     task1.setPicture("");
     task1.setName("Grammatik - Dativ oder Akkusativ II");
@@ -593,8 +591,7 @@ public class Application {
     gaps1.add(new SolutionGaps(options6));
     gaps1.add(new SolutionGaps(options7));
     gaps1.add(new SolutionGaps(options8));
-    solution1 = new SolutionEntity(gaps1, "3. Fall: Dativ - Frage: Wem? Beispiel: Von wem hat Simone das Auto? Von dem (auch: vom) Autohändler. Dem Autohändler gehörte es vorher.\n" +
-      "4. Fall: Akkusativ - Frage: Wen oder was? Beispiel: Wen hat Simone mitgenommen? Den Hund und den (auch: ihren) besten Freund.");
+    solution1 = new SolutionEntity(gaps1, "3. Fall: Dativ - Frage: Wem? 4. Fall: Akkusativ - Frage: Wen oder was?");
     task1 = new TaskEntity();
     task1.setPicture("");
     task1.setName("Grammatik - Dativ oder Akkusativ III");
