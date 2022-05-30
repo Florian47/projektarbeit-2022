@@ -9,6 +9,10 @@ import sommersemester2022.userroles.UserRole;
 import javax.persistence.*;
 import java.util.*;
 
+/**
+ * UserEntity is the entity class for the user. It holds all information regarding the users of the system.
+ * @author Florian Weinert, David Wiebe
+ */
 @Entity
 public class UserEntity {
 
@@ -22,6 +26,10 @@ public class UserEntity {
   private String password;
 
   private UserRole role;
+
+  /**
+   * roles holds all roles that a user owns (e.g. TEACHER & ADMIN)
+   */
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
 //  @Cascade(org.hibernate.annotations.CascadeType.ALL)
