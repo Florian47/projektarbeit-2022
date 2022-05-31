@@ -1,6 +1,8 @@
 package test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import sommersemester2022.Application;
 import sommersemester2022.person.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+import sommersemester2022.security.services.jwt.JwtUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -38,19 +41,38 @@ public class BaseTest {
   protected PlatformTransactionManager tx;
   @Autowired
   protected EntityManager em;
+  @Autowired
+  protected JwtUtils jwtUtils;
 
-  @BeforeEach
-  public void setup() {
-    new TransactionTemplate(tx).execute(new TransactionCallbackWithoutResult() {
-      protected void doInTransactionWithoutResult(TransactionStatus status) {
-        removeAll(UserEntity.class);
-      }
-    });
+  public BaseTest(){
+   new TestRestTemplate();
+  }
+
+//
+//  @BeforeEach
+//  public void setup() {
+//    new TransactionTemplate(tx).execute(new TransactionCallbackWithoutResult() {
+//      protected void doInTransactionWithoutResult(TransactionStatus status) {
+//        removeAll(UserEntity.class);
+//      }
+//    });
+//  }
+
+
+  protected String getJWTToken(String user) {
+    return jwtUtils.generateJwtToken(user);
   }
 
   protected ResponseEntity<String> restPost(String url, String json) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
+    return restTemplate.postForEntity(url, new HttpEntity<>(json, headers), String.class);
+  }
+
+  protected ResponseEntity<String> restAuthPost(String url, String json, String token) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setBearerAuth(token);
     return restTemplate.postForEntity(url, new HttpEntity<>(json, headers), String.class);
   }
 

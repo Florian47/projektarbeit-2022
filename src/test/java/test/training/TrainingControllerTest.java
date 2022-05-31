@@ -58,7 +58,7 @@ public class TrainingControllerTest extends BaseTest {
   public void testAddTraining() throws Exception {
     String json = objectMapper.writeValueAsString(training);
 
-    ResponseEntity<String> result = restPost("/training/add", json);
+    ResponseEntity<String> result = restAuthPost("/training/add", json, getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     List<TrainingEntity> entities = loadAll(TrainingEntity.class);
