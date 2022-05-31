@@ -13,6 +13,7 @@ public class TaskEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String name;
+  @Lob
   private String text;
   @Lob
   private String picture;
