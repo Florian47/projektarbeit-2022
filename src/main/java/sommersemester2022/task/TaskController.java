@@ -20,7 +20,7 @@ public class TaskController {
   public TaskEntity getTaskById(@PathVariable int id) {
     return taskRepo.findById(id).get();
   }
-  @PreAuthorize("hasRole('ROLE_TEACHER')")
+//  @PreAuthorize("hasRole({'ROLE_TEACHER','ROLE_STUDENT'})")
   @PutMapping("/task/edit/{id}")
   public TaskEntity updateTask(@PathVariable int id, @RequestBody TaskEntity task) {
     task.setId(id);
