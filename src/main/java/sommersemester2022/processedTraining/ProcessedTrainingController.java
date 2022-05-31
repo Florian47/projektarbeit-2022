@@ -27,7 +27,7 @@ public class ProcessedTrainingController {
 
   @Autowired
   private TrainingRepo trainingRepo;
-  @PreAuthorize("hasRole('ROLE_TEACHER')")
+//  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @PostMapping("/processedTraining/add")
   public ProcessedTrainingEntity createTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
     return processedTrainingRepo.save(processedTraining);
@@ -36,12 +36,12 @@ public class ProcessedTrainingController {
   public ProcessedTrainingEntity getById(@PathVariable int id) {
     return processedTrainingRepo.findById(id).get();
   }
-  @PreAuthorize("hasRole('ROLE_TEACHER')")
+//  @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/processedTraining/delete/{id}")
   public void deleteProcessedTraining(@PathVariable int id) {
     processedTrainingRepo.deleteById(id);
   }
-  @PreAuthorize("hasRole('ROLE_TEACHER')")
+//  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @PutMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity update(@PathVariable int id, @RequestBody ProcessedTrainingEntity processedTraining) {
     processedTraining.setId(id);
@@ -53,7 +53,7 @@ public class ProcessedTrainingController {
     return processedTrainingRepo.findAll();
   }
 
-
+//  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @GetMapping("/generateProcessedTraining/{id}")
   public ProcessedTrainingEntity createProcessedTraining(@PathVariable int id) throws JsonProcessingException {
     ProcessedTrainingEntity processedTraining = new ProcessedTrainingEntity();
