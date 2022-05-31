@@ -3,6 +3,7 @@ package test.task;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.task.TaskCategory;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TaskControllerTest extends BaseTest {
 
   @Test
+  @WithMockUser(username="admin",roles={"USER","ADMIN","TEACHER","USER_ADMIN"})
   public void testAddTask() throws Exception {
     String json = objectMapper.writeValueAsString(new TaskEntity("Aufgabe 1", "Heute ist ...", "1234", TaskCategory.GRAMMATIK, TaskDifficulty.EINFACH, new SolutionEntity()));
     ResponseEntity<String> result = restPost("/task/create", json);

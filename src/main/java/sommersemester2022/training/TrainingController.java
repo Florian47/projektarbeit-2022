@@ -20,7 +20,8 @@ public class TrainingController {
 
   @Autowired
   private ProcessedTrainingRepo processedTrainingRepo;
-  @PreAuthorize("hasRole('ROLE_TEACHER')")
+  //@PreAuthorize("hasRole('ROLE_TEACHER')")
+  //TODO undo comment
   @PostMapping("/training/add")
   public TrainingEntity createTraining(@RequestBody TrainingEntity training) {
     return trainingRepo.save(training);
