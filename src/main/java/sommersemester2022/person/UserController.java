@@ -15,6 +15,8 @@ import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.security.services.jwt.JwtUtils;
 import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.RoleRepo;
+import sommersemester2022.userroles.UserRole;
+
 import java.util.List;
 
 import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
@@ -22,6 +24,7 @@ import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
 
 @RestController @Service @Transactional
 public class UserController {
+
   @Autowired
   private UserRepo userRepo;
   @Autowired

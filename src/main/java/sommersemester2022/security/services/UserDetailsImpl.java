@@ -10,6 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import sommersemester2022.person.UserEntity;
 
+/*
+Die Klasse UserDetailImpl enhält diverse Attribute, die für die Authenfizierung des Benutzers wichtig sind.
+Des weiteren werden die Rollen, hier Authorities genannt, in eine GrantedAuthoritie Liste gespeichert. Diese werden bei der Anmeldung
+an den Client übergeben.
+Diese Klasse wurde von David Wiebe erstellt.
+ */
 public class UserDetailsImpl implements UserDetails {
 
   @Serial
