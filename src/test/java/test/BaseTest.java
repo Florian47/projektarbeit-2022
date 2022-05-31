@@ -1,6 +1,8 @@
 package test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import sommersemester2022.Application;
 import sommersemester2022.person.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,14 +44,19 @@ public class BaseTest {
   @Autowired
   protected JwtUtils jwtUtils;
 
-  @BeforeEach
-  public void setup() {
-    new TransactionTemplate(tx).execute(new TransactionCallbackWithoutResult() {
-      protected void doInTransactionWithoutResult(TransactionStatus status) {
-        removeAll(UserEntity.class);
-      }
-    });
+  public BaseTest(){
+   new TestRestTemplate();
   }
+
+//
+//  @BeforeEach
+//  public void setup() {
+//    new TransactionTemplate(tx).execute(new TransactionCallbackWithoutResult() {
+//      protected void doInTransactionWithoutResult(TransactionStatus status) {
+//        removeAll(UserEntity.class);
+//      }
+//    });
+//  }
 
 
   protected String getJWTToken(String user) {
