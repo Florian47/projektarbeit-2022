@@ -8,7 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
 import sommersemester2022.security.services.UserDetailsImpl;
-
+/*
+Die Klasse UserDetailServiceImpl implementiert die Benutzer Details, über das UserRepository.
+Diese Klasse wurde von David Wiebe erstellt
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
