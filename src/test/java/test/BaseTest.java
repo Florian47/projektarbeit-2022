@@ -82,6 +82,18 @@ public class BaseTest {
     return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
   }
 
+  protected ResponseEntity<String> restDel(String url) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    return restTemplate.exchange(url, HttpMethod.DELETE, new HttpEntity<>(headers), String.class);
+  }
+
+  protected ResponseEntity<String> restPut(String url, String json) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(headers), String.class);
+  }
+
   protected <T> void removeAll(Class<T> type) {
     loadAll(type).forEach(e -> em.remove(e));
   }
