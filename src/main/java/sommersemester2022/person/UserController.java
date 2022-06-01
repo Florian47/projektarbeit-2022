@@ -61,7 +61,8 @@ public class UserController {
   public UserEntity register(@RequestBody UserEntity person) {
 //    encoder.encode(person.getPassword());
     person.roles.add(roleRepo.findByName(ROLE_STUDENT));
-    return userRepo.save(person);
+    UserEntity save = userRepo.save(person);
+    return save;
   }
   @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @GetMapping("/users/{id}")

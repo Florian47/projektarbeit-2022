@@ -77,7 +77,6 @@ public class TrainingControllerTest extends BaseTest {
 
 
   @Test
-  @WithMockUser(username="admin",roles={"USER","ADMIN","TEACHER","USER_ADMIN"})
   public void testAddTraining() throws Exception {
     String json = objectMapper.writeValueAsString(training);
 

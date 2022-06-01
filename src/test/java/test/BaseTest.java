@@ -1,19 +1,34 @@
 package test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import sommersemester2022.Application;
+import sommersemester2022.person.UserEntity;
+import sommersemester2022.person.UserRepo;
 import sommersemester2022.security.services.jwt.JwtUtils;
+import sommersemester2022.userroles.RoleEntity;
+import sommersemester2022.userroles.RoleRepo;
+import sommersemester2022.userroles.UserRole;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
+
+import static sommersemester2022.userroles.UserRole.*;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -33,15 +48,39 @@ public class BaseTest {
   @Autowired
   protected JwtUtils jwtUtils;
 
-  //
-//  @BeforeEach
-//  public void setup() {
-//    new TransactionTemplate(tx).execute(new TransactionCallbackWithoutResult() {
-//      protected void doInTransactionWithoutResult(TransactionStatus status) {
-//        removeAll(UserEntity.class);
-//      }
-//    });
-//  }
+  @Autowired
+  protected UserRepo userRepo;
+
+  @Autowired
+  protected RoleRepo roleRepository;
+
+  protected UserEntity admin;
+
+  @BeforeEach
+  public void setup() {
+    userRepo.deleteAll();
+
+    RoleEntity student = new RoleEntity();
+    student.setName(ROLE_STUDENT);
+    if(!roleRepository.existsByName(ROLE_STUDENT)) roleRepository.save(student);
+    RoleEntity teacher = new RoleEntity();
+    teacher.setName(UserRole.ROLE_TEACHER);
+    if(!roleRepository.existsByName(UserRole.ROLE_TEACHER)) roleRepository.save(teacher);
+    RoleEntity admin = new RoleEntity();
+    admin.setName(ROLE_ADMINISTRATOR);
+    if(!roleRepository.existsByName(UserRole.ROLE_ADMINISTRATOR)) roleRepository.save(admin);
+
+    UserEntity user = new UserEntity();
+    user.setFirstName("admin");
+    user.setLastName("admin");
+    user.setUsername("admin");
+    user.setPassword("admin1");
+    user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
+    user.roles.add(roleRepository.findByName(ROLE_ADMINISTRATOR));
+    user.roles.add(roleRepository.findByName(ROLE_TEACHER));
+    user.roles.add(roleRepository.findByName(ROLE_STUDENT));
+    this.admin = userRepo.save(user);
+  }
 
 
   protected String getJWTToken(String user) {
@@ -67,7 +106,7 @@ public class BaseTest {
     return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
   }
 
-  protected ResponseEntity<String> restAuthGet(String url,String token) {
+  protected ResponseEntity<String> restAuthGet(String url, String token) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.setBearerAuth(token);
@@ -80,7 +119,7 @@ public class BaseTest {
     return restTemplate.exchange(url, HttpMethod.DELETE, new HttpEntity<>(headers), String.class);
   }
 
-  protected ResponseEntity<String> restAuthDel(String url,String token) {
+  protected ResponseEntity<String> restAuthDel(String url, String token) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.setBearerAuth(token);
@@ -90,14 +129,14 @@ public class BaseTest {
   protected ResponseEntity<String> restPut(String url, String json) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(headers), String.class);
+    return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(json,headers), String.class);
   }
 
-  protected ResponseEntity<String> restAuthPut(String url,String json,String token) {
+  protected ResponseEntity<String> restAuthPut(String url, String json, String token) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.setBearerAuth(token);
-    return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(headers), String.class);
+    return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(json,headers), String.class);
   }
 
   protected <T> void removeAll(Class<T> type) {
@@ -107,4 +146,5 @@ public class BaseTest {
   protected <T> List<T> loadAll(Class<T> type) {
     return em.createQuery("select e from " + type.getSimpleName() + " e", type).getResultList();
   }
+
 }

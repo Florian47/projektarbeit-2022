@@ -139,7 +139,7 @@ public class TaskControllerTest extends BaseTest {
     optionsList.add(new SolutionOptions("Donnerstag", false));
 
     gapsList.add(new SolutionGaps(optionsList));
-    task = new TaskEntity("Aufgabe 1", "Heute ist ...", "1234", TaskCategory.GRAMMATIK, TaskDifficulty.EINFACH, new SolutionEntity(gapsList));
+    task = new TaskEntity("Aufgabe 2", "Heute ist ...", "1234", TaskCategory.GRAMMATIK, TaskDifficulty.EINFACH, new SolutionEntity(gapsList));
     json = objectMapper.writeValueAsString(task);
     result = restAuthPost("/task/add", json,getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
