@@ -27,4 +27,6 @@ public interface TaskRepo extends JpaRepository<TaskEntity, Integer> {
    * @return Liste aller "originalen" Aufgaben
    */
   List<TaskEntity> findAllByIndividualFalse();
+
+  boolean existsByName(String name);
 }

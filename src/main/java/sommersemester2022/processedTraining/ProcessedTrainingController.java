@@ -78,7 +78,7 @@ public class ProcessedTrainingController {
   //  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @PutMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity update(@PathVariable int id, @RequestBody ProcessedTrainingEntity processedTraining) {
-    Integer stdId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getDetails()).getId();
+    int stdId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getDetails()).getId();
     processedTraining.setStudentId(stdId);
     processedTraining.setId(id);
     return processedTrainingRepo.save(processedTraining);
@@ -129,7 +129,7 @@ public class ProcessedTrainingController {
 
   /**
    * Wertet das vom Schüler bearbeitete Training aus und nutzt dazu "evaluateTask" und "evaluateGap"
-   * @param processedTraining Frontend Daten für das bearbeitete Training
+   * @param id ID des Trainings, welches ausgewertet werden soll
    * @return ausgewertetes bearbeitetes Training
    */
   @PrePersist

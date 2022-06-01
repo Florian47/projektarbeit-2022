@@ -5,9 +5,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
+import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.processedTraining.ProcessedTrainingRepo;
 import sommersemester2022.task.TaskEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +66,6 @@ public class TrainingController {
    */
   @GetMapping("/training/individuell")
   public List<TrainingEntity> getAllManuelTrainings() {
-    processedTrainingRepo.findAll();
     return trainingRepo.findByIndividualTrue();
   }
 
@@ -86,7 +87,14 @@ public class TrainingController {
   @GetMapping("/training/schueler/{id}")
   public List<TrainingEntity> getAllTrainingsForStudent(@PathVariable int id) {
     Optional<UserEntity> user = userRepo.findById(id);
-    return trainingRepo.findByStudentsAndIndividualTrue(user).get();
+    List<TrainingEntity> output = trainingRepo.findByStudentsAndIndividualTrue(user).get();
+    List<ProcessedTrainingEntity> processedTrainings = processedTrainingRepo.findAllByStudentId(id);
+    for (ProcessedTrainingEntity pt : processedTrainings) {
+      if (output.contains(pt.getOriginTraining())) {
+        output.remove(pt);
+      }
+    }
+    return output;
   }
 
   /**
