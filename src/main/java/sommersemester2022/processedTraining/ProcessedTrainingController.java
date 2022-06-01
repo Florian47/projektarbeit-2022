@@ -5,11 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import sommersemester2022.person.UserEntity;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -113,6 +110,7 @@ public class ProcessedTrainingController {
     TrainingEntity copyTraining = gson.fromJson(gson.toJson(training), TrainingEntity.class);
     for (TaskEntity task : copyTraining.getTasks()
     ) {
+
       task.setId(null);
       task.getSolution().setId(null);
       task.setIndividual(true);
@@ -138,14 +136,19 @@ public class ProcessedTrainingController {
   @PrePersist
   @PostMapping("/evaluate/Training/{id}")
   public List<ProcessedTrainingEntity> evaluateProcessedTraining(@RequestParam Integer id) {
+    List<ProcessedTrainingEntity> entities = new ArrayList<>();
+    entities = processedTrainingRepo.findAllById(id);
+    List<ProcessedTrainingEntity> relevantEntities = new ArrayList<>();
     //get all processedTrainings with originTraining.getId() == id
     // iterate over processed training list and evaluate ALL of them
     //return it
     return null;
   }
+
   @PrePersist
   @PostMapping("/evaluate/ProcessedTraining")
   public ProcessedTrainingEntity evaluateProcessedTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
+
     TrainingEntity teacherTraining = processedTraining.getOriginTraining();
 
     processedTraining.getProcessedSolutionTasks()

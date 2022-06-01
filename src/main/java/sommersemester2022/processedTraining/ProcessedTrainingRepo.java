@@ -20,4 +20,6 @@ public interface ProcessedTrainingRepo extends JpaRepository<ProcessedTrainingEn
    * @return
    */
   List<ProcessedTrainingEntity> findAllByStudentId(int id);
+
+  List<ProcessedTrainingEntity> findAllById(int id);
 }
