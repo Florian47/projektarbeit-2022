@@ -1,26 +1,15 @@
 package test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import sommersemester2022.Application;
-import sommersemester2022.person.UserEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
+import sommersemester2022.Application;
 import sommersemester2022.security.services.jwt.JwtUtils;
 
 import javax.persistence.EntityManager;
@@ -44,11 +33,7 @@ public class BaseTest {
   @Autowired
   protected JwtUtils jwtUtils;
 
-  public BaseTest(){
-   new TestRestTemplate();
-  }
-
-//
+  //
 //  @BeforeEach
 //  public void setup() {
 //    new TransactionTemplate(tx).execute(new TransactionCallbackWithoutResult() {
@@ -82,15 +67,36 @@ public class BaseTest {
     return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
   }
 
+  protected ResponseEntity<String> restAuthGet(String url,String token) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setBearerAuth(token);
+    return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
+  }
+
   protected ResponseEntity<String> restDel(String url) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     return restTemplate.exchange(url, HttpMethod.DELETE, new HttpEntity<>(headers), String.class);
   }
 
+  protected ResponseEntity<String> restAuthDel(String url,String token) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setBearerAuth(token);
+    return restTemplate.exchange(url, HttpMethod.DELETE, new HttpEntity<>(headers), String.class);
+  }
+
   protected ResponseEntity<String> restPut(String url, String json) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
+    return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(headers), String.class);
+  }
+
+  protected ResponseEntity<String> restAuthPut(String url,String json,String token) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setBearerAuth(token);
     return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(headers), String.class);
   }
 

@@ -56,23 +56,20 @@ public class UserController {
 
   }
 //("/userloesung/aufgabe{id}/luecke{id}/)
-  //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
-  //TODO undo comment
+  //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")t
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
 //    encoder.encode(person.getPassword());
     person.roles.add(roleRepo.findByName(ROLE_STUDENT));
     return userRepo.save(person);
   }
-  //  @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
-  //TODO undo comment
+  @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @GetMapping("/users/{id}")
   public UserEntity getById(@PathVariable int id) {
     return userRepo.findById(id).get();
   }
 
-  //@PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
-  //TODO undo comment
+  @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @PutMapping("/users/{id}")
   public UserEntity updateUser(@PathVariable int id, @RequestBody UserEntity person) {
 //    encoder.encode(person.getPassword());
@@ -82,8 +79,7 @@ public class UserController {
 
 //    return ResponseEntity.ok().body(userRepo.save(person));
   }
-  //@PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
-  //TODO undo comment
+  @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @DeleteMapping("/users/{id}")
   public void deleteUser( @RequestHeader ("Authorization")@PathVariable int id) {
     userRepo.deleteById(id);
