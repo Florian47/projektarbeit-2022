@@ -7,6 +7,11 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * TaskEntity ist die Entitätsklasse für eine Aufgabe und hält alle dafür notwendigen Eigenschaften (Attribute)
+ * und Fähigkeiten (Methoden).
+ * @author Tobias Esau, Alexander Kiehl
+ */
 @Entity
 public class TaskEntity implements NotUniqueIdentification{
 
@@ -25,7 +30,16 @@ public class TaskEntity implements NotUniqueIdentification{
   private TaskDifficulty difficulty;
   @OneToOne(cascade = CascadeType.ALL)
   private SolutionEntity solution;
+
+  /**
+   * UUID -> Ist für die Unterscheidung einer Lehrer- (Original) zu einer Schüleraufgabe (kopiert)
+   * wichtig, da sie sich die gleichen Klassen teilen!
+   */
   private String notUniqueId;
+
+  /**
+   * Gibt an, ob eine Aufgabe die "originale" ist, da sie beim Training kopiert wird.
+   */
   private boolean individual;
 
   public TaskEntity() {}

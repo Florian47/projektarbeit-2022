@@ -7,6 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+
+/**
+ * StudentGeneratedTrainingEntity ist die Entitätsklasse für das auto-generierte Training und hält alle dafür
+ * notwendigen Eigenschaften (Attribute) und Fähigkeiten (Methoden).
+ * @author Tobias Esau, Alexander Kiehl
+ */
 @Entity
 public class StudentGeneratedTrainingEntity {
   @Id

@@ -13,6 +13,11 @@ import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * UserEntity ist die Entitätsklasse für den User und hält alle dafür notwendigen
+ * Eigenschaften (Attribute) und Fähigkeiten (Methoden).
+ * @author Florian Weinert, David Wiebe
+ */
 @Entity
 public class UserEntity {
 
@@ -21,10 +26,17 @@ public class UserEntity {
   private int id;
   private String firstName;
   private String lastName;
+
+  /**
+   * Usernamen dürfen nicht doppelt vergeben werden (daher unique)
+   */
   @Column(unique = true)
   private String username;
   private String password;
 
+  /**
+   * Das Attribut hält alle User-Rollen, welche ein User besitzt.
+   */
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
   public List<RoleEntity> roles = new ArrayList<>();
@@ -86,7 +98,4 @@ public class UserEntity {
   public void setRoles(List<RoleEntity> role) {
     this.roles = role;
   }
-
-
-
 }

@@ -21,7 +21,13 @@ import java.util.List;
 
 import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
 
-
+/**
+ * UserController ist die Controller-Klasse für die User-Entität. Sie kontrolliert alle Aktivitäten, welche mit den
+ * Usern ausgeführt werden können und gibt die Informationen an das Repository weiter.
+ * (z.B. alle CRUD-Operationen)
+ * @author Florian Weinert, David Wiebe
+ * @see    UserRepo
+ */
 @RestController @Service @Transactional
 public class UserController {
 
@@ -38,6 +44,11 @@ public class UserController {
 
   UserDetailsImpl userDetails;
 
+  /**
+   * Authentifiziert einen User (Login).
+   * @param person Frontend Daten für den User
+   * @return ResponseEntity
+   */
   @PostMapping("/users/authenticate")
   public ResponseEntity authenticate(@RequestBody UserEntity person) {
     Authentication authentication = authenticationManager.authenticate(
@@ -55,8 +66,14 @@ public class UserController {
 //      new EntityNotFoundException("Username and password does not match a user"));
 
   }
+
 //("/userloesung/aufgabe{id}/luecke{id}/)
   //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")t
+  /**
+   * Registriert einen neuen Benutzer im System
+   * @param person Frontend Daten für den User
+   * @return gespeicherte User-Entität
+   */
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
 //    encoder.encode(person.getPassword());
@@ -64,12 +81,24 @@ public class UserController {
     UserEntity save = userRepo.save(person);
     return save;
   }
+
+  /**
+   * Gibt den User mit der gesuchten ID zurück.
+   * @param id User ID
+   * @return angefragter User
+   */
   @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @GetMapping("/users/{id}")
   public UserEntity getById(@PathVariable int id) {
     return userRepo.findById(id).get();
   }
 
+  /**
+   * Gibt den geänderten User zurück.
+   * @param id User ID
+   * @param person - Frontend Daten für den User
+   * @return geänderter User
+   */
   @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @PutMapping("/users/{id}")
   public UserEntity updateUser(@PathVariable int id, @RequestBody UserEntity person) {
@@ -80,15 +109,23 @@ public class UserController {
 
 //    return ResponseEntity.ok().body(userRepo.save(person));
   }
+
+  /**
+   * Gibt dem Repository den Auftrag, den User mit der entsprechenden ID zu löschen.
+   * @param id User ID
+   */
   @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @DeleteMapping("/users/{id}")
   public void deleteUser( @RequestHeader ("Authorization")@PathVariable int id) {
     userRepo.deleteById(id);
   }
 
+  /**
+   * Gibt eine Liste aller bestehenden User des System zurück.
+   * @return Liste aller User
+   */
   @GetMapping("/users")
   public List<UserEntity> getAll() {
     return userRepo.findAll();
   }
-
 }

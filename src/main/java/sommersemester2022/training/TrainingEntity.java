@@ -1,6 +1,5 @@
 package sommersemester2022.training;
 
-import com.sun.istack.NotNull;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import sommersemester2022.person.UserEntity;
@@ -9,19 +8,30 @@ import sommersemester2022.task.TaskEntity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * TrainingEntity ist die Entitätsklasse für ein Training und hält alle dafür notwendigen Eigenschaften (Attribute)
+ * und Fähigkeiten (Methoden).
+ * @author Tobias Esau, Alexander Kiehl
+ */
 @Entity
 public class TrainingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
+
   private String name;
+
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany(cascade = CascadeType.ALL)
   private List<UserEntity> students;
+
+  /**
+   * gibt an, ob ein Training individuell erstellt wurde
+   */
   private boolean individual;
+
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany(cascade = CascadeType.ALL)
   private List<TaskEntity> tasks;
@@ -36,10 +46,9 @@ public class TrainingEntity {
     this.individual = individual;
   }
 
-  public TrainingEntity(TrainingEntity that)
-    {
+  public TrainingEntity(TrainingEntity that) {
       this(that.getName(),that.getStudents(),that.isIndividual());
-    }
+  }
 
   public int getScore() {
     return this.score;
@@ -98,7 +107,6 @@ public class TrainingEntity {
   public void setStudents(List<UserEntity> students) {
     this.students = students;
   }
-
 }
 
 

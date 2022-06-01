@@ -12,6 +12,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * SolutionEntity ist die Entitätsklasse für die Lösung und hält alle dafür notwendigen
+ * Eigenschaften (Attribute) und Fähigkeiten (Methoden).
+ * @author Tobias Esau, Alexander Kiehl
+ */
 @Entity
 public class SolutionEntity implements NotUniqueIdentification {
 
@@ -23,6 +28,10 @@ public class SolutionEntity implements NotUniqueIdentification {
   @OneToMany(cascade = CascadeType.ALL)
   private List<SolutionGaps> solutionGaps;
   private String hint;
+
+  /**
+   * UUID -> Ist für die Unterscheidung einer Lehrer- zu einer Schülerlösung wichtig, da sie sich die gleichen Klassen teilen!
+   */
   private String notUniqueId;
 
   public SolutionEntity() {}
@@ -35,6 +44,9 @@ public class SolutionEntity implements NotUniqueIdentification {
     this.hint = hint;
   }
 
+  /**
+   * Generiert eine zufällige UUID (not unique ID)
+   */
   @PrePersist
   private void generateRandomNotUniqueId(){
     if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
@@ -46,28 +58,21 @@ public class SolutionEntity implements NotUniqueIdentification {
   public Integer getId() {
     return this.id;
   }
-
   public void setId(Integer id) {
     this.id = id;
   }
-
   public List<SolutionGaps> getSolutionGaps() {
     return solutionGaps;
   }
-
   public void setSolutionGaps(List<SolutionGaps> solutionGaps) {
     this.solutionGaps = solutionGaps;
   }
-
   public String getHint() {
     return hint;
   }
-
   public void setHint(String hint) {
     this.hint = hint;
   }
-
-
   }
 
 
