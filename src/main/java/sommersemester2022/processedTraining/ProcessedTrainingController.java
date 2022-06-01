@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import sommersemester2022.person.UserEntity;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -16,10 +17,15 @@ import sommersemester2022.training.HibernateProxyTypeAdapter;
 import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.training.TrainingRepo;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PrePersist;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+
 
 @Transactional
 @RestController
@@ -93,11 +99,15 @@ public class ProcessedTrainingController {
   @PrePersist
   @PostMapping("/evaluate/Training/{id}")
   public List<ProcessedTrainingEntity> evaluateProcessedTraining(@RequestParam Integer id) {
+    List<ProcessedTrainingEntity> entities = new ArrayList<>();
+    entities = processedTrainingRepo.findAllById(id);
+    List<ProcessedTrainingEntity> relevantEntities = new ArrayList<>();
     //get all processedTrainings with originTraining.getId() == id
     // iterate over processed training list and evaluate ALL of them
     //return it
     return null;
   }
+
   @PrePersist
   @PostMapping("/evaluate/ProcessedTraining")
   public ProcessedTrainingEntity evaluateProcessedTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
@@ -142,5 +152,4 @@ public class ProcessedTrainingController {
     //TODO: improve exception//Was not able to identifiy T.getClass.getSimpleName() with uniqueName ... in list  {...}
     return list.stream().filter(t2 -> Objects.equals(t1.getNotUniqueId(), t2.getNotUniqueId())).findAny().orElseThrow(() -> new RuntimeException("Was not able to find %s in list".formatted(t1.getNotUniqueId())));
   }
-
 }
