@@ -39,7 +39,7 @@ public class UserController {
 
   /**
    * Authentifiziert einen User (Login).
-   * @param person - Frontend Daten für den User
+   * @param person Frontend Daten für den User
    * @return ResponseEntity
    */
   @PostMapping("/users/authenticate")
@@ -61,7 +61,7 @@ public class UserController {
 
   /**
    * Registriert einen neuen Benutzer im System
-   * @param person - Frontend Daten für den User
+   * @param person Frontend Daten für den User
    * @return gespeicherte User-Entität
    */
   //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
@@ -75,7 +75,7 @@ public class UserController {
 
   /**
    * Gibt den User mit der gesuchten ID zurück.
-   * @param id - User ID
+   * @param id User ID
    * @return angefragter User
    */
 //  @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
@@ -86,7 +86,7 @@ public class UserController {
 
   /**
    * Gibt den geänderten User zurück.
-   * @param id - User ID
+   * @param id User ID
    * @param person - Frontend Daten für den User
    * @return geänderter User
    */
@@ -103,7 +103,7 @@ public class UserController {
 
   /**
    * Gibt dem Repository den Auftrag, den User mit der entsprechenden ID zu löschen.
-   * @param id - User ID
+   * @param id User ID
    */
   @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @DeleteMapping("/users/{id}")

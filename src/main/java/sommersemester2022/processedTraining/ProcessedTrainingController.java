@@ -20,9 +20,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * ProcessedTrainingController is the control class for the processed training entity. It handles all activities that
- * can be done with completed trainings and gives information to the repository which saves the activities.
- * (e.g. all CRUD-Operations)
+ * ProcessedTrainingController ist die Controller-Klasse für die Entität des bearbeiteten Trainings.
+ * Sie kontrolliert alle Aktivitäten, welche mit den bearbeiteten Trainings ausgeführt werden können und gibt die
+ * Informationen an das Repository weiter.
+ * (z.B. alle CRUD-Operationen)
  * @author Tobias Esau, Alexander Kiehl
  * @see    ProcessedTrainingRepo
  */
@@ -36,9 +37,9 @@ public class ProcessedTrainingController {
   private TrainingRepo trainingRepo;
 
   /**
-   * Creates a new processed training.
-   * @param processedTraining - frontend data
-   * @return processed training
+   * Erstellt ein neues bearbeitetes Training
+   * @param processedTraining Frontend Daten des bearbeiteten Trainings
+   * @return bearbeitetes Training
    */
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @PostMapping("/processedTraining/add")
@@ -47,9 +48,9 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Returns the processed training found by the given id.
-   * @param id - training id
-   * @return processed training
+   * Gibt das bearbeitete Training mit der angegebenen ID zurück.
+   * @param id ID des bearbeiteten Trainings
+   * @return bearbeitetes Training
    */
   @GetMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity getById(@PathVariable int id) {
@@ -57,8 +58,8 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Tells the repository to delete the processed training with the given id.
-   * @param id - training id
+   * Gibt die Information an das Repository, das bearbeitete Training mit der angegebenen ID zu löschen.
+   * @param id ID des bearbeiteten Trainings
    */
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/processedTraining/delete/{id}")
@@ -67,9 +68,9 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Returns the updated processed training.
-   * @param id - training id
-   * @return processed training
+   * Gibt das veränderte bearbeitete Training zurück.
+   * @param id ID des bearbeiteten Trainings
+   * @return bearbeitetes Training
    */
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @PutMapping("/processedTraining/{id}")
@@ -79,8 +80,8 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Returns all processed trainings existing in the database
-   * @return list of processed trainings
+   * Gibt alle in der Datenbank vorhandenen bearbeiteten Trainings zurück
+   * @return Liste aller bearbeiteten Trainings
    */
   @GetMapping("/processedTrainings")
   public List<ProcessedTrainingEntity> getAll() {
@@ -88,10 +89,9 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Creates a new processed training if the student saves his passed training.
-   * @param id - processed training id
-   * @return created processed training
-   * @throws JsonProcessingException - Exception
+   * Erstellt ein bearbeitetes Training, nachdem der Schüler das Training mit "Speichern" gesichert hat.
+   * @param id ID des bearbeiteten Trainings
+   * @return erstelltes bearbeitetes Training
    */
   @GetMapping("/generateProcessedTraining/{id}")
   public ProcessedTrainingEntity createProcessedTraining(@PathVariable int id) throws JsonProcessingException {
@@ -104,7 +104,6 @@ public class ProcessedTrainingController {
     TrainingEntity copyTraining = gson.fromJson(gson.toJson(training), TrainingEntity.class);
     for (TaskEntity task : copyTraining.getTasks()
     ) {
-
       task.setId(null);
       task.getSolution().setId(null);
       task.setIndividual(true);
@@ -123,9 +122,9 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Evaluates the training by using methods "evaluateTask" and "evaluateGap"
-   * @param processedTraining - frontend data for processed training
-   * @return evaluated processed training
+   * Wertet das vom Schüler bearbeitete Training aus und nutzt dazu "evaluateTask" und "evaluateGap"
+   * @param processedTraining Frontend Daten für das bearbeitete Training
+   * @return ausgewertetes bearbeitetes Training
    */
   @PrePersist
   @PostMapping("/evaluate/ProcessedTraining")
@@ -150,8 +149,8 @@ public class ProcessedTrainingController {
   /**
    * Wertet eine gesamte Aufgabe des Trainings aus. Jede korrekte Lücke gibt einen Punkt. Eine Lücke ist korrekt, wenn
    * sie mit der Lösung des Lehrers übereinstimmt. Die Methode benutzt die Methode "evaluateGap".
-   * @param student - ganze Aufgaben-Lösung des Schülers
-   * @param teacher - ganze Aufgaben-Lösung (Musterlösung) des Lehrers
+   * @param student gesamte Aufgaben-Lösung des Schülers
+   * @param teacher gesamte Aufgaben-Lösung (Musterlösung) des Lehrers
    */
   private void evaluateTask(TaskEntity student, TaskEntity teacher) {
     //evaluate max task score
@@ -162,8 +161,8 @@ public class ProcessedTrainingController {
 
   /**
    * Wertet eine einzelne Lücke aus, indem sie die Schüler-Lösung mit der Lehrer-Lösung abgleicht..
-   * @param teacherGap - Lehrer-Lösung (Musterlösung) der einzelnen Lücke in einer Aufgabe
-   * @param studentGap - Schüler-Lösung der einzelnen Lücke in einer Aufgabe
+   * @param teacherGap Lehrer-Lösung (Musterlösung) der einzelnen Lücke in einer Aufgabe
+   * @param studentGap Schüler-Lösung der einzelnen Lücke in einer Aufgabe
    * @return int 1 oder 0 als Wahrheitswert
    */
   private int evaluateGap(SolutionGaps teacherGap, SolutionGaps studentGap) {

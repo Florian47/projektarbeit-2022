@@ -10,7 +10,8 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * UserEntity ist die Entitätsklasse für den User. Sie hält alle benutzerspezifischen Informationen.
+ * UserEntity ist die Entitätsklasse für den User und hält alle dafür notwendigen
+ * Eigenschaften (Attribute) und Fähigkeiten (Methoden).
  * @author Florian Weinert, David Wiebe
  */
 @Entity
@@ -21,10 +22,13 @@ public class UserEntity {
   private int id;
   private String firstName;
   private String lastName;
+
+  /**
+   * Usernamen dürfen nicht doppelt vergeben werden (daher unique)
+   */
   @Column(unique = true)
   private String username;
   private String password;
-
   private UserRole role;
 
   /**
