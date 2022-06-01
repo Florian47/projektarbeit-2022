@@ -5,8 +5,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import sommersemester2022.person.UserEntity;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -78,7 +81,7 @@ public class ProcessedTrainingController {
   //  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @PutMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity update(@PathVariable int id, @RequestBody ProcessedTrainingEntity processedTraining) {
-    Integer stdId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getDetails()).getId();
+    int stdId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     processedTraining.setStudentId(stdId);
     processedTraining.setId(id);
     return processedTrainingRepo.save(processedTraining);
@@ -129,7 +132,7 @@ public class ProcessedTrainingController {
 
   /**
    * Wertet das vom Schüler bearbeitete Training aus und nutzt dazu "evaluateTask" und "evaluateGap"
-   * @param processedTraining Frontend Daten für das bearbeitete Training
+   * @param id ID des Trainings, welches ausgewertet werden soll
    * @return ausgewertetes bearbeitetes Training
    */
   @PrePersist
