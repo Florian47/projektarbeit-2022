@@ -19,11 +19,11 @@ public class TrainingEntity {
   private Integer id;
   private String name;
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany
   private List<UserEntity> students;
   private boolean individual;
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany
   private List<TaskEntity> tasks;
 
   private int score;
