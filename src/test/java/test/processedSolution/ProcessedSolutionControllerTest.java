@@ -1,9 +1,11 @@
 package test.processedSolution;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
+import sommersemester2022.person.UserEntity;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
@@ -12,6 +14,7 @@ import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
 import test.BaseTest;
 
+import javax.management.relation.RoleList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProcessedSolutionControllerTest extends BaseTest {
 
+
+
+
+
   @Test
-  @WithMockUser(username="admin",roles={"USER","ADMIN","TEACHER","USER_ADMIN"})
-  //Musterlösung vom Lehrer
-  public void testJSONSolution() throws Exception {
+  @BeforeAll
+  static void generateDummys(){
     SolutionEntity solution = new SolutionEntity();
     List<SolutionGaps> gapsList = new ArrayList<>();
     List<SolutionOptions> optionsList = new ArrayList<>();
@@ -50,11 +56,17 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     taskEntity.setSolution(solution);
     tasks.add(taskEntity);
     TrainingEntity trainingEntity = new TrainingEntity();
+
     trainingEntity.setTasks(tasks);
 
-    String json = objectMapper.writeValueAsString(trainingEntity);
-    ResponseEntity<String> result = restPost("/training/add", json);
-    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+  //Musterlösung vom Lehrer
+  public void testJSONSolution() throws Exception {
+
+
+    //String json = objectMapper.writeValueAsString(trainingEntity);
+    //ResponseEntity<String> result = restPost("/training/add", json);
+    //assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 
 
@@ -82,28 +94,16 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     sSolutionEntities.add(new SolutionEntity(sGapsList));
     sSolution.setProcessedSolutionTasks(sTaskList);
 
+    List <TrainingEntity> trainingEntityList = loadAll(TrainingEntity.class);
+    TrainingEntity trainingEntity = trainingEntityList.get(0);
     List<TaskEntity> sTasks = new ArrayList<>();
     TaskEntity sTaskEntity = new TaskEntity();
     sTaskEntity.setName("TrainingsTask");
     sSolution.setOriginTraining(trainingEntity);
-    tasks.add(sTaskEntity);
     List<TrainingEntity> tEntities = loadAll(TrainingEntity.class);
     trainingEntity = tEntities.get(0);
 
-    json =objectMapper.writeValueAsString(trainingEntity);
-    result = restPost("/generateProcessedTraining", json);
-    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-
-    List<ProcessedTrainingEntity> pEntities = loadAll(ProcessedTrainingEntity.class);
-     ProcessedTrainingEntity processedTraining = pEntities.get(0);
-    //processedTraining.setProcessedSolutionTasks(tasks);
-    //processedTraining.setOriginTraining(trainingEntity);
-    processedTraining.getProcessedSolutionTasks();
-
-    json = objectMapper.writeValueAsString(processedTraining);
-    result = restPost("/evaluate/ProcessedTraining", json);
-    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     //List<ProcessedTrainingEntity> processedTrainingEntityList = loadAll(ProcessedTrainingEntity.class);
     assertThat(tEntities.size()).isEqualTo(1);
@@ -111,6 +111,6 @@ public class ProcessedSolutionControllerTest extends BaseTest {
    // TrainingEntity te = processedTraining.getOriginTraining();
     //assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
     assertThat(trainingEntity.getScore()).isEqualTo(2);
-    assertThat(processedTraining.getScore()).isEqualTo(1);
+
   }
 }

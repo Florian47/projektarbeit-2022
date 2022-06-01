@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import sommersemester2022.person.UserEntity;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -16,8 +17,11 @@ import sommersemester2022.training.HibernateProxyTypeAdapter;
 import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.training.TrainingRepo;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PrePersist;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
