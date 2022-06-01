@@ -148,10 +148,10 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Evaluates a task of the processed training. Every correct gap provides 1 point. A gap is correct if every option is
-   * identical to the teachers given optimal solution. Uses "evaluateGap".
-   * @param student - whole task solution of student who passed the task
-   * @param teacher - whole task solution of teacher who created the task and its solution
+   * Wertet eine gesamte Aufgabe des Trainings aus. Jede korrekte Lücke gibt einen Punkt. Eine Lücke ist korrekt, wenn
+   * sie mit der Lösung des Lehrers übereinstimmt. Die Methode benutzt die Methode "evaluateGap".
+   * @param student - ganze Aufgaben-Lösung des Schülers
+   * @param teacher - ganze Aufgaben-Lösung (Musterlösung) des Lehrers
    */
   private void evaluateTask(TaskEntity student, TaskEntity teacher) {
     //evaluate max task score
@@ -161,10 +161,10 @@ public class ProcessedTrainingController {
   }
 
   /**
-   * Evaluates a single gap. Checks whether the solutions of the gaps are matching.
-   * @param teacherGap - teachers solution of single gap in the task
-   * @param studentGap - students solution of single gap in the task
-   * @return int 1 or 0 to check if true or false
+   * Wertet eine einzelne Lücke aus, indem sie die Schüler-Lösung mit der Lehrer-Lösung abgleicht..
+   * @param teacherGap - Lehrer-Lösung (Musterlösung) der einzelnen Lücke in einer Aufgabe
+   * @param studentGap - Schüler-Lösung der einzelnen Lücke in einer Aufgabe
+   * @return int 1 oder 0 als Wahrheitswert
    */
   private int evaluateGap(SolutionGaps teacherGap, SolutionGaps studentGap) {
     boolean allOptionsMatch = teacherGap.getSolutionOptions().stream()

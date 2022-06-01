@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * ProcessedSolutionTasks holds the information about the filled gaps which are present in the solution of the student
- * who completed a training.
+ * ProcessedSolutionTasks hält alle Informationen über die ausgefüllten Lücken, welche in der Lösung des Schüler existieren,
+ * welcher das Training durchgeführt hat.
  * @author Tobias Esau
  */
 @Entity

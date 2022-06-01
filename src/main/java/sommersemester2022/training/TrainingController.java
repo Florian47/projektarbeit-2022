@@ -38,8 +38,10 @@ public class TrainingController {
 
   @GetMapping("/training/individuell")
   public List<TrainingEntity> getAllManuelTrainings() {
+    processedTrainingRepo.findAll();
     return trainingRepo.findByIndividualTrue();
   }
+
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/training/{id}")
   public void deleteTraining(@PathVariable int id) {

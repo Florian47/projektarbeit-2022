@@ -18,9 +18,9 @@ import java.util.List;
 import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
 
 /**
- * UserController is the control class for the user entity. It handles all activities that can be done with users and
- * gives information to the repository which saves the activities.
- * (e.g. all CRUD-Operations)
+ * UserController ist die Controller-Klasse für die User-Entität. Sie kontrolliert alle Aktivitäten, welche mit den
+ * Usern ausgeführt werden können und gibt die Informationen an das Repository weiter.
+ * (z.B. alle CRUD-Operationen)
  * @author Florian Weinert, David Wiebe
  * @see    UserRepo
  */
@@ -38,8 +38,8 @@ public class UserController {
   JwtUtils jwtUtils;
 
   /**
-   * Authenticate a user to check his abilities.
-   * @param person - frontend data for user
+   * Authentifiziert einen User (Login).
+   * @param person - Frontend Daten für den User
    * @return ResponseEntity
    */
   @PostMapping("/users/authenticate")
@@ -60,9 +60,9 @@ public class UserController {
 //("/userloesung/aufgabe{id}/luecke{id}/)
 
   /**
-   * Registers a new user in the system.
-   * @param person - frontend data for user
-   * @return saved user entity
+   * Registriert einen neuen Benutzer im System
+   * @param person - Frontend Daten für den User
+   * @return gespeicherte User-Entität
    */
   //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @PostMapping("/users/register")
@@ -74,9 +74,9 @@ public class UserController {
   }
 
   /**
-   * Returns the user found by the given id..
-   * @param id - user id
-   * @return asked user
+   * Gibt den User mit der gesuchten ID zurück.
+   * @param id - User ID
+   * @return angefragter User
    */
 //  @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @GetMapping("/users/{id}")
@@ -85,10 +85,10 @@ public class UserController {
   }
 
   /**
-   * Returns the updated user.
-   * @param id - user id
-   * @param person - frontend data for user
-   * @return updated user
+   * Gibt den geänderten User zurück.
+   * @param id - User ID
+   * @param person - Frontend Daten für den User
+   * @return geänderter User
    */
   @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @PutMapping("/users/{id}")
@@ -102,8 +102,8 @@ public class UserController {
   }
 
   /**
-   * Tells the repository to delete the user with the given id.
-   * @param id - user id
+   * Gibt dem Repository den Auftrag, den User mit der entsprechenden ID zu löschen.
+   * @param id - User ID
    */
   @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
   @DeleteMapping("/users/{id}")
@@ -112,8 +112,8 @@ public class UserController {
   }
 
   /**
-   * Returns a list of all users existing in the database.
-   * @return list of asked users
+   * Gibt eine Liste aller bestehenden User des System zurück.
+   * @return Liste aller User
    */
   @GetMapping("/users")
   public List<UserEntity> getAll() {

@@ -7,31 +7,33 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
- * UserRepo implements JpaRepository and connects to database and handles all CRUD-operations for the user entities.
+ * UserRepo implementiert das JpaRepository und schafft die Verbindung zur Datenbank. Außerdem führt das Repository alle
+ * CRUD-Operationen für die User-Entität durch.
  * @author Florian Weinert
  */
 @Transactional
 @Service
 public interface UserRepo extends JpaRepository<UserEntity, Integer> {
   /**
-   * Returns optionally an user entity in case it finds the given combination of username and password in the database.
-   * @param username
-   * @param password
-   * @return optional an user entity
+   * Gibt optional eine User-Entität zurück, wenn die angegebene Kombination aus Username und Passwort in der Datenbank
+   * existiert.
+   * @param username - der Benutzername
+   * @param password - das Passwort
+   * @return optional die User-Entität
    */
   Optional<UserEntity> findByUsernameAndPassword(String username, String password);
 
   /**
-   * Returns the information whether the user name is already exisiting in the database.
-   * @param username
-   * @return boolean if the username already exists
+   * Gibt die Information zurück, ob ein Benzutzer bereits im System existiert.
+   * @param username - der Benutzername
+   * @return Wahrheitswert, ob der Benutzer existiert
    */
   boolean existsByUsername(String username);
 
   /**
-   * Returns optionally an user entity in case the user name is exisiting in the database.
-   * @param username
-   * @return optional an user entity
+   * Gibt optional eine User-Entität zurück, wenn der angegebene Username in der Datenbank existiert.
+   * @param username - der Benutzername
+   * @return optional eine User-Entität
    */
   Optional<UserEntity> findByUsername(String username);
 }

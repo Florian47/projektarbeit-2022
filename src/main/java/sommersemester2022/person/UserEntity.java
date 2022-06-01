@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * UserEntity is the entity class for the user. It holds all information regarding the users of the system.
+ * UserEntity ist die Entitätsklasse für den User. Sie hält alle benutzerspezifischen Informationen.
  * @author Florian Weinert, David Wiebe
  */
 @Entity
@@ -28,7 +28,7 @@ public class UserEntity {
   private UserRole role;
 
   /**
-   * roles holds all roles that a user owns (e.g. TEACHER & ADMIN)
+   * Das Attribut hält alle User-Rollen, welche ein User besitzt.
    */
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
