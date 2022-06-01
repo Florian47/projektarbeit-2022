@@ -137,12 +137,20 @@ public class ProcessedTrainingController {
   @PostMapping("/evaluate/Training/{id}")
   public List<ProcessedTrainingEntity> evaluateProcessedTraining(@RequestParam Integer id) {
     List<ProcessedTrainingEntity> entities = new ArrayList<>();
-    entities = processedTrainingRepo.findAllById(id);
+    entities = processedTrainingRepo.findAll();
     List<ProcessedTrainingEntity> relevantEntities = new ArrayList<>();
+    int x = entities.size();
+    for (int i = 0; i<x;i++)
+    {
+          if(entities.get(x).getOriginTraining().getId()==id) {
+            relevantEntities.add(entities.get(x));
+          }
+
+    }
     //get all processedTrainings with originTraining.getId() == id
     // iterate over processed training list and evaluate ALL of them
     //return it
-    return null;
+    return relevantEntities;
   }
 
   @PrePersist
