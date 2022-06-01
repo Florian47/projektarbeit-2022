@@ -59,7 +59,7 @@ public class UserController {
   //@PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMINISTRATOR')")
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
-    encoder.encode(person.getPassword());
+//    encoder.encode(person.getPassword());
     person.roles.add(roleRepo.findByName(ROLE_STUDENT));
     return userRepo.save(person);
   }
