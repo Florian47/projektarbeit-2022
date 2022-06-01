@@ -52,8 +52,7 @@ public class ProcessedTrainingController {
   public void deleteProcessedTraining(@PathVariable int id) {
     processedTrainingRepo.deleteById(id);
   }
-
-  //  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
+  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @PutMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity update(@PathVariable int id, @RequestBody ProcessedTrainingEntity processedTraining) {
     Integer stdId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getDetails()).getId();
