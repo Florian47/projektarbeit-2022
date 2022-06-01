@@ -41,8 +41,11 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
+
   @PostConstruct
   private void initDb() {
+
+
     RoleEntity student = new RoleEntity();
     student.setName(ROLE_STUDENT);
     if(!roleRepository.existsByName(ROLE_STUDENT)) roleRepository.save(student);
@@ -96,6 +99,7 @@ public class Application {
 
     if(!userRepository.existsByUsername(user3.getUsername()))userRepository.save(user3);
 
+    /**
     //Task 1, Lückentext, Einfach
     List<SolutionOptions> options1 = new ArrayList<>();
     options1.add(new SolutionOptions("organisiert", true));
@@ -1835,7 +1839,7 @@ public class Application {
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
     if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
-
+    */
 
 
 

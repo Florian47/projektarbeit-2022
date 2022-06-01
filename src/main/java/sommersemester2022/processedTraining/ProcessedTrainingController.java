@@ -5,7 +5,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
 import sommersemester2022.task.NotUniqueIdentification;
@@ -27,23 +29,29 @@ public class ProcessedTrainingController {
 
   @Autowired
   private TrainingRepo trainingRepo;
-//  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
+
+  //  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @PostMapping("/processedTraining/add")
   public ProcessedTrainingEntity createTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
     return processedTrainingRepo.save(processedTraining);
   }
+
   @GetMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity getById(@PathVariable int id) {
     return processedTrainingRepo.findById(id).get();
   }
-//  @PreAuthorize("hasRole('ROLE_TEACHER')")
+
+  //  @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/processedTraining/delete/{id}")
   public void deleteProcessedTraining(@PathVariable int id) {
     processedTrainingRepo.deleteById(id);
   }
-//  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
+
+  //  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @PutMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity update(@PathVariable int id, @RequestBody ProcessedTrainingEntity processedTraining) {
+    Integer stdId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getDetails()).getId();
+    processedTraining.setStudentId(stdId);
     processedTraining.setId(id);
     return processedTrainingRepo.save(processedTraining);
   }
@@ -53,7 +61,7 @@ public class ProcessedTrainingController {
     return processedTrainingRepo.findAll();
   }
 
-//  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
+  //  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
   @GetMapping("/generateProcessedTraining/{id}")
   public ProcessedTrainingEntity createProcessedTraining(@PathVariable int id) throws JsonProcessingException {
     ProcessedTrainingEntity processedTraining = new ProcessedTrainingEntity();
@@ -83,6 +91,14 @@ public class ProcessedTrainingController {
     return processedTrainingRepo.save(processedTraining);
   }
   @PrePersist
+  @PostMapping("/evaluate/Training/{id}")
+  public List<ProcessedTrainingEntity> evaluateProcessedTraining(@RequestParam Integer id) {
+    //get all processedTrainings with originTraining.getId() == id
+    // iterate over processed training list and evaluate ALL of them
+    //return it
+    return null;
+  }
+  @PrePersist
   @PostMapping("/evaluate/ProcessedTraining")
   public ProcessedTrainingEntity evaluateProcessedTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
 
@@ -105,6 +121,7 @@ public class ProcessedTrainingController {
 
   /**
    * every correct gap provides 1 point. A gap is correct if every option is identical to teacher option.
+   *
    * @param student
    * @param teacher
    */

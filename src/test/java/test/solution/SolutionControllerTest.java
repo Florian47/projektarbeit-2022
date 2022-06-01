@@ -3,6 +3,7 @@ package test.solution;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SolutionControllerTest extends BaseTest {
 
   @Test
+  @WithMockUser(username="admin",roles={"USER","ADMIN","TEACHER","USER_ADMIN"})
   public void testJSONSolution() throws Exception {
     SolutionEntity entity = new SolutionEntity();
     List<SolutionGaps> gapsList = new ArrayList<>();

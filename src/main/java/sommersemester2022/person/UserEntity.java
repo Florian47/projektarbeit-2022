@@ -25,7 +25,6 @@ public class UserEntity {
   private String username;
   private String password;
 
-  public UserRole role;
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
   public List<RoleEntity> roles = new ArrayList<>();
@@ -79,11 +78,6 @@ public class UserEntity {
   public void setPassword(String password) {
     this.password = password;
   }
-
-  public void setRole(UserRole role) {
-    this.role = role;
-  }
-  public UserRole getRole(){return this.role;}
 
   public List<RoleEntity> getRoles() {
     return this.roles;

@@ -1,16 +1,21 @@
 package test.training;
 
+import org.h2.engine.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
+import sommersemester2022.person.UserEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
+import sommersemester2022.userroles.UserRole;
 import test.BaseTest;
 
+import javax.management.relation.RoleList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TrainingControllerTest extends BaseTest {
 
   static TrainingEntity training;
+  static TrainingEntity training1;
   static SolutionEntity solution;
   @BeforeAll
   static void generateDummys(){
@@ -50,6 +56,22 @@ public class TrainingControllerTest extends BaseTest {
 
     training = new TrainingEntity();
     training.setTasks(tasks);
+
+    UserEntity user = new UserEntity();
+    user.setLastName("Peter");
+    user.setLastName("Lustig");
+    user.setUsername("plustig");
+    user.setPassword("geheim");
+    ArrayList roleList = new RoleList();
+    roleList.add("Student");
+    user.setRoles(roleList);
+    List<UserEntity> userList = new ArrayList<>();
+    userList.add(user);
+
+    training.setIndividual(true);
+    training.setStudents(userList);
+
+
   }
 
 
@@ -60,10 +82,14 @@ public class TrainingControllerTest extends BaseTest {
 
     ResponseEntity<String> result = restAuthPost("/training/add", json, getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    json = objectMapper.writeValueAsString(training);
 
     List<TrainingEntity> entities = loadAll(TrainingEntity.class);
-    assertThat(entities.size()).isEqualTo(1);
+    assertThat(entities.size()).isEqualTo(2);
     TrainingEntity pe = entities.get(0);
     assertThat(pe).isNotNull();
+    TrainingEntity te = entities.get(1);
+    te.toString();
+    assertThat(te.isIndividual()).isEqualTo(true);
   }
 }

@@ -24,6 +24,8 @@ public class ProcessedTrainingEntity {
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private TrainingEntity originTraining;
 
+  private Integer studentId;
+
   public ProcessedTrainingEntity() {}
 
   public ProcessedTrainingEntity(List<TaskEntity> processedSolutionTasks, TrainingEntity originTraining) {
@@ -62,6 +64,12 @@ public class ProcessedTrainingEntity {
 
   public void setOriginTraining(TrainingEntity originTraining) {
     this.originTraining = originTraining;
+  }
+
+  public void setStudentId(Integer stdId) {
+  }
+  public Integer getStudentId() {
+    return studentId;
   }
 }
 

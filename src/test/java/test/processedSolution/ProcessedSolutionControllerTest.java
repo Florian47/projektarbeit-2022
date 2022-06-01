@@ -3,6 +3,7 @@ package test.processedSolution;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProcessedSolutionControllerTest extends BaseTest {
 
   @Test
+  @WithMockUser(username="admin",roles={"USER","ADMIN","TEACHER","USER_ADMIN"})
   //Musterlösung vom Lehrer
   public void testJSONSolution() throws Exception {
     SolutionEntity solution = new SolutionEntity();

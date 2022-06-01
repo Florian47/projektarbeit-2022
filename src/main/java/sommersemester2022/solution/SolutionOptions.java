@@ -10,9 +10,7 @@ public class SolutionOptions implements NotUniqueIdentification {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
-
   private String optionName;
-  private boolean rightAnswer;
   private String notUniqueId;
   private boolean checkedAnswer;
 
