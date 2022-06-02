@@ -1,11 +1,9 @@
 package test.user;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import sommersemester2022.person.UserEntity;
 import test.BaseTest;
 
@@ -22,9 +20,9 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testCreate() throws Exception {
-    admin.setUsername("admin2");
-    admin.setId(0);
-    String json = objectMapper.writeValueAsString(admin);
+    testUser.setUsername("admin2");
+    testUser.setId(0);
+    String json = objectMapper.writeValueAsString(testUser);
     ResponseEntity<String> result = restPost("/users/register", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<UserEntity> entities = loadAll(UserEntity.class);
@@ -40,8 +38,8 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testCreateSameUsernameFailing() throws Exception {
-    admin.setId(0);
-    String json = objectMapper.writeValueAsString(admin);
+    testUser.setId(0);
+    String json = objectMapper.writeValueAsString(testUser);
     ResponseEntity<String> result1 = restPost("/users/register", json);
     assertThat(result1.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -52,7 +50,7 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void userGetById() throws Exception {
-    ResponseEntity<String> result = restAuthGet("/users/" + admin.getId(), getJWTToken("admin"));
+    ResponseEntity<String> result = restAuthGet("/users/" + testUser.getId(), getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<UserEntity> list = loadAll((UserEntity.class));
 
@@ -66,10 +64,10 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testUpdate() throws Exception {
-    admin.setFirstName("admin2");
-    String json = objectMapper.writeValueAsString(admin);
+    testUser.setFirstName("admin2");
+    String json = objectMapper.writeValueAsString(testUser);
 
-    ResponseEntity<String> result = restAuthPut("/users/" + admin.getId(), json, getJWTToken("admin"));
+    ResponseEntity<String> result = restAuthPut("/users/" + testUser.getId(), json, getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<UserEntity> list = loadAll(UserEntity.class);
 
@@ -86,7 +84,7 @@ public class UserControllerTest extends BaseTest {
   @Test
   public void testDelete() throws Exception {
 
-    ResponseEntity<String> result = restAuthDel("/users/" + admin.getId(), getJWTToken("admin"));
+    ResponseEntity<String> result = restAuthDel("/users/" + testUser.getId(), getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     List<UserEntity> list = loadAll((UserEntity.class));

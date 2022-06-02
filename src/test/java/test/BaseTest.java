@@ -1,8 +1,6 @@
 package test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
 import sommersemester2022.Application;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
+import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.processedTraining.ProcessedTrainingRepo;
 import sommersemester2022.security.services.jwt.JwtUtils;
 import sommersemester2022.solution.SolutionEntity;
@@ -65,17 +61,12 @@ public class BaseTest {
   protected UserRepo userRepo;
   @Autowired
   protected TrainingRepo trainingRepo;
-
   @Autowired
   protected ProcessedTrainingRepo processedTrainingRepo;
   @Autowired
   protected RoleRepo roleRepository;
-
-  protected UserEntity admin;
-
+  protected UserEntity testUser;
   protected TaskEntity task;
-
-  protected TrainingEntity training;
 
   @BeforeEach
   public void setup() {
@@ -104,9 +95,7 @@ public class BaseTest {
     user.roles.add(roleRepository.findByName(ROLE_ADMINISTRATOR));
     user.roles.add(roleRepository.findByName(ROLE_TEACHER));
     user.roles.add(roleRepository.findByName(ROLE_STUDENT));
-    this.admin = userRepo.save(user);
-
-
+    this.testUser = userRepo.save(user);
   }
 
 

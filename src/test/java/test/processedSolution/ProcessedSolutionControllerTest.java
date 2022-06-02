@@ -5,21 +5,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.test.context.support.WithMockUser;
-import sommersemester2022.person.UserEntity;
-import org.springframework.scheduling.config.Task;
-import sommersemester2022.person.UserEntity;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
-import sommersemester2022.training.TrainingRepo;
 import test.BaseTest;
 
-import javax.management.relation.RoleList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +62,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
 
     pTraining = new ProcessedTrainingEntity();
     pTraining.setProcessedSolutionTasks(tasks);
-    pTraining.setStudentId(0);
+    //pTraining.setStudent(admin);
 
 
 
@@ -80,16 +73,18 @@ public class ProcessedSolutionControllerTest extends BaseTest {
   public void testCreateTraining() throws Exception {
     this.task = taskRepo.save(taskEntity);
     this.training=trainingRepo.save(training);
+    pTraining.setStudent(testUser);
     //pTraining.setOriginTraining(training);
 
 
     ProcessedTrainingEntity proc = new ProcessedTrainingEntity();
     List<TaskEntity> tasks = new ArrayList<>();
     tasks.add(task);
-    proc.setStudentId(0);
+    //proc.setStudentId(0);
     //processedTrainingRepo.save(proc);
     proc.setProcessedSolutionTasks(tasks);
     proc.setOriginTraining(training);
+    processedTrainingRepo.save(pTraining);
 
     String json = objectMapper.writeValueAsString(proc);
     ResponseEntity<String> result = restPost("/processedTraining/add", json);
@@ -97,7 +92,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
 
     List <ProcessedTrainingEntity> pTrainingList = loadAll(ProcessedTrainingEntity.class);
     pTraining = pTrainingList.get(0);
-    assertThat(pTraining.getStudentId()).isEqualTo(0);
+    assertThat(pTraining.getStudent()).isEqualTo(0);
     //assertThat(pTraining.getOriginTraining().getName()).isEqualTo("TrainingsTraining");
     //assertThat(pTraining.getProcessedSolutionTasks().get(0).getSolution().getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
 
@@ -113,6 +108,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     this.taskEntity=taskRepo.save(taskEntity);
     pTraining.setOriginTraining(training);
     this.training=trainingRepo.save(training);
+    pTraining.setStudent(testUser);
 
     List <TrainingEntity> trainingList = loadAll(TrainingEntity.class);
     training = trainingList.get(0);

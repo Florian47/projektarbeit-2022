@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import sommersemester2022.person.UserEntity;
+import sommersemester2022.person.UserRepo;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -17,9 +17,7 @@ import sommersemester2022.training.HibernateProxyTypeAdapter;
 import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.training.TrainingRepo;
 
-import javax.persistence.EntityManager;
 import javax.persistence.PrePersist;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +41,9 @@ public class ProcessedTrainingController {
 
   @Autowired
   private TrainingRepo trainingRepo;
+
+  @Autowired
+  private UserRepo userRepo;
 
   //  @PreAuthorize("hasRole({'ROLE_TEACHER', 'ROLE_STUDENT'})")
 
@@ -85,7 +86,8 @@ public class ProcessedTrainingController {
   @PutMapping("/processedTraining/{id}")
   public ProcessedTrainingEntity update(@PathVariable int id, @RequestBody ProcessedTrainingEntity processedTraining) {
     int stdId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-    processedTraining.setStudentId(stdId);
+    UserEntity user = userRepo.getById(stdId);
+    processedTraining.setStudent(user);
     processedTraining.setId(id);
     return processedTrainingRepo.save(processedTraining);
   }
