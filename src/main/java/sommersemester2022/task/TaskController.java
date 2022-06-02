@@ -81,6 +81,6 @@ public class TaskController {
    */
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   public List<TaskEntity> getAllTasksForGeneratedTraining(TaskCategory category, TaskDifficulty difficulty) {
-    return taskRepo.findAllByCategoryAndDifficulty(category, difficulty);
+    return taskRepo.findAllByCategoryAndDifficultyAndIndividualFalse(category, difficulty);
   }
 }

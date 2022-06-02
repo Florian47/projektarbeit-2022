@@ -20,7 +20,7 @@ public interface TaskRepo extends JpaRepository<TaskEntity, Integer> {
    * @param difficulty Schwierigkeit der Aufgabe
    * @return Liste aller Aufgaben mit angegebener Kategorie und Schwierigkeit
    */
-  List<TaskEntity> findAllByCategoryAndDifficulty(TaskCategory category, TaskDifficulty difficulty);
+  List<TaskEntity> findAllByCategoryAndDifficultyAndIndividualFalse(TaskCategory category, TaskDifficulty difficulty);
 
   /**
    * Gibt alle "originalen" Aufgaben zurück, also die nicht beim Training kopierten.
