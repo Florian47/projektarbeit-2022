@@ -97,8 +97,12 @@ public class TrainingController {
   public List<TrainingEntity> getAllTrainingsForStudent(@PathVariable int id) {
     Optional<UserEntity> user = userRepo.findById(id);
     List<TrainingEntity> allAllowedTrainings = trainingRepo.findByStudentsAndIndividualTrue(user).get();
-    List<ProcessedTrainingEntity> processedTrainings = processedTrainingRepo.findAllByStudentId(id);
+    List<ProcessedTrainingEntity> processedTrainings = processedTrainingRepo.findByStudentId(id);
 
+    /**
+     * Der folgende Ausdruck filtert alle Trainings für den Benutzer auf die, welche nicht bearbeitet wurden, damit
+     * diese nicht mehr in der Trainingsübersicht angezeigt werden.
+     */
     return allAllowedTrainings
       .stream()
       .filter(training -> processedTrainings

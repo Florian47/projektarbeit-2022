@@ -19,5 +19,5 @@ public interface ProcessedTrainingRepo extends JpaRepository<ProcessedTrainingEn
    * Gibt eine Liste aller Trainings zurück, welche bereits von dem Schüler mit der angegebenen ID bearbeitet wurden.
    * @return
    */
-  List<ProcessedTrainingEntity> findAllByStudentId(int id);
+  List<ProcessedTrainingEntity> findByStudentId(int id);
 }
