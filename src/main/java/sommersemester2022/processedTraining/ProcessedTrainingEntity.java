@@ -22,14 +22,14 @@ public class ProcessedTrainingEntity {
   private int id;
 
   private int score;
-  @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+  @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private List<TaskEntity> processedSolutionTasks;
 
   /**
    * originTraining beschreibt das zugehörige Training, welches vom Dozent erstellt wurde.
    */
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private TrainingEntity originTraining;
 
