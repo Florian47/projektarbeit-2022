@@ -19,7 +19,16 @@ import org.springframework.transaction.support.TransactionTemplate;
 import sommersemester2022.Application;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
+import sommersemester2022.processedTraining.ProcessedTrainingRepo;
 import sommersemester2022.security.services.jwt.JwtUtils;
+import sommersemester2022.solution.SolutionEntity;
+import sommersemester2022.solution.SolutionGaps;
+import sommersemester2022.solution.SolutionOptions;
+import sommersemester2022.solution.SolutionRepo;
+import sommersemester2022.task.TaskEntity;
+import sommersemester2022.task.TaskRepo;
+import sommersemester2022.training.TrainingEntity;
+import sommersemester2022.training.TrainingRepo;
 import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.RoleRepo;
 import sommersemester2022.userroles.UserRole;
@@ -49,16 +58,32 @@ public class BaseTest {
   protected JwtUtils jwtUtils;
 
   @Autowired
+  protected SolutionRepo solutionRepo;
+  @Autowired
+  protected TaskRepo taskRepo;
+  @Autowired
   protected UserRepo userRepo;
+  @Autowired
+  protected TrainingRepo trainingRepo;
 
+  @Autowired
+  protected ProcessedTrainingRepo processedTrainingRepo;
   @Autowired
   protected RoleRepo roleRepository;
 
   protected UserEntity admin;
 
+  protected TaskEntity task;
+
+  protected TrainingEntity training;
+
   @BeforeEach
   public void setup() {
-    userRepo.deleteAll();
+    if (userRepo != null){userRepo.deleteAll();}
+    //if (solutionRepo != null){solutionRepo.deleteAll();}
+    if (taskRepo != null){taskRepo.deleteAll();}
+    //if (trainingRepo != null){trainingRepo.deleteAll();}
+    //if (processedTrainingRepo != null){processedTrainingRepo.deleteAll();}
 
     RoleEntity student = new RoleEntity();
     student.setName(ROLE_STUDENT);
@@ -80,6 +105,8 @@ public class BaseTest {
     user.roles.add(roleRepository.findByName(ROLE_TEACHER));
     user.roles.add(roleRepository.findByName(ROLE_STUDENT));
     this.admin = userRepo.save(user);
+
+
   }
 
 

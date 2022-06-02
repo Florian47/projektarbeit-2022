@@ -5,9 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.security.services.UserDetailsImpl;
@@ -19,8 +17,11 @@ import sommersemester2022.training.HibernateProxyTypeAdapter;
 import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.training.TrainingRepo;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PrePersist;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +33,8 @@ import java.util.Objects;
  * @author Tobias Esau, Alexander Kiehl, Florian Weinert
  * @see    ProcessedTrainingRepo
  */
+
+
 @Transactional
 @RestController
 public class ProcessedTrainingController {
@@ -113,6 +116,7 @@ public class ProcessedTrainingController {
     TrainingEntity copyTraining = gson.fromJson(gson.toJson(training), TrainingEntity.class);
     for (TaskEntity task : copyTraining.getTasks()
     ) {
+
       task.setId(null);
       task.getSolution().setId(null);
       task.setIndividual(true);
@@ -136,16 +140,35 @@ public class ProcessedTrainingController {
    * @return ausgewertetes bearbeitetes Training
    */
   @PrePersist
-  @PostMapping("/evaluate/Training/{id}")
-  public List<ProcessedTrainingEntity> evaluateProcessedTraining(@RequestParam Integer id) {
+  @GetMapping("/evaluate/Training/{id}")
+  public List<ProcessedTrainingEntity> evaluateProcessedTraining(@PathVariable String id) {
+    List<ProcessedTrainingEntity> entities = new ArrayList<>();
+    int intId = Integer.parseInt(id);
+    entities = processedTrainingRepo.findAll();
+    List<ProcessedTrainingEntity> relevantEntities = new ArrayList<>();
+    int x = entities.size();
+    for (int i = 0; i<x;i++)
+    {
+          if(entities.get(i).getOriginTraining().getId()==intId) {
+            relevantEntities.add(entities.get(i));
+          }
+
+    }
+    x = relevantEntities.size();
+    for (int i = 0; i<x;i++)
+    {
+      evaluateProcessedTraining(relevantEntities.get(i));
+    }
     //get all processedTrainings with originTraining.getId() == id
     // iterate over processed training list and evaluate ALL of them
     //return it
-    return null;
+    return relevantEntities;
   }
+
   @PrePersist
   @PostMapping("/evaluate/ProcessedTraining")
   public ProcessedTrainingEntity evaluateProcessedTraining(@RequestBody ProcessedTrainingEntity processedTraining) {
+
     TrainingEntity teacherTraining = processedTraining.getOriginTraining();
 
     processedTraining.getProcessedSolutionTasks()

@@ -16,7 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class UserControllerTest extends BaseTest {
-
+  /**
+   * Erstellt einen Nutzer mit den gegebenen Variablen
+   * @throws Exception
+   */
   @Test
   public void testCreate() throws Exception {
     admin.setUsername("admin2");
@@ -31,6 +34,10 @@ public class UserControllerTest extends BaseTest {
     assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
   }
 
+  /**
+   * Versucht einen Nutzer mit bereits vorhanenem username zu erstellen und scheitert
+   * @throws Exception
+   */
   @Test
   public void testCreateSameUsernameFailing() throws Exception {
     admin.setId(0);
@@ -39,7 +46,10 @@ public class UserControllerTest extends BaseTest {
     assertThat(result1.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-
+  /**
+   * Holt den Benutzer über die id aus der Datenbank
+   * @throws Exception
+   */
   @Test
   public void userGetById() throws Exception {
     ResponseEntity<String> result = restAuthGet("/users/" + admin.getId(), getJWTToken("admin"));
@@ -50,6 +60,10 @@ public class UserControllerTest extends BaseTest {
     assertThat(result.toString().contains("admin"));
   }
 
+  /**
+   * Ändert den Vornamen eines Nutzers über die id
+   * @throws Exception
+   */
   @Test
   public void testUpdate() throws Exception {
     admin.setFirstName("admin2");
@@ -65,6 +79,10 @@ public class UserControllerTest extends BaseTest {
     assertThat(p.getLastName()).isEqualTo("admin");
   }
 
+  /**
+   * Löscht einen Nutzer über eine id aus der Datenbank
+   * @throws Exception
+   */
   @Test
   public void testDelete() throws Exception {
 
@@ -98,6 +116,10 @@ public class UserControllerTest extends BaseTest {
 //    assertThat(p.getLastName()).isEqualTo("Nord");
 //  }
 
+  /**
+   * Liest alle Nutzer aus der Datenbank aus
+   * @throws Exception
+   */
   @Test
   public void testGetAll() throws Exception {
     String json = objectMapper.writeValueAsString(new UserEntity("Tim", "Nord", "user1", "pass1", null));

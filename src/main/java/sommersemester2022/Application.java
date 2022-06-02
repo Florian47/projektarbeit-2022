@@ -148,7 +148,7 @@ public class Application {
     task1.setSolution(solution1);
     if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
 
-
+    /**
     //Task 2, Lückentext, Einfach
     options1 = new ArrayList<>();
     options1.add(new SolutionOptions("gekocht", true));
