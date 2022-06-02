@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
+import sommersemester2022.person.UserEntity;
 import org.springframework.scheduling.config.Task;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
@@ -15,6 +17,7 @@ import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.training.TrainingRepo;
 import test.BaseTest;
 
+import javax.management.relation.RoleList;
 import java.util.ArrayList;
 import java.util.List;
 
