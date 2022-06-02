@@ -17,15 +17,14 @@ import sommersemester2022.security.services.jwt.AuthEntryPointJwt;
 import sommersemester2022.security.services.jwt.AuthTokenFilter;
 import sommersemester2022.security.services.UserDetailsServiceImpl;
 
-import javax.servlet.http.HttpServletResponse;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
-/*
-Die Klasse WebSecurityConfig ist eine Klasse die die Zugriffsrechte auf den Webclient regelt.
-Die Annotation @EnableWebSecurity ermöglicht es Spring, automatisch auf die Klasse und somit auf die globale
-Websicherheit zuzugreifen. @EnableGlobalMethodeSecurity ermöglicht den Zugriff auf diverse weitere Annotationen um den Rolen
-die nötigen Rechte zuzuweisen.
-Die Klasse wurde von David Wiebe erstellt.
+/**
+ * @author David Wiebe
+ * Die Klasse WebSecurityConfig regelt die Zugriffsrechte auf den Webclient.
+ * @see EnableWebSecurity ermöglicht Spring einen automatischen Zugriff auf diese Klasse, dies Unterstützt eine globale
+ * Websichertheit.
+ * @see EnableGlobalMethodSecurity ermöglicht den Zugriff auf Anotationen mit denen Zugriffe auf einzelne Methoden
+ * eingeschränkt werden können.
  */
 @Configuration
 @EnableWebSecurity
@@ -35,39 +34,66 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
   UserDetailsServiceImpl userDetailsService;
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
+
+  /**
+   * Es wird ein AuthTokenFilter gesetzt der für die JWT Token authentifizierung notwendig ist.
+   * @return AuthTokenFilter
+   */
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
     return new AuthTokenFilter();
   }
   @Override
-  /*
-  Diese Methode bindet die Benutzer Details die für die Authenfizierung relevant sind an den AuthenticationManager.
+  /**
+   * Die Methode configure fügt über den Authentic
+   * ationManagerBuilder den UserDetailService und den PsswordEncoder zusammen.
+   * Der AuthenticationManager bildet die Grundlage der Authentifizierung.
+   * @Param AuthenticationBuilder
+   * @throws Exception
    */
   public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
     authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
   }
   @Bean
   @Override
-  // Der AuthenticationManager bildet die Grundlage für die Authentifizierung bei der Anmeldung der Benutzer.
+  /**
+   * Diese Methode wird überschrieben um die Methode configure(AuthenticationManagerBuilder) als Bean zur verfügung
+   * zu stellen.
+   * @Return authenticationManagerBean
+   * @throws Exception
+   */
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
-  // Der PasswordEncoder encoded das verschlüsselte Passwort.
+
+  /**
+   * Der PasswordEncoder koodiert die Passwörter. Dies ist besonders wichtig die Sicherheit der Datenübermittlung zwischen Server
+   * und WebClient zu gewährleisten.
+   * @return BCryptPasswordEncoder
+   */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
+  /**
+   * Der DefaultWebSecurityExpressionHandler übersetzt die Anotatione, die an den Methoden der einzelnen Controller
+   * notiert werden,
+   * @return defaultWebsecurityExpressionHandler
+   */
   @Bean
   public DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler() {
     DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
     defaultWebSecurityExpressionHandler.setDefaultRolePrefix("");
     return defaultWebSecurityExpressionHandler;
   }
-  /*
-  Die Methode configure(HttpSecurity http) ist das Herzstück der Klasse. Hier werden die Zugriffe auf den Webclient geregelt.
-  Vor allem wird festelegt, wann eine Authentifizierung nötig ist. Desweiteren wird festgelegt wann der Exception Handler
-  (AuthEntryPonitJwt) eingreifen soll. Am Ende der Methode wird ein AuthTokenFilter gesetzt.
+
+  /**
+   * Die Methode configure ist eine Sicherheitskonfiguration. In dieser Methode werden erste Einschränkungen im Bezug
+   * auf den Serverzugriff implementiert. Desweiteren wird ein Exception Handler "AuthenticationEntryPoint" eingebunden.
+   * Es werden diverse SIcherheitsmaßnahmen getroffen wie das SessionManagment und der eingeschränkte authorisierte Zugriff
+   * auf den Webclient. Dieser ist nur über eine Benutzername und Passwort authentifizierung möglich.
+   * @param http the {@link HttpSecurity} to modify
+   * @throws Exception
    */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
