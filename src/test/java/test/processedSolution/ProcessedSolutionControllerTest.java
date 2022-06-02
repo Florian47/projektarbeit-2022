@@ -1,5 +1,6 @@
 package test.processedSolution;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -31,10 +32,12 @@ public class ProcessedSolutionControllerTest extends BaseTest {
   static ProcessedTrainingEntity pTraining;
   static TaskEntity taskEntity;
 
+  static SolutionEntity solution;
+
   @Test
   @BeforeAll
   static void generateDummys(){
-    SolutionEntity solution = new SolutionEntity();
+    solution = new SolutionEntity();
     List<SolutionGaps> gapsList = new ArrayList<>();
     List<SolutionOptions> optionsList = new ArrayList<>();
     List<SolutionOptions> optionsList2 = new ArrayList<>();
@@ -72,6 +75,10 @@ public class ProcessedSolutionControllerTest extends BaseTest {
 
   }
 
+  /**
+   *  Test der Funktion "/generateProcessedTraining/" mit einer 100% richtigen Lösung und einer 100% falschen Lösung
+   * @throws Exception
+   */
   //Musterlösung vom Lehrer
   @Test
   public void testJSONSolution() throws Exception {
@@ -84,26 +91,29 @@ public class ProcessedSolutionControllerTest extends BaseTest {
 
     ResponseEntity<String> result = restAuthGet("/generateProcessedTraining/"+training.getId(),getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    result = restAuthGet("/generateProcessedTraining/"+training.getId(),getJWTToken("admin"));
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
+    pTraining.getProcessedSolutionTasks().get(0).setSolution(solution);
 
     List <ProcessedTrainingEntity> pTrainingList = loadAll(ProcessedTrainingEntity.class);
     pTraining= pTrainingList.get(0);
-    int id = pTraining.getId();
+    int id = pTraining.getOriginTraining().getId();
+    pTrainingList.get(0).getProcessedSolutionTasks().get(0).getSolution().getSolutionGaps().get(0).getSolutionOptions().get(1).setCheckedAnswer(true);
+    pTrainingList.get(0).getProcessedSolutionTasks().get(0).getSolution().getSolutionGaps().get(0).getSolutionOptions().get(2).setCheckedAnswer(true);
+    pTrainingList.get(0).getProcessedSolutionTasks().get(0).getSolution().getSolutionGaps().get(1).getSolutionOptions().get(1).setCheckedAnswer(true);
+    pTrainingList.get(0).getProcessedSolutionTasks().get(0).getSolution().getSolutionGaps().get(1).getSolutionOptions().get(2).setCheckedAnswer(true);
+    processedTrainingRepo.save(pTraining);
 
-
-    String json = objectMapper.writeValueAsString(pTraining);
-    result = restPost("/evaluate/Training/"+id,json);
+    String json = objectMapper.writeValueAsString(pTraining.getOriginTraining().getId());
+    result = restGet("/evaluate/Training/"+id);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-    List<UserEntity> list = loadAll((UserEntity.class));
     List<ProcessedTrainingEntity> pEntityList = loadAll(ProcessedTrainingEntity.class);
     ProcessedTrainingEntity trainingEntity = pEntityList.get(0);
+    List<ProcessedTrainingEntity> list = objectMapper.readValue(result.getBody(), new TypeReference<>() {
+    });
 
-
-    //List<ProcessedTrainingEntity> processedTrainingEntityList = loadAll(ProcessedTrainingEntity.class);
-    //ProcessedTrainingEntity pe = processedTrainingEntityList.get(0);
-    // TrainingEntity te = processedTraining.getOriginTraining();
-    //assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
-    assertThat(trainingEntity.getScore()).isEqualTo(2);
-
+    assertThat(list.get(0).getScore()).isEqualTo(2);
+    assertThat(list.get(1).getScore()).isEqualTo(0);
   }
 }
