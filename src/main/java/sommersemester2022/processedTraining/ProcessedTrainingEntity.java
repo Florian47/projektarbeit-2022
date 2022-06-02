@@ -37,9 +37,10 @@ public class ProcessedTrainingEntity {
 
   public ProcessedTrainingEntity() {}
 
-  public ProcessedTrainingEntity(List<TaskEntity> processedSolutionTasks, TrainingEntity originTraining) {
+  public ProcessedTrainingEntity(List<TaskEntity> processedSolutionTasks, TrainingEntity originTraining, int studentId) {
     this.processedSolutionTasks = processedSolutionTasks;
     this.originTraining = originTraining;
+    this.studentId = studentId;
   }
 
   public int getScore() {
@@ -75,6 +76,7 @@ public class ProcessedTrainingEntity {
   }
 
   public void setStudentId(int stdId) {
+    this.studentId = stdId;
   }
   public int getStudentId() {
     return studentId;
