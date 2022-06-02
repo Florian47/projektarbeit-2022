@@ -1,6 +1,7 @@
 package test.user;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.h2.engine.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,10 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/**
+ * @author Alexander Kiehl
+ * In dieser Klasse werden die CRUD Operationen des UserControllers getestet.
+ */
 public class UserControllerTest extends BaseTest {
   /**
    * Erstellt einen Nutzer mit den gegebenen Variablen
@@ -20,9 +24,9 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testCreate() throws Exception {
-    testUser.setUsername("admin2");
-    testUser.setId(0);
-    String json = objectMapper.writeValueAsString(testUser);
+    admin.setUsername("admin2");
+    admin.setId(0);
+    String json = objectMapper.writeValueAsString(admin);
     ResponseEntity<String> result = restPost("/users/register", json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<UserEntity> entities = loadAll(UserEntity.class);
@@ -38,8 +42,8 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testCreateSameUsernameFailing() throws Exception {
-    testUser.setId(0);
-    String json = objectMapper.writeValueAsString(testUser);
+    admin.setId(0);
+    String json = objectMapper.writeValueAsString(admin);
     ResponseEntity<String> result1 = restPost("/users/register", json);
     assertThat(result1.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -50,7 +54,7 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void userGetById() throws Exception {
-    ResponseEntity<String> result = restAuthGet("/users/" + testUser.getId(), getJWTToken("admin"));
+    ResponseEntity<String> result = restAuthGet("/users/" + admin.getId(), getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<UserEntity> list = loadAll((UserEntity.class));
 
@@ -64,10 +68,10 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testUpdate() throws Exception {
-    testUser.setFirstName("admin2");
-    String json = objectMapper.writeValueAsString(testUser);
+    admin.setFirstName("admin2");
+    String json = objectMapper.writeValueAsString(admin);
 
-    ResponseEntity<String> result = restAuthPut("/users/" + testUser.getId(), json, getJWTToken("admin"));
+    ResponseEntity<String> result = restAuthPut("/users/" + admin.getId(), json, getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<UserEntity> list = loadAll(UserEntity.class);
 
@@ -83,12 +87,18 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testDelete() throws Exception {
+    UserEntity user = new UserEntity();
+    user.setUsername("Fred");
+    user.setFirstName("Feuerstein");
+    userRepo.save(user);
+    List<UserEntity> list = loadAll((UserEntity.class));
+    int id = list.get(1).getId();
 
-    ResponseEntity<String> result = restAuthDel("/users/" + testUser.getId(), getJWTToken("admin"));
+    ResponseEntity<String> result = restAuthDel("/users/" + id, getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-    List<UserEntity> list = loadAll((UserEntity.class));
-    assertThat(list.size()).isEqualTo(0);
+    list = loadAll((UserEntity.class));
+    assertThat(list.size()).isEqualTo(1);
   }
 
 //  @Test

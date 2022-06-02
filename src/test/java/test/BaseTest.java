@@ -78,18 +78,17 @@ public class BaseTest {
   protected RoleRepo roleRepository;
   protected UserEntity admin;
   protected TrainingEntity training;
-
   protected TaskEntity task;
+  protected ProcessedTrainingEntity pTraining;
 
 
   @BeforeEach
   public void setup() {
-//    if (userRepo != null){userRepo.deleteAll();}
+    userRepo.deleteAll();
 //    if (solutionRepo != null){solutionRepo.deleteAll();}
-//    if (taskRepo != null){taskRepo.deleteAll();}
+    taskRepo.deleteAll();
 //    if (trainingRepo != null){trainingRepo.deleteAll();}
     //if (processedTrainingRepo != null){processedTrainingRepo.deleteAll();}
-    userRepo.deleteAll();
 
     RoleEntity student = new RoleEntity();
     student.setName(ROLE_STUDENT);
@@ -136,6 +135,14 @@ public class BaseTest {
     this.training.setIndividual(true);
     this.training.setStudents(userList);
     this.training = trainingRepo.save(training);
+    this.task = taskRepo.save(task1);
+    //TODO brickt tests sobald einkommentiert
+    /**
+    this.pTraining = new ProcessedTrainingEntity();
+    this.pTraining.setProcessedSolutionTasks(taskList);
+    this.pTraining.setStudent(user);
+    this.pTraining = processedTrainingRepo.save(pTraining);
+     */
   }
 
 

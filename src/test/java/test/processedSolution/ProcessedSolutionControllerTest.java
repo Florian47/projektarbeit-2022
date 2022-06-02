@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+/**
+ * @author Alexander Kiehl
+ * In dieser Klasse werden die CRUD Operationen des ProcessedSolutionControllers getestet.
+ */
 
 public class ProcessedSolutionControllerTest extends BaseTest {
 
@@ -29,43 +32,6 @@ public class ProcessedSolutionControllerTest extends BaseTest {
   @Test
   @BeforeAll
   static void generateDummys(){
-    solution = new SolutionEntity();
-    List<SolutionGaps> gapsList = new ArrayList<>();
-    List<SolutionOptions> optionsList = new ArrayList<>();
-    List<SolutionOptions> optionsList2 = new ArrayList<>();
-
-    optionsList.add(new SolutionOptions("Montag", false));
-    optionsList.add(new SolutionOptions("Dienstag", true));
-    optionsList.add(new SolutionOptions("Mittwoch", true));
-    optionsList.add(new SolutionOptions("Donnerstag", false));
-
-    optionsList2.add(new SolutionOptions("Montag", false));
-    optionsList2.add(new SolutionOptions("Dienstag", true));
-    optionsList2.add(new SolutionOptions("Mittwoch", true));
-    optionsList2.add(new SolutionOptions("Donnerstag", false));
-
-    gapsList.add(new SolutionGaps(optionsList));
-    gapsList.add(new SolutionGaps(optionsList2));
-
-    solution.setSolutionGaps(gapsList);
-
-    List<TaskEntity> tasks = new ArrayList<>();
-    taskEntity = new TaskEntity();
-    taskEntity.setName("TrainingsTask");
-    taskEntity.setSolution(solution);
-
-    tasks.add(taskEntity);
-    training = new TrainingEntity();
-    training.setName("TrainingsTraining");
-    training.setTasks(tasks);
-    training.setIndividual(false);
-
-    pTraining = new ProcessedTrainingEntity();
-    pTraining.setProcessedSolutionTasks(tasks);
-    //pTraining.setStudent(admin);
-
-
-
   }
 
 
@@ -73,7 +39,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
   public void testCreateTraining() throws Exception {
     this.task = taskRepo.save(taskEntity);
     this.training=trainingRepo.save(training);
-    pTraining.setStudent(testUser);
+    pTraining.setStudent(admin);
     //pTraining.setOriginTraining(training);
 
 
@@ -108,7 +74,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     this.taskEntity=taskRepo.save(taskEntity);
     pTraining.setOriginTraining(training);
     this.training=trainingRepo.save(training);
-    pTraining.setStudent(testUser);
+    pTraining.setStudent(admin);
 
     List <TrainingEntity> trainingList = loadAll(TrainingEntity.class);
     training = trainingList.get(0);

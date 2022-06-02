@@ -125,7 +125,7 @@ public class TrainingControllerTest extends BaseTest {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     List<TaskEntity> entities = loadAll(TaskEntity.class);
-    assertThat(entities.size()).isEqualTo(3);
+    assertThat(entities.size()).isEqualTo(2);
     TaskEntity pe = entities.get(0);
     assertThat(pe).isNotNull();
     trainingRepo.deleteAll();
