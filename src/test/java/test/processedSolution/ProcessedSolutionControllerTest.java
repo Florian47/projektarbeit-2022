@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.test.context.support.WithMockUser;
 import sommersemester2022.person.UserEntity;
 import org.springframework.scheduling.config.Task;
@@ -28,10 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProcessedSolutionControllerTest extends BaseTest {
 
   static TrainingEntity training;
-
   static ProcessedTrainingEntity pTraining;
   static TaskEntity taskEntity;
-
   static SolutionEntity solution;
 
   @Test
@@ -61,6 +60,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     taskEntity = new TaskEntity();
     taskEntity.setName("TrainingsTask");
     taskEntity.setSolution(solution);
+
     tasks.add(taskEntity);
     training = new TrainingEntity();
     training.setName("TrainingsTraining");
@@ -75,13 +75,41 @@ public class ProcessedSolutionControllerTest extends BaseTest {
 
   }
 
+
+  @Test
+  public void testCreateTraining() throws Exception {
+    this.task = taskRepo.save(taskEntity);
+    this.training=trainingRepo.save(training);
+    //pTraining.setOriginTraining(training);
+
+
+    ProcessedTrainingEntity proc = new ProcessedTrainingEntity();
+    List<TaskEntity> tasks = new ArrayList<>();
+    tasks.add(task);
+    proc.setStudentId(0);
+    //processedTrainingRepo.save(proc);
+    proc.setProcessedSolutionTasks(tasks);
+    proc.setOriginTraining(training);
+
+    String json = objectMapper.writeValueAsString(proc);
+    ResponseEntity<String> result = restPost("/processedTraining/add", json);
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    List <ProcessedTrainingEntity> pTrainingList = loadAll(ProcessedTrainingEntity.class);
+    pTraining = pTrainingList.get(0);
+    assertThat(pTraining.getStudentId()).isEqualTo(0);
+    //assertThat(pTraining.getOriginTraining().getName()).isEqualTo("TrainingsTraining");
+    //assertThat(pTraining.getProcessedSolutionTasks().get(0).getSolution().getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
+
+
+  }
+
   /**
    *  Test der Funktion "/generateProcessedTraining/" mit einer 100% richtigen Lösung und einer 100% falschen Lösung
    * @throws Exception
    */
-  //Musterlösung vom Lehrer
   @Test
-  public void testJSONSolution() throws Exception {
+  public void testEvaluateTraining() throws Exception {
     this.taskEntity=taskRepo.save(taskEntity);
     pTraining.setOriginTraining(training);
     this.training=trainingRepo.save(training);

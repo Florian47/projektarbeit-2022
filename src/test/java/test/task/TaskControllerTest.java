@@ -21,6 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TaskControllerTest extends BaseTest {
 
+  /**
+   * Erstellt einen Task
+   * @throws Exception
+   */
   @Test
   public void testAddTask() throws Exception {
     List<SolutionGaps> gapsList = new ArrayList<>();
@@ -45,6 +49,10 @@ public class TaskControllerTest extends BaseTest {
     assertThat(pe.getSolution().getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
   }
 
+  /**
+   * Holt einen Task über die id aus der Datenbank
+   * @throws Exception
+   */
   @Test
   public void testGetByIdTask() throws Exception {
     List<SolutionGaps> gapsList = new ArrayList<>();
@@ -78,9 +86,12 @@ public class TaskControllerTest extends BaseTest {
     assertThat(pe.getPicture()).isEqualTo("1234");
   }
 
+  /**
+   * Ändert einen Task über die id
+   * @throws Exception
+   */
   @Test
   public void testUpdateTask() throws Exception {
-    //TODO doesn't work
     List<SolutionGaps> gapsList = new ArrayList<>();
     List<SolutionOptions> optionsList = new ArrayList<>();
 
@@ -115,6 +126,10 @@ public class TaskControllerTest extends BaseTest {
     assertThat(pe.getPicture()).isEqualTo("1234");
   }
 
+  /**
+   * Holt alle Tasks aus der Datenbank
+   * @throws Exception
+   */
   @Test
   public void testGetAllTasks() throws Exception {
     List<SolutionGaps> gapsList = new ArrayList<>();
@@ -143,10 +158,6 @@ public class TaskControllerTest extends BaseTest {
     json = objectMapper.writeValueAsString(task);
     result = restAuthPost("/task/add", json,getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-    List<TaskEntity> entities = loadAll(TaskEntity.class);
-    task = entities.get(0);
-
-
 
     result = restAuthGet("/task",getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -155,15 +166,14 @@ public class TaskControllerTest extends BaseTest {
     assertThat(list.size()).isEqualTo(2);
     assertThat(result.toString().contains("Aufgabe 2"));
     assertThat(result.toString().contains("Aufgabe 1"));
-
-
     TaskEntity pe = list.get(0);
-    //assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
-    //assertThat(pe.getScore()).isEqualTo(4);
     assertThat(pe.getPicture()).isEqualTo("1234");
   }
 
-
+  /**
+   * Löscht einen Task über die id
+   * @throws Exception
+   */
   @Test
   public void testDeleteTask() throws Exception {
     List<SolutionGaps> gapsList = new ArrayList<>();
