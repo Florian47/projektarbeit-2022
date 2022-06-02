@@ -6,10 +6,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -53,6 +55,7 @@ import static sommersemester2022.userroles.UserRole.*;
   webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
   classes = Application.class
 )
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class BaseTest {
   @Autowired
   protected TestRestTemplate restTemplate;
@@ -78,8 +81,6 @@ public class BaseTest {
   protected ProcessedTrainingRepo processedTrainingRepo;
   @Autowired
   protected RoleRepo roleRepository;
-
-
   protected UserEntity admin;
   protected TrainingEntity training;
 
@@ -88,11 +89,12 @@ public class BaseTest {
 
   @BeforeEach
   public void setup() {
-    if (userRepo != null){userRepo.deleteAll();}
-    //if (solutionRepo != null){solutionRepo.deleteAll();}
-    if (taskRepo != null){taskRepo.deleteAll();}
-    //if (trainingRepo != null){trainingRepo.deleteAll();}
+//    if (userRepo != null){userRepo.deleteAll();}
+//    if (solutionRepo != null){solutionRepo.deleteAll();}
+//    if (taskRepo != null){taskRepo.deleteAll();}
+//    if (trainingRepo != null){trainingRepo.deleteAll();}
     //if (processedTrainingRepo != null){processedTrainingRepo.deleteAll();}
+    userRepo.deleteAll();
 
     RoleEntity student = new RoleEntity();
     student.setName(ROLE_STUDENT);
@@ -114,9 +116,6 @@ public class BaseTest {
     user.roles.add(roleRepository.findByName(ROLE_TEACHER));
     user.roles.add(roleRepository.findByName(ROLE_STUDENT));
     this.admin = userRepo.save(user);
-
-
-
 
     List<SolutionGaps> gapsList = new ArrayList<>();
     List<SolutionOptions> optionsList = new ArrayList<>();

@@ -46,6 +46,7 @@ public class TrainingControllerTest extends BaseTest {
     TrainingEntity te = entities.get(0);
     te.toString();
     assertThat(te.isIndividual()).isEqualTo(true);
+    trainingRepo.deleteAll();
 
 
   }
@@ -68,7 +69,7 @@ public class TrainingControllerTest extends BaseTest {
     });
     assertThat(list.size()).isEqualTo(1);
     assertThat(list.get(0).getName().equals("Test1"));
-
+    trainingRepo.deleteAll();
   }
 
   @Test
@@ -78,6 +79,7 @@ public class TrainingControllerTest extends BaseTest {
     List<TrainingEntity> list = objectMapper.readValue(result.getBody(), new TypeReference<>() {
     });
     assertThat(list.size()).isEqualTo(1);
+    trainingRepo.deleteAll();
   }
 
   @Test
@@ -87,6 +89,7 @@ public class TrainingControllerTest extends BaseTest {
 
     List<TrainingEntity> list = loadAll((TrainingEntity.class));
     assertThat(list.size()).isEqualTo(0);
+    trainingRepo.deleteAll();
   }
 
   @Test
@@ -97,6 +100,7 @@ public class TrainingControllerTest extends BaseTest {
 
     List<TrainingEntity> list = loadAll((TrainingEntity.class));
     assertThat(list.size()).isEqualTo(1);
+    trainingRepo.deleteAll();
   }
 
   @Test
@@ -121,9 +125,10 @@ public class TrainingControllerTest extends BaseTest {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     List<TaskEntity> entities = loadAll(TaskEntity.class);
-    assertThat(entities.size()).isEqualTo(2);
+    assertThat(entities.size()).isEqualTo(3);
     TaskEntity pe = entities.get(0);
     assertThat(pe).isNotNull();
+    trainingRepo.deleteAll();
     }
 
   @Test
@@ -140,6 +145,7 @@ public class TrainingControllerTest extends BaseTest {
     List<TrainingEntity> entities = loadAll(TrainingEntity.class);
     assertThat(entities.size()).isEqualTo(1);
     TrainingEntity pe = entities.get(0);
-    assertThat(pe).hasFieldOrPropertyWithValue("id",9);
+    assertThat(pe).hasFieldOrPropertyWithValue("id",35);
+    trainingRepo.deleteAll();
   }
 }
