@@ -116,7 +116,7 @@ public class TrainingController {
    */
   @GetMapping("/training/processed")
   public List<TrainingEntity> getAllProcessedTrainings() {
-    List<TrainingEntity> allTrainings = trainingRepo.findAll();
+    List<TrainingEntity> allTrainings = trainingRepo.findByIndividualTrue();
     List<ProcessedTrainingEntity> allProcessedTrainings = processedTrainingRepo.findAll();
     /**
      * Der folgende Ausdruck filtert alle existierenden Trainings auf die, welche min. einmal bearbeitet wurden, damit
