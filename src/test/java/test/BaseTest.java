@@ -24,6 +24,14 @@ import sommersemester2022.security.services.jwt.JwtUtils;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
+import sommersemester2022.task.TaskCategory;
+import sommersemester2022.task.TaskDifficulty;
+import sommersemester2022.task.TaskEntity;
+import sommersemester2022.training.TrainingEntity;
+import sommersemester2022.training.TrainingRepo;
+import sommersemester2022.solution.SolutionEntity;
+import sommersemester2022.solution.SolutionGaps;
+import sommersemester2022.solution.SolutionOptions;
 import sommersemester2022.solution.SolutionRepo;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.task.TaskRepo;
@@ -71,11 +79,12 @@ public class BaseTest {
   @Autowired
   protected RoleRepo roleRepository;
 
+
   protected UserEntity admin;
+  protected TrainingEntity training;
 
   protected TaskEntity task;
 
-  protected TrainingEntity training;
 
   @BeforeEach
   public void setup() {
@@ -107,6 +116,32 @@ public class BaseTest {
     this.admin = userRepo.save(user);
 
 
+
+
+    List<SolutionGaps> gapsList = new ArrayList<>();
+    List<SolutionOptions> optionsList = new ArrayList<>();
+    optionsList.add(new SolutionOptions("Montag", false));
+    optionsList.add(new SolutionOptions("Dienstag", true));
+    optionsList.add(new SolutionOptions("Mittwoch", true));
+    optionsList.add(new SolutionOptions("Donnerstag", false));
+    gapsList.add(new SolutionGaps(optionsList));
+    SolutionEntity solution1 = new SolutionEntity(gapsList, "Lese dir den Satz in gedanken einmal laut vor");
+    TaskEntity task1 = new TaskEntity();
+    task1.setName("Task1");
+    task1.setText("Welcher Tag ist heute?");
+    task1.setSolution(solution1);
+    task1.setCategory(TaskCategory.LUECKENTEXT);
+    task1.setDifficulty(TaskDifficulty.EINFACH);
+    List<UserEntity> userList = new ArrayList<>();
+    userList.add(this.admin);
+    List<TaskEntity> taskList = new ArrayList<>();
+    taskList.add(task1);
+    this.training = new TrainingEntity();
+    this.training.setName("Test1");
+    this.training.setTasks(taskList);
+    this.training.setIndividual(true);
+    this.training.setStudents(userList);
+    this.training = trainingRepo.save(training);
   }
 
 
