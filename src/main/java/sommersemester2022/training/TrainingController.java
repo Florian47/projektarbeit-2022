@@ -98,7 +98,6 @@ public class TrainingController {
     Optional<UserEntity> user = userRepo.findById(id);
     List<TrainingEntity> allAllowedTrainings = trainingRepo.findByStudentsAndIndividualTrue(user).get();
     List<ProcessedTrainingEntity> processedTrainings = processedTrainingRepo.findByStudentId(id);
-
     /**
      * Der folgende Ausdruck filtert alle Trainings für den Benutzer auf die, welche nicht bearbeitet wurden, damit
      * diese nicht mehr in der Trainingsübersicht angezeigt werden.
@@ -108,6 +107,26 @@ public class TrainingController {
       .filter(training -> processedTrainings
         .stream()
         .noneMatch(processedTraining -> Objects.equals(training.getId(), processedTraining.getOriginTraining().getId())))
+      .collect(Collectors.toList());
+  }
+
+  /**
+   * Gibt alle Trainings zurück, welche mindestens einmal bearbeitet wurden (für die Auswertung benötigt).
+   * @return Liste der Trainings, die mindestens einmal bearbeitet wurden
+   */
+  @GetMapping("/training/processed")
+  public List<TrainingEntity> getAllProcessedTrainings() {
+    List<TrainingEntity> allTrainings = trainingRepo.findAll();
+    List<ProcessedTrainingEntity> allProcessedTrainings = processedTrainingRepo.findAll();
+    /**
+     * Der folgende Ausdruck filtert alle existierenden Trainings auf die, welche min. einmal bearbeitet wurden, damit
+     * diese in der Auswertung angezeigt werden können.
+     */
+    return allTrainings
+      .stream()
+      .filter(training -> allProcessedTrainings
+        .stream()
+        .anyMatch(processedTraining -> Objects.equals(training.getId(), processedTraining.getOriginTraining().getId())))
       .collect(Collectors.toList());
   }
 

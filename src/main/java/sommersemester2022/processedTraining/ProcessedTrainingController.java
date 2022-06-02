@@ -29,7 +29,7 @@ import java.util.Objects;
  * Sie kontrolliert alle Aktivitäten, welche mit den bearbeiteten Trainings ausgeführt werden können und gibt die
  * Informationen an das Repository weiter.
  * (z.B. alle CRUD-Operationen)
- * @author Tobias Esau, Alexander Kiehl
+ * @author Tobias Esau, Alexander Kiehl, Florian Weinert
  * @see    ProcessedTrainingRepo
  */
 @Transactional
