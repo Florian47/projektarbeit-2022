@@ -19,7 +19,7 @@ public class TrainingEntity {
   private Integer id;
   private String name;
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.MERGE)
   private List<UserEntity> students;
   private boolean individual;
   @LazyCollection(LazyCollectionOption.FALSE)
