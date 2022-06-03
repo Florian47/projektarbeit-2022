@@ -137,12 +137,11 @@ public class BaseTest {
     this.training = trainingRepo.save(training);
     this.task = taskRepo.save(task1);
     //TODO brickt tests sobald einkommentiert
-    /**
-    this.pTraining = new ProcessedTrainingEntity();
-    this.pTraining.setProcessedSolutionTasks(taskList);
-    this.pTraining.setStudent(user);
-    this.pTraining = processedTrainingRepo.save(pTraining);
-     */
+    //this.pTraining = new ProcessedTrainingEntity();
+    //this.pTraining.setProcessedSolutionTasks(taskList);
+    //this.pTraining.setStudent(user);
+    //this.pTraining.setOriginTraining(training);
+    //this.pTraining = processedTrainingRepo.save(pTraining);
   }
 
 

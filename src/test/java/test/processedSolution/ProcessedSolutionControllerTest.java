@@ -37,9 +37,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
 
   @Test
   public void testCreateTraining() throws Exception {
-    this.task = taskRepo.save(taskEntity);
-    this.training=trainingRepo.save(training);
-    pTraining.setStudent(admin);
+    //pTraining.setStudent(admin);
     //pTraining.setOriginTraining(training);
 
 
@@ -50,7 +48,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     //processedTrainingRepo.save(proc);
     proc.setProcessedSolutionTasks(tasks);
     proc.setOriginTraining(training);
-    processedTrainingRepo.save(pTraining);
+    //processedTrainingRepo.save(pTraining);
 
     String json = objectMapper.writeValueAsString(proc);
     ResponseEntity<String> result = restPost("/processedTraining/add", json);
