@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import sommersemester2022.person.UserEntity;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 import sommersemester2022.solution.SolutionOptions;
@@ -102,6 +101,19 @@ public class TrainingControllerTest extends BaseTest {
     assertThat(list.size()).isEqualTo(1);
     trainingRepo.deleteAll();
   }
+  @Test
+  public void testNoTrainingsForStudent()throws Exception {
+    training.setStudents(null);
+    trainingRepo.save(training);
+    ResponseEntity<String> result = restGet("/training/schueler/" + admin.getId());
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    List<TrainingEntity> list = loadAll((TrainingEntity.class));
+    assertThat(list.size()).isEqualTo(1);
+    TrainingEntity pe = list.get(0);
+    assertThat(pe.getStudents().size()).isEqualTo(0);
+    trainingRepo.deleteAll();
+  }
 
   @Test
   public void testAddTasksToTraining() throws Exception {
@@ -125,7 +137,7 @@ public class TrainingControllerTest extends BaseTest {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     List<TaskEntity> entities = loadAll(TaskEntity.class);
-    assertThat(entities.size()).isEqualTo(3);
+    assertThat(entities.size()).isEqualTo(2);
     TaskEntity pe = entities.get(0);
     assertThat(pe).isNotNull();
     trainingRepo.deleteAll();
@@ -145,7 +157,7 @@ public class TrainingControllerTest extends BaseTest {
     List<TrainingEntity> entities = loadAll(TrainingEntity.class);
     assertThat(entities.size()).isEqualTo(1);
     TrainingEntity pe = entities.get(0);
-    assertThat(pe).hasFieldOrPropertyWithValue("id",35);
+    assertThat(pe).hasFieldOrPropertyWithValue("id",9);
     trainingRepo.deleteAll();
   }
 }
