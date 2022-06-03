@@ -1,11 +1,10 @@
 package test.user;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.Ignore;
+import org.h2.engine.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import sommersemester2022.person.UserEntity;
 import test.BaseTest;
 
@@ -14,7 +13,10 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/**
+ * @author Alexander Kiehl
+ * In dieser Klasse werden die CRUD Operationen des UserControllers getestet.
+ */
 public class UserControllerTest extends BaseTest {
   /**
    * Erstellt einen Nutzer mit den gegebenen Variablen
@@ -85,12 +87,18 @@ public class UserControllerTest extends BaseTest {
    */
   @Test
   public void testDelete() throws Exception {
+    UserEntity user = new UserEntity();
+    user.setUsername("Fred");
+    user.setFirstName("Feuerstein");
+    userRepo.save(user);
+    List<UserEntity> list = loadAll((UserEntity.class));
+    int id = list.get(1).getId();
 
-    ResponseEntity<String> result = restAuthDel("/users/" + admin.getId(), getJWTToken("admin"));
+    ResponseEntity<String> result = restAuthDel("/users/" + id, getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-    List<UserEntity> list = loadAll((UserEntity.class));
-    assertThat(list.size()).isEqualTo(0);
+    list = loadAll((UserEntity.class));
+    assertThat(list.size()).isEqualTo(1);
   }
 
 //  @Test

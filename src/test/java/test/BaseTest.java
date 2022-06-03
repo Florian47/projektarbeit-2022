@@ -21,6 +21,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import sommersemester2022.Application;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
+import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.processedTraining.ProcessedTrainingRepo;
 import sommersemester2022.security.services.jwt.JwtUtils;
 import sommersemester2022.solution.SolutionEntity;
@@ -86,13 +87,13 @@ public class BaseTest {
 
   protected SolutionEntity solution1;
   protected TaskEntity task;
+  protected ProcessedTrainingEntity pTraining;
 
 
   @BeforeEach
   public void setup() {
-//    if (userRepo != null){userRepo.deleteAll();}
 //    if (solutionRepo != null){solutionRepo.deleteAll();}
-//    if (taskRepo != null){taskRepo.deleteAll();}
+    taskRepo.deleteAll();
 //    if (trainingRepo != null){trainingRepo.deleteAll();}
     //if (processedTrainingRepo != null){processedTrainingRepo.deleteAll();}
     userRepo.deleteAll();
@@ -143,6 +144,13 @@ public class BaseTest {
     this.training.setIndividual(true);
     this.training.setStudents(userList);
     this.training = trainingRepo.save(training);
+    this.task = taskRepo.save(task1);
+    //TODO brickt tests sobald einkommentiert
+    //this.pTraining = new ProcessedTrainingEntity();
+    //this.pTraining.setProcessedSolutionTasks(taskList);
+    //this.pTraining.setStudent(user);
+    //this.pTraining.setOriginTraining(training);
+    //this.pTraining = processedTrainingRepo.save(pTraining);
   }
 
 

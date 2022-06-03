@@ -2,6 +2,7 @@ package sommersemester2022.processedTraining;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.transaction.annotation.Transactional;
+import sommersemester2022.person.UserEntity;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
 
@@ -22,25 +23,36 @@ public class ProcessedTrainingEntity {
   private int id;
 
   private int score;
-  @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+
+  public UserEntity getStudent() {
+    return student;
+  }
+
+  public void setStudent(UserEntity student) {
+    this.student = student;
+  }
+
+  @ManyToOne
+  private UserEntity student;
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private List<TaskEntity> processedSolutionTasks;
 
   /**
    * originTraining beschreibt das zugehörige Training, welches vom Dozent erstellt wurde.
    */
-  @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private TrainingEntity originTraining;
 
-  private int studentId;
 
-  public ProcessedTrainingEntity() {}
+  public ProcessedTrainingEntity() {
+  }
 
-  public ProcessedTrainingEntity(List<TaskEntity> processedSolutionTasks, TrainingEntity originTraining, int studentId) {
+  public ProcessedTrainingEntity(List<TaskEntity> processedSolutionTasks, TrainingEntity originTraining, UserEntity user) {
     this.processedSolutionTasks = processedSolutionTasks;
     this.originTraining = originTraining;
-    this.studentId = studentId;
+    this.student = user;
   }
 
   public int getScore() {
@@ -75,12 +87,6 @@ public class ProcessedTrainingEntity {
     this.originTraining = originTraining;
   }
 
-  public void setStudentId(int stdId) {
-    this.studentId = stdId;
-  }
-  public int getStudentId() {
-    return studentId;
-  }
 }
 
 
