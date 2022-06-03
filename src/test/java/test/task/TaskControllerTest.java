@@ -43,7 +43,6 @@ public class TaskControllerTest extends BaseTest {
     assertThat(pe.getPicture()).isEqualTo(null);
     assertThat(pe.getSolution().getSolutionGaps().get(0).getSolutionOptions().get(0).getOptionName()).isEqualTo("Montag");
   }
-
   /**
    * Holt einen Task über die id aus der Datenbank
    * @throws Exception
@@ -149,7 +148,7 @@ public class TaskControllerTest extends BaseTest {
 
     list = loadAll((TaskEntity.class));
     assertThat(list.size()).isEqualTo(1);
-    ;
+
   }
 
 }
