@@ -28,13 +28,6 @@ public class ProcessedSolutionControllerTest extends BaseTest {
 
   static TrainingEntity training;
   static ProcessedTrainingEntity pTraining;
-  static TaskEntity taskEntity;
-  static SolutionEntity solution;
-
-  @Test
-  @BeforeAll
-  static void generateDummys(){
-  }
 
   /**
    * Test um ein ProcessedTraining zu erstelle ohne vorher die IDs zu löschen. Schlägt fehl da die Duplikate nicht gespeichert werden können
@@ -42,7 +35,6 @@ public class ProcessedSolutionControllerTest extends BaseTest {
    */
   @Test
   public void testCreateProcessedTraining() throws Exception {
-
     ProcessedTrainingEntity proc = new ProcessedTrainingEntity();
     List<TaskEntity> tasks = new ArrayList<>();
     tasks.add(task);
@@ -87,7 +79,6 @@ public class ProcessedSolutionControllerTest extends BaseTest {
    */
   @Test
   public void testGetTraining() throws Exception {
-
     List <TrainingEntity> trainingList = loadAll(TrainingEntity.class);
     training = trainingList.get(0);
     ResponseEntity<String> result = restAuthGet("/generateProcessedTraining/"+training.getId(),getJWTToken("admin"));
@@ -99,14 +90,12 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.toString().contains("Test1"));
   }
-
   /**
    * LÖscht ein ProcessedTraining aus der Datenbank
    * @throws Exception
    */
   @Test
   public void testDelTraining() throws Exception {
-
     List <TrainingEntity> trainingList = loadAll(TrainingEntity.class);
     training = trainingList.get(0);
     ResponseEntity<String> result = restAuthGet("/generateProcessedTraining/"+training.getId(),getJWTToken("admin"));
@@ -119,7 +108,6 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     pTrainingList = loadAll(ProcessedTrainingEntity.class);
     assertThat(pTrainingList.size()).isEqualTo(0);
   }
-
   /**
    * Ändert eine Training mit der angegebenen ID
    * @throws Exception
@@ -156,6 +144,11 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     assertThat(result.toString()).contains("Test1");
   }
 
+  /**
+   * Erzeugt ein ProcessedTraining aus einem Training
+   * @throws Exception
+   */
+
   @Test
   public void testGenerateProcessedTraining() throws Exception {
     List<TrainingEntity> trainingList = loadAll(TrainingEntity.class);
@@ -166,6 +159,10 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     assertThat(pTrainingList.size()).isEqualTo(1);
   }
 
+  /**
+   * Überprüft ob die IDs beim generieren eines ProcessedTrainings verändert werden
+   * @throws Exception
+   */
   @Test
   public void testGenerateProcessedTrainingGetsAltered() throws Exception {
     List<TrainingEntity> trainingList = loadAll(TrainingEntity.class);
@@ -196,7 +193,6 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     result = restPost("/evaluate/ProcessedTraining",json);
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     List<ProcessedTrainingEntity> pEntityList = loadAll(ProcessedTrainingEntity.class);
-
     assertThat(pEntityList.get(0).getScore()).isEqualTo(1);
   }
 }

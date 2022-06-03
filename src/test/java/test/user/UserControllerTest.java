@@ -35,6 +35,23 @@ public class UserControllerTest extends BaseTest {
     UserEntity pe = entities.stream().filter(user -> Objects.equals(user.getUsername(), "admin2")).findAny().get();
     assertThat(pe.getId()).isGreaterThanOrEqualTo(1);
   }
+  /**
+   * Testet ob ein ersteller Nutzer die rolle Student bekommt
+   * @throws Exception
+   */
+  @Test
+  public void testCreateGetRole() throws Exception {
+    admin.setUsername("admin2");
+    admin.setId(0);
+    String json = objectMapper.writeValueAsString(admin);
+    ResponseEntity<String> result = restPost("/users/register", json);
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    List<UserEntity> entities = loadAll(UserEntity.class);
+    assertThat(entities.size()).isEqualTo(2);
+
+    UserEntity pe = entities.stream().filter(user -> Objects.equals(user.getUsername(), "admin2")).findAny().get();
+    assertThat(pe.getRoles()).isNotNull();
+  }
 
   /**
    * Versucht einen Nutzer mit bereits vorhanenem username zu erstellen und scheitert
