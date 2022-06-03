@@ -84,6 +84,7 @@ public class BaseTest {
   protected UserEntity admin;
   protected TrainingEntity training;
 
+  protected SolutionEntity solution1;
   protected TaskEntity task;
 
 
@@ -95,6 +96,7 @@ public class BaseTest {
 //    if (trainingRepo != null){trainingRepo.deleteAll();}
     //if (processedTrainingRepo != null){processedTrainingRepo.deleteAll();}
     userRepo.deleteAll();
+    trainingRepo.deleteAll();
 
     RoleEntity student = new RoleEntity();
     student.setName(ROLE_STUDENT);
@@ -124,11 +126,11 @@ public class BaseTest {
     optionsList.add(new SolutionOptions("Mittwoch", true));
     optionsList.add(new SolutionOptions("Donnerstag", false));
     gapsList.add(new SolutionGaps(optionsList));
-    SolutionEntity solution1 = new SolutionEntity(gapsList, "Lese dir den Satz in gedanken einmal laut vor");
+    this.solution1 = new SolutionEntity(gapsList, "Lese dir den Satz in gedanken einmal laut vor");
     TaskEntity task1 = new TaskEntity();
     task1.setName("Task1");
     task1.setText("Welcher Tag ist heute?");
-    task1.setSolution(solution1);
+    task1.setSolution(this.solution1);
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     List<UserEntity> userList = new ArrayList<>();
