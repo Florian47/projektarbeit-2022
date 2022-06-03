@@ -149,6 +149,7 @@ public class TrainingControllerTest extends BaseTest {
     String json = objectMapper.writeValueAsString(training);
     ResponseEntity<String> result = restAuthGet("/training/" + training.getId(), getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    int id = training.getId();
     training.setId(500);
     json = objectMapper.writeValueAsString(training);
     result = restAuthPost("/training/edit/", json, getJWTToken("admin"));
@@ -157,7 +158,7 @@ public class TrainingControllerTest extends BaseTest {
     List<TrainingEntity> entities = loadAll(TrainingEntity.class);
     assertThat(entities.size()).isEqualTo(1);
     TrainingEntity pe = entities.get(0);
-    assertThat(pe).hasFieldOrPropertyWithValue("id",9);
+    assertThat(pe.getId()).isEqualTo(id);
     trainingRepo.deleteAll();
   }
 }
