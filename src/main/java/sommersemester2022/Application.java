@@ -239,13 +239,13 @@ public class Application {
     options4.add(new SolutionOptions("bauen", true));
     options4.add(new SolutionOptions("umgraben", false));
     options5 = new ArrayList<>();
-    options5.add(new SolutionOptions("zerstören", false));
-    options5.add(new SolutionOptions("bauen", true));
-    options5.add(new SolutionOptions("umgraben", false));
+    options5.add(new SolutionOptions("Falafel", false));
+    options5.add(new SolutionOptions("Eis", true));
+    options5.add(new SolutionOptions("Toastbrot", false));
     options6 = new ArrayList<>();
-    options6.add(new SolutionOptions("zerstören", false));
-    options6.add(new SolutionOptions("bauen", true));
-    options6.add(new SolutionOptions("umgraben", false));
+    options6.add(new SolutionOptions("macht", true));
+    options6.add(new SolutionOptions("hat", false));
+    options6.add(new SolutionOptions("gibt", false));
 
     gaps1 = new ArrayList<>();
     gaps1.add(new SolutionGaps(options1));
