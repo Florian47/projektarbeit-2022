@@ -7,15 +7,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
-import sommersemester2022.security.services.UserDetailsImpl;
-/*
-Die Klasse UserDetailServiceImpl implementiert die Benutzer Details, über das UserRepository.
-Diese Klasse wurde von David Wiebe erstellt
+
+/**@author David Wiebe
+ * Die Klasse UserDetailsServiceImpl ist eine Art Repository Klasse für die Klasse UserDetailsImpl.
+ * Diese sucht den Benutzer über den Usernamen. Indem der Datenbankaufruf über Die UserRepository Klasse aufgerufen wird.
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
   UserRepo userRepository;
+  /**
+   * Die Methode loadUserByUsername lädt die Benutzerdaten aus der Datenbank und gibt sie an die Methode Build der Klasse
+   * UserDetailsImpl weiter.
+   * @param username wird aus dem Sicherheitstoken entnommen
+   * @return UserDetailsImpl.build(user)
+   * @throws UsernameNotFoundException
+   */
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
