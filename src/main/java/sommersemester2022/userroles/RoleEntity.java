@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author David Wiebe, Tobias Esau
+ * Die Klass RoleEntity ist die Entityklasse für die Rollen des Benutzers. Hier wurden alle Attribute und
+ * notwendige Getter und Setter Methoden implementiert.
+ */
 @Entity
 @Table(name = "roles")
 public class RoleEntity {
@@ -14,6 +19,10 @@ public class RoleEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
+  /**
+   * Die UserRolen mit dem Hinweis Enumeration
+   * @see UserRole
+   */
   @Enumerated(EnumType.STRING)
   public UserRole name;
 

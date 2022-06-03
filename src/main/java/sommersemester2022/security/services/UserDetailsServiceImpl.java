@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   /**
    * Die Methode loadUserByUsername lädt die Benutzerdaten aus der Datenbank und gibt sie an die Methode Build der Klasse
    * UserDetailsImpl weiter.
-   * @param username the username identifying the user whose data is required.
+   * @param username wird aus dem Sicherheitstoken entnommen
    * @return UserDetailsImpl.build(user)
    * @throws UsernameNotFoundException
    */

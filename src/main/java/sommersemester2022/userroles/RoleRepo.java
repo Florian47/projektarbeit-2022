@@ -16,6 +16,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author David Wiebe, Tobias Esau
+ * Eine Role Repositoryklasse in der die SQL Abfragen für die Klasse RoleEntity definiert werden.
+ * @see RoleController
+ */
 @Transactional
 @Service
 @Repository
@@ -24,6 +29,11 @@ public interface RoleRepo extends JpaRepository<RoleEntity, Integer> {
   boolean existsByName(UserRole name);
   List<RoleEntity> findAll();
 
+  /**
+   * Es wurde eine etwas komplexere SQL Abfrage definiert, um alle Rollen eines Users aus der Datenbank zu ziehen.
+   * @param authentication
+   * @return Liste RoleEntity
+   */
   @Query(value="SELECT roles.id, name FROM app.user_entity_roles INNER JOIN app.roles ON app.user_entity_roles.roles_id = app.roles.id where user_entity_id = ?#{#authentication.principal.id}", nativeQuery = true)
   List<RoleEntity> findALLRoles(@Param("authentication") Authentication authentication);
 }

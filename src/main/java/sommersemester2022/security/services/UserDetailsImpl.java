@@ -30,10 +30,10 @@ public class UserDetailsImpl implements UserDetails {
   private final Collection<? extends GrantedAuthority> authorities;
   /**
    * Die Methode UserDetailsImpl ist die Konstruktor Methode der Klasse UserDetailsImpl.
-   * @param id
-   * @param username
-   * @param password
-   * @param authorities
+   * @param id aus der Datenbank
+   * @param username aus der Methode loadUserbyUsername
+   * @param password aus der Datenbank
+   * @param authorities aus der Datenbank
    */
   public UserDetailsImpl(int id, String username, String password,
                          Collection<? extends GrantedAuthority> authorities)
@@ -53,7 +53,7 @@ public class UserDetailsImpl implements UserDetails {
    * Hier bei wird ein UserEntity Objekt übergeben. Die Rollen des Benutzerobjektes werden in eine GrandtAuthority
    * Collection gespeichert. Diese werden zusammen mit der Benutzer ID, dem Benutzernamen und dem Passwort
    * als UserDetailsImpl Objekt zurückgegeben.
-   * @param user
+   * @param user nachdem auslösen der Methode loadUserByUsername erstelltes UserEntity Objekt
    * @return UserDetailsImpl(user.getId (),user.getUsername(),user.getPassword(),authorities
    */
   public static UserDetailsImpl build(UserEntity user)

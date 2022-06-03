@@ -92,7 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
    * auf den Serverzugriff implementiert. Desweiteren wird ein Exception Handler "AuthenticationEntryPoint" eingebunden.
    * Es werden diverse SIcherheitsmaßnahmen getroffen wie das SessionManagment und der eingeschränkte authorisierte Zugriff
    * auf den Webclient. Dieser ist nur über eine Benutzername und Passwort authentifizierung möglich.
-   * @param http the {@link HttpSecurity} to modify
+   * @param http {@link HttpSecurity}
    * @throws Exception
    */
   @Override

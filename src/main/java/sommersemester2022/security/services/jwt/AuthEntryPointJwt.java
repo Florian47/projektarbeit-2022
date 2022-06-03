@@ -9,9 +9,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+import sommersemester2022.security.WebSecurityConfig;
+
+/**
+ * @author David Wiebe
+ * Die Klasse AuthEntryPointJwt ist eine Fehlermanager. Dieser löst aus, wenn die Authentifizierung des Benutzers fehlschlägt.
+ * @see WebSecurityConfig
+ */
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
   private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+
+  /**
+   * Wenn die Authentifizierung des Benutzers fehlschlägt, wird ein Unauthorized error in den Logmanager des
+   * Servers geschrieben.
+   * @param request Anfrage des Webclients
+   * @param response Antwort des Servers
+   * @param authException Definition des Fehlers
+   * @throws IOException
+   * @throws ServletException
+   */
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response,
                        AuthenticationException authException) throws IOException, ServletException {
