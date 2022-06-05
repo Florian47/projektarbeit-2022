@@ -125,9 +125,9 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     pTraining.getOriginTraining().setName("Test2");
     String json = objectMapper.writeValueAsString(pTraining);
     result = restAuthPut("/processedTraining/"+id, json,getJWTToken("admin"));
-    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-    //pTrainingList = loadAll(ProcessedTrainingEntity.class);
-    //assertThat(pTrainingList.get(0).getOriginTraining().getName()).isEqualTo("Test2");
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    pTrainingList = loadAll(ProcessedTrainingEntity.class);
+    assertThat(pTrainingList.get(0).getOriginTraining().getName()).isEqualTo("Test2");
   }
 
   /**
