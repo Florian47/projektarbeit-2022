@@ -6,6 +6,7 @@ import sommersemester2022.training.TrainingEntity;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ProcessedTrainingRepo implementiert das JpaRepository und schafft die Verbindung zur Datenbank. Außerdem führt das
@@ -18,7 +19,12 @@ public interface ProcessedTrainingRepo extends JpaRepository<ProcessedTrainingEn
 
   /**
    * Gibt eine Liste aller Trainings zurück, welche bereits von dem Schüler mit der angegebenen ID bearbeitet wurden.
-   * @return
+   * @return Liste aller Trainings, welche bearbeitet wurden
    */
   List<ProcessedTrainingEntity> findByStudentId(int id);
+  /**
+   * Gibt eine Liste aller Trainings zurück, welche zum angegebenen "Ursprungs-"Training gehören.
+   * @return Liste aller Trainings, gehören zum Urspungs-Training
+   */
+  List<ProcessedTrainingEntity> findByOriginTraining(Optional<TrainingEntity> originTraining);
 }

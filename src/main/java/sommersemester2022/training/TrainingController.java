@@ -1,8 +1,10 @@
 package sommersemester2022.training;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
@@ -84,7 +86,13 @@ public class TrainingController {
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/training/{id}")
   public void deleteTraining(@PathVariable int id) {
-    trainingRepo.deleteById(id);
+    List<ProcessedTrainingEntity> allProcessed = processedTrainingRepo.findByOriginTraining(trainingRepo.findById(id));
+    if (allProcessed.isEmpty()) {
+      trainingRepo.deleteById(id);
+    } else {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+        "Das Training kann nicht gelöscht werden, sobald ein Schüler es bearbeitet hat.");
+    }
   }
 
   /**

@@ -1,10 +1,16 @@
 package sommersemester2022.task;
 
+import org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorIngresDatabaseImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import sommersemester2022.training.TrainingEntity;
+import sommersemester2022.training.TrainingRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * TaskController ist die Controller-Klasse für die Entität der Aufgabe.
@@ -17,6 +23,8 @@ import java.util.List;
 public class TaskController {
   @Autowired
   private TaskRepo taskRepo;
+  @Autowired
+  private TrainingRepo trainingRepo;
 
   /**
    * Erstellt eine neue Aufgabe im System.
@@ -70,7 +78,13 @@ public class TaskController {
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/task/{id}")
   public void deleteTask(@PathVariable int id) {
-    taskRepo.deleteById(id);
+    Optional<List<TrainingEntity>> allWithTask = trainingRepo.findByTasks(taskRepo.findById(id));
+    if (allWithTask.isEmpty()) {
+      taskRepo.deleteById(id);
+    } else {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+        "Die Aufgabe kann nicht gelöscht werden, da sie noch Teil eines Trainings ist.");
+    }
   }
 
   /**

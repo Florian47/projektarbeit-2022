@@ -1,6 +1,7 @@
 package sommersemester2022.person;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,13 +12,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import sommersemester2022.security.services.UserDetailsImpl;
 import sommersemester2022.security.services.jwt.JwtUtils;
-import sommersemester2022.userroles.RoleEntity;
+import sommersemester2022.training.TrainingEntity;
+import sommersemester2022.training.TrainingRepo;
 import sommersemester2022.userroles.RoleRepo;
-import sommersemester2022.userroles.UserRole;
 
 import java.util.List;
+import java.util.Optional;
 
 import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
 
@@ -28,13 +31,15 @@ import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
  * @author Florian Weinert, David Wiebe
  * @see    UserRepo
  */
+
 @RestController @Service @Transactional
 public class UserController {
-
   @Autowired
   private UserRepo userRepo;
   @Autowired
   private RoleRepo roleRepo;
+  @Autowired
+  private TrainingRepo trainingRepo;
   @Autowired
   PasswordEncoder encoder;
   @Autowired
@@ -110,15 +115,23 @@ public class UserController {
 //    return ResponseEntity.ok().body(userRepo.save(person));
   }
 
-  /**
-   * Gibt dem Repository den Auftrag, den User mit der entsprechenden ID zu löschen.
-   * @param id User ID
-   */
-  @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
-  @DeleteMapping("/users/{id}")
-  public void deleteUser( @RequestHeader ("Authorization")@PathVariable int id) {
-    userRepo.deleteById(id);
-  }
+
+    /**
+     * Gibt dem Repository den Auftrag, den User mit der entsprechenden ID zu löschen. Die geschieht nur, wenn der User
+     * nicht mehr für ein Training freigegeben ist.
+     * @param id User ID
+     */
+    @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
+    @DeleteMapping("/users/{id}")
+    public void deleteUser (@RequestHeader("Authorization") @PathVariable int id) {
+      Optional<List<TrainingEntity>> trainingsFromUser = trainingRepo.findByStudentsAndIndividualTrue(userRepo.findById(id));
+      if (trainingsFromUser.isEmpty()) {
+        userRepo.deleteById(id);
+      } else {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Der User kann nicht gelöscht werden, da er noch für ein Training freigegeben ist.");
+      }
+    }
 
   /**
    * Gibt eine Liste aller bestehenden User des System zurück.
