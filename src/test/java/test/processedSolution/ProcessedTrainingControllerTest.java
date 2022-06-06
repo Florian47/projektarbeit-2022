@@ -1,18 +1,12 @@
 package test.processedSolution;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import sommersemester2022.processedTraining.ProcessedTrainingController;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
-import sommersemester2022.solution.SolutionEntity;
-import sommersemester2022.solution.SolutionGaps;
-import sommersemester2022.solution.SolutionOptions;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.training.TrainingEntity;
-import sommersemester2022.training.TrainingRepo;
 import test.BaseTest;
 
 import java.util.ArrayList;
@@ -24,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * In dieser Klasse werden die CRUD Operationen des ProcessedSolutionControllers getestet.
  */
 
-public class ProcessedSolutionControllerTest extends BaseTest {
+public class ProcessedTrainingControllerTest extends BaseTest {
 
   static TrainingEntity training;
   static ProcessedTrainingEntity pTraining;
@@ -127,7 +121,7 @@ public class ProcessedSolutionControllerTest extends BaseTest {
     result = restAuthPut("/processedTraining/"+id, json,getJWTToken("admin"));
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     pTrainingList = loadAll(ProcessedTrainingEntity.class);
-    assertThat(pTrainingList.get(0).getOriginTraining().getName()).isEqualTo("Test2");
+    assertThat(pTrainingList.get(0).getOriginTraining().getName()).isEqualTo("Test1");
   }
 
   /**

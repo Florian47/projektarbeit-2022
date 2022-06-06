@@ -41,7 +41,7 @@ public class ProcessedTrainingEntity {
   /**
    * originTraining beschreibt das zugehörige Training, welches vom Dozent erstellt wurde.
    */
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne//(fetch = FetchType.EAGER)
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private TrainingEntity originTraining;
 
