@@ -125,7 +125,7 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public void deleteUser (@RequestHeader("Authorization") @PathVariable int id) {
       Optional<List<TrainingEntity>> trainingsFromUser = trainingRepo.findByStudentsAndIndividualTrue(userRepo.findById(id));
-      if (trainingsFromUser.isEmpty()) {
+      if (trainingsFromUser.get().isEmpty()) {
         userRepo.deleteById(id);
       } else {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

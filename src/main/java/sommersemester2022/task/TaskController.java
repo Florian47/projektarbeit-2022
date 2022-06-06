@@ -79,7 +79,7 @@ public class TaskController {
   @DeleteMapping("/task/{id}")
   public void deleteTask(@PathVariable int id) {
     Optional<List<TrainingEntity>> allWithTask = trainingRepo.findByTasks(taskRepo.findById(id));
-    if (allWithTask.isEmpty()) {
+    if (allWithTask.get().isEmpty()) {
       taskRepo.deleteById(id);
     } else {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
