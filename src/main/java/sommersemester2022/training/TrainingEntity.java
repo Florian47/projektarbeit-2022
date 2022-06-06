@@ -33,7 +33,7 @@ public class TrainingEntity {
   private boolean individual;
 
   @LazyCollection(LazyCollectionOption.FALSE)
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.PERSIST)
   private List<TaskEntity> tasks;
 
   private int score;

@@ -84,16 +84,6 @@ public class TrainingController {
   @PreAuthorize("hasRole('ROLE_TEACHER')")
   @DeleteMapping("/training/{id}")
   public void deleteTraining(@PathVariable int id) {
-    List<ProcessedTrainingEntity> entities;
-    entities = processedTrainingRepo.findAll();
-    List<ProcessedTrainingEntity> relevantEntities = new ArrayList<>();
-    int x = entities.size();
-    for (int i = 0; i<x;i++)
-    {
-      if(entities.get(i).getOriginTraining().getId()==id) {
-        processedTrainingRepo.delete(entities.get(i));
-      }
-    }
     trainingRepo.deleteById(id);
   }
 
