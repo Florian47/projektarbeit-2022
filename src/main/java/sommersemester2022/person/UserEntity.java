@@ -1,5 +1,7 @@
 package sommersemester2022.person;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -18,20 +20,26 @@ import java.util.stream.Collectors;
  * Eigenschaften (Attribute) und Fähigkeiten (Methoden).
  * @author Florian Weinert, David Wiebe
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class UserEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @JsonProperty("id")
   private int id;
+  @JsonProperty("firstname")
   private String firstName;
+  @JsonProperty("lastname")
   private String lastName;
 
   /**
    * Usernamen dürfen nicht doppelt vergeben werden (daher unique)
    */
   @Column(unique = true)
+  @JsonProperty("username")
   private String username;
+  @JsonProperty("password")
   private String password;
 
   /**
@@ -39,6 +47,7 @@ public class UserEntity {
    */
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
+  @JsonProperty("roles")
   public List<RoleEntity> roles = new ArrayList<>();
 
   public UserEntity(String firstName, String lastName, String username, String password, List<RoleEntity> roles) {
