@@ -26,20 +26,15 @@ public class UserEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @JsonProperty("id")
   private int id;
-  @JsonProperty("firstname")
   private String firstName;
-  @JsonProperty("lastname")
   private String lastName;
 
   /**
    * Usernamen dürfen nicht doppelt vergeben werden (daher unique)
    */
   @Column(unique = true)
-  @JsonProperty("username")
   private String username;
-  @JsonProperty("password")
   private String password;
 
   /**
@@ -47,7 +42,6 @@ public class UserEntity {
    */
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
-  @JsonProperty("roles")
   public List<RoleEntity> roles = new ArrayList<>();
 
   public UserEntity(String firstName, String lastName, String username, String password, List<RoleEntity> roles) {
