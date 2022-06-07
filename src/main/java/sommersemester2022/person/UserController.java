@@ -82,9 +82,17 @@ public class UserController {
   @PostMapping("/users/register")
   public UserEntity register(@RequestBody UserEntity person) {
 //    encoder.encode(person.getPassword());
-    person.roles.add(roleRepo.findByName(ROLE_STUDENT));
-    UserEntity save = userRepo.save(person);
-    return save;
+    Optional<UserEntity> userWithName = userRepo.findByUsername(person.getUsername());
+    if (userWithName.isEmpty()) {
+      person.roles.add(roleRepo.findByName(ROLE_STUDENT));
+      UserEntity save = userRepo.save(person);
+      return save;
+    }
+    else
+    {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+        "Der Username ist bereits vergeben");
+    }
   }
 
   /**

@@ -1,8 +1,10 @@
 package sommersemester2022;
 
+import org.h2.util.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.transaction.annotation.Transactional;
 import sommersemester2022.person.UserEntity;
 import sommersemester2022.person.UserRepo;
 import sommersemester2022.solution.SolutionEntity;
@@ -12,6 +14,7 @@ import sommersemester2022.task.TaskCategory;
 import sommersemester2022.task.TaskDifficulty;
 import sommersemester2022.task.TaskEntity;
 import sommersemester2022.task.TaskRepo;
+import sommersemester2022.training.TrainingEntity;
 import sommersemester2022.training.TrainingRepo;
 import sommersemester2022.userroles.RoleEntity;
 import sommersemester2022.userroles.RoleRepo;
@@ -20,9 +23,16 @@ import sommersemester2022.userroles.UserRole;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static sommersemester2022.userroles.UserRole.*;
 import static sommersemester2022.userroles.UserRole.ROLE_STUDENT;
+
 /**
  * @author Alexander Kiehl
  * Eine Datenhaltungsklasse die die Benutzer und die Übungsaufgaben in die Datenbank schreibt
@@ -42,18 +52,20 @@ public class DummyData {
   /**
    * Methode die einmal bei Programmstart aufgerufen wird und die DummyDaten in die Datenbank schreibt
    */
+  @Transactional
   @PostConstruct
-  public void initDb(){
+  public void initDb() {
     RoleEntity student = new RoleEntity();
     student.setName(ROLE_STUDENT);
-    if(!roleRepository.existsByName(ROLE_STUDENT)) roleRepository.save(student);
+    if (!roleRepository.existsByName(ROLE_STUDENT)) roleRepository.save(student);
     RoleEntity teacher = new RoleEntity();
     teacher.setName(UserRole.ROLE_TEACHER);
-    if(!roleRepository.existsByName(UserRole.ROLE_TEACHER)) roleRepository.save(teacher);
+    if (!roleRepository.existsByName(UserRole.ROLE_TEACHER)) roleRepository.save(teacher);
     RoleEntity admin = new RoleEntity();
     admin.setName(ROLE_ADMINISTRATOR);
-    if(!roleRepository.existsByName(UserRole.ROLE_ADMINISTRATOR)) roleRepository.save(admin);
+    if (!roleRepository.existsByName(UserRole.ROLE_ADMINISTRATOR)) roleRepository.save(admin);
 
+    List<UserEntity> allUsers = new ArrayList<>();
     // Add admin user
     UserEntity user = new UserEntity();
     user.setFirstName("admin");
@@ -64,7 +76,7 @@ public class DummyData {
     user.roles.add(roleRepository.findByName(ROLE_ADMINISTRATOR));
     user.roles.add(roleRepository.findByName(ROLE_TEACHER));
     user.roles.add(roleRepository.findByName(ROLE_STUDENT));
-    if(!userRepository.existsByUsername(user.getUsername()))userRepository.save(user);
+    allUsers.add(user);
 
 //     Add 3 test users
     UserEntity user1 = new UserEntity();
@@ -74,8 +86,7 @@ public class DummyData {
     user1.setPassword("chrisbrinkhoff");
     user1.setPassword(BCrypt.hashpw(user1.getPassword(), BCrypt.gensalt(12)));
     user1.roles.add(roleRepository.findByName(ROLE_STUDENT));
-
-    if(!userRepository.existsByUsername(user1.getUsername()))userRepository.save(user1);
+    allUsers.add(user1);
 
     UserEntity user2 = new UserEntity();
     user2.setFirstName("Florian");
@@ -84,8 +95,7 @@ public class DummyData {
     user2.setPassword("florianweinert");
     user2.setPassword(BCrypt.hashpw(user2.getPassword(), BCrypt.gensalt(12)));
     user2.roles.add(roleRepository.findByName(ROLE_STUDENT));
-
-    if(!userRepository.existsByUsername(user2.getUsername()))userRepository.save(user2);
+    allUsers.add(user2);
 
     UserEntity user3 = new UserEntity();
     user3.setFirstName("Alexander");
@@ -94,10 +104,9 @@ public class DummyData {
     user3.setPassword("alexanderkiehl");
     user3.setPassword(BCrypt.hashpw(user3.getPassword(), BCrypt.gensalt(12)));
     user3.roles.add(roleRepository.findByName(ROLE_STUDENT));
+    allUsers.add(user3);
 
-    if(!userRepository.existsByUsername(user3.getUsername()))userRepository.save(user3);
-
-
+    List<TaskEntity> tasks = new ArrayList<>();
     //Task 1, Lückentext, Einfach
     List<SolutionOptions> options1 = new ArrayList<>();
     options1.add(new SolutionOptions("organisiert", true));
@@ -144,7 +153,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
 
     //Task 2, Lückentext, Einfach
@@ -184,7 +193,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 3, Lückentext, Einfach
     options1 = new ArrayList<>();
@@ -217,7 +226,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 4, Lückentext, Mittel
     options1 = new ArrayList<>();
@@ -260,7 +269,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 5, Lückentext, Mittel
     options1 = new ArrayList<>();
@@ -299,7 +308,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 6, Lückentext, Mittel
     options1 = new ArrayList<>();
@@ -337,7 +346,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 7, Lückentext, Schwer
     options1 = new ArrayList<>();
@@ -375,7 +384,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 8, Lückentext, Schwer
     options1 = new ArrayList<>();
@@ -413,7 +422,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 9, Lückentext, Schwer
     options1 = new ArrayList<>();
@@ -476,7 +485,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.LUECKENTEXT);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 10, Grammatik, Einfach
     options1 = new ArrayList<>();
@@ -517,7 +526,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 11, Grammatik, Einfach
     options1 = new ArrayList<>();
@@ -550,7 +559,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 12, Grammatik, Einfach
     options1 = new ArrayList<>();
@@ -595,7 +604,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 13, Grammatik, Mittel
     options1 = new ArrayList<>();
@@ -656,7 +665,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 14, Grammatik, Mittel
     options1 = new ArrayList<>();
@@ -717,7 +726,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 15, Grammatik, Mittel
     options1 = new ArrayList<>();
@@ -778,7 +787,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 16, Grammatik, Schwer
     options1 = new ArrayList<>();
@@ -826,7 +835,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 17, Grammatik, Schwer
     options1 = new ArrayList<>();
@@ -879,7 +888,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 18, Grammatik, Schwer
     options1 = new ArrayList<>();
@@ -942,7 +951,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GRAMMATIK);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 19, Groß und Kleinschreibung, Einfach
     options1 = new ArrayList<>();
@@ -979,7 +988,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 20, Groß und Kleinschreibung, Einfach
     options1 = new ArrayList<>();
@@ -1021,8 +1030,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
-
+    tasks.add(task1);
 
 
     //Task 21, Groß und Kleinschreibung, Einfach
@@ -1065,7 +1073,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 22, Groß und Kleinschreibung, Mittel
     options1 = new ArrayList<>();
@@ -1119,7 +1127,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 23, Groß und Kleinschreibung, Mittel
     options1 = new ArrayList<>();
@@ -1161,7 +1169,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 24, Groß und Kleinschreibung, Mittel
     options1 = new ArrayList<>();
@@ -1223,7 +1231,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 25, Groß und Kleinschreibung, Schwer
     options1 = new ArrayList<>();
@@ -1276,7 +1284,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 26, Groß und Kleinschreibung, Schwer
     options1 = new ArrayList<>();
@@ -1325,7 +1333,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 27, Groß und Kleinschreibung, Schwer
     options1 = new ArrayList<>();
@@ -1378,7 +1386,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.GROSS_KLEIN_SCHREIBUNG);
     task1.setDifficulty(TaskDifficulty.SCHWER);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 28, Zeichensetzung, Einfach
     options1 = new ArrayList<>();
@@ -1439,7 +1447,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.ZEICHENSETZUNG);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 29, Zeichensetzung, Einfach
     options1 = new ArrayList<>();
@@ -1500,7 +1508,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.ZEICHENSETZUNG);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 30, Zeichensetzung, Einfach
     options1 = new ArrayList<>();
@@ -1561,7 +1569,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.ZEICHENSETZUNG);
     task1.setDifficulty(TaskDifficulty.EINFACH);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 31, Zeichensetzung, Mittel
     options1 = new ArrayList<>();
@@ -1614,7 +1622,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.ZEICHENSETZUNG);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 32, Zeichensetzung, Mittel
     options1 = new ArrayList<>();
@@ -1667,7 +1675,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.ZEICHENSETZUNG);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 33, Zeichensetzung, Mittel
     options1 = new ArrayList<>();
@@ -1736,7 +1744,7 @@ public class DummyData {
     task1.setCategory(TaskCategory.ZEICHENSETZUNG);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
     //Task 34, Zeichensetzung, Schwer
     options1 = new ArrayList<>();
@@ -1830,8 +1838,59 @@ public class DummyData {
     task1.setCategory(TaskCategory.ZEICHENSETZUNG);
     task1.setDifficulty(TaskDifficulty.MITTEL);
     task1.setSolution(solution1);
-    if(!taskRepository.existsByName(task1.getName()))taskRepository.save(task1);
+    tasks.add(task1);
 
+    var unsavedUser = allUsers.stream().filter(usera -> !userRepository.existsByUsername(usera.getUsername())).toList();
+    userRepository.saveAll(unsavedUser);
+
+
+    List<TrainingEntity> unsavedTrainingList = new ArrayList<>();
+    TrainingEntity training1 = new TrainingEntity();
+    training1.setName("Lückentext Training - Chris Leon Brinkhoff");
+    training1.setIndividual(true);
+    List<UserEntity> userList = new ArrayList<>();
+    userList.add(user1);
+    training1.setStudents(userList);
+    var filteredTasks = tasks.stream().filter(task -> filterByCategory(task, TaskCategory.LUECKENTEXT)).limit(3).toList();
+    training1.setTasks(filteredTasks);
+    if (filteredTasks.stream().map(TaskEntity::getName).noneMatch(taskRepository::existsByName)) {
+      unsavedTrainingList.add(training1);
+    }
+
+    training1 = new TrainingEntity();
+    training1.setName("Grammatik Training - Florian Weinert");
+    training1.setIndividual(true);
+    List<UserEntity> userList1 = new ArrayList<>();
+    userList1.add(user2);
+    training1.setStudents(userList1);
+    filteredTasks = tasks.stream().filter(task -> filterByCategory(task, TaskCategory.GRAMMATIK)).limit(3).toList();
+    training1.setTasks(filteredTasks);
+    if (filteredTasks.stream().map(TaskEntity::getName).noneMatch(taskRepository::existsByName)) {
+      unsavedTrainingList.add(training1);
+    }
+
+    training1 = new TrainingEntity();
+    training1.setName("Gross und Kleinschreibung Training - Alexander Kiehl");
+    training1.setIndividual(true);
+    List<UserEntity> userList2 = new ArrayList<>();
+    userList2.add(user3);
+    training1.setStudents(userList2);
+    filteredTasks = tasks.stream().filter(task -> filterByCategory(task, TaskCategory.GROSS_KLEIN_SCHREIBUNG)).limit(3).toList();
+    training1.setTasks(filteredTasks);
+    if (filteredTasks.stream().map(TaskEntity::getName).noneMatch(taskRepository::existsByName)) {
+      unsavedTrainingList.add(training1);
+    }
+
+    var unsavedTrainings = unsavedTrainingList.stream().filter(training -> !trainingRepository.existsByName(training.getName())).toList();
+    trainingRepository.saveAll(unsavedTrainings);
+
+
+    var unsavedTasks = tasks.stream().filter(task -> !taskRepository.existsByName(task.getName())).toList();
+    taskRepository.saveAll(unsavedTasks);
+  }
+
+  private boolean filterByCategory(TaskEntity task, TaskCategory category) {
+    return Objects.equals(task.getCategory(), category);
   }
 
 }

@@ -93,11 +93,10 @@ public class BaseTest {
   @BeforeEach
   public void setup() {
 //    if (solutionRepo != null){solutionRepo.deleteAll();}
+    trainingRepo.deleteAll();
     taskRepo.deleteAll();
-//    if (trainingRepo != null){trainingRepo.deleteAll();}
     //if (processedTrainingRepo != null){processedTrainingRepo.deleteAll();}
     userRepo.deleteAll();
-    trainingRepo.deleteAll();
 
     RoleEntity student = new RoleEntity();
     student.setName(ROLE_STUDENT);

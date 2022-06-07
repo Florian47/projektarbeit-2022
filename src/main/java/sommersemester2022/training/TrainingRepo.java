@@ -34,4 +34,9 @@ public interface TrainingRepo extends JpaRepository<TrainingEntity, Integer> {
    * @return Liste aller Trainings, welche die Aufgabe enthalten
    */
   Optional<List<TrainingEntity>> findByTasks(Optional<TaskEntity> task);
+  /**
+   * Überprüft ob ein Training bereits in der Datenbank ist
+   * @return true wenn Training bereits in der Datenbank vorhanden ist
+   */
+  boolean existsByName(String name);
 }
