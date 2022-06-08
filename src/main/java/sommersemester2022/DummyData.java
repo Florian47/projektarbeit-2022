@@ -1004,8 +1004,8 @@ public class DummyData {
     options4.add(new SolutionOptions("Tanzten", false));
     options4.add(new SolutionOptions("tanzten", true));
     options5 = new ArrayList<>();
-    options5.add(new SolutionOptions("Funkelten", false));
-    options5.add(new SolutionOptions("funkelten", true));
+    options5.add(new SolutionOptions("Fröhlich", false));
+    options5.add(new SolutionOptions("fröhlich", true));
     options6 = new ArrayList<>();
     options6.add(new SolutionOptions("Luft", true));
     options6.add(new SolutionOptions("luft", false));
