@@ -1,5 +1,6 @@
 package sommersemester2022.task;
 
+import org.springframework.util.StringUtils;
 import sommersemester2022.solution.SolutionEntity;
 import sommersemester2022.solution.SolutionGaps;
 
@@ -127,7 +128,7 @@ public class TaskEntity implements NotUniqueIdentification{
 
   @PrePersist
   private void generateRandomNotUniqueId(){
-    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+    if(!StringUtils.hasLength(this.notUniqueId)) this.notUniqueId = UUID.randomUUID().toString();
   }
   @Override
   public String getNotUniqueId() {

@@ -3,6 +3,7 @@ package sommersemester2022.solution;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import sommersemester2022.processedTraining.ProcessedTrainingEntity;
 import sommersemester2022.task.NotUniqueIdentification;
 import sommersemester2022.task.TaskEntity;
@@ -49,7 +50,7 @@ public class SolutionEntity implements NotUniqueIdentification {
    */
   @PrePersist
   private void generateRandomNotUniqueId(){
-    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+    if(!StringUtils.hasLength(this.notUniqueId)) this.notUniqueId = UUID.randomUUID().toString();
   }
   @Override
   public String getNotUniqueId() {

@@ -1,5 +1,6 @@
 package sommersemester2022.solution;
 
+import org.springframework.util.StringUtils;
 import sommersemester2022.task.NotUniqueIdentification;
 
 import javax.persistence.*;
@@ -36,7 +37,7 @@ public class SolutionOptions implements NotUniqueIdentification {
    */
   @PrePersist
   private void generateRandomNotUniqueId(){
-    if(this.notUniqueId == null) this.notUniqueId = UUID.randomUUID().toString();
+    if(!StringUtils.hasLength(this.notUniqueId)) this.notUniqueId = UUID.randomUUID().toString();
   }
   @Override
   public String getNotUniqueId() {
